@@ -39,8 +39,6 @@ class _SignUpLayoutState extends State<SignUpLayout> {
 
   @override
   void initState() {
-    super.initState();
-
     _keyboardState = _keyboardVisibility.isKeyboardVisible;
     _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
@@ -49,6 +47,7 @@ class _SignUpLayoutState extends State<SignUpLayout> {
         });
       },
     );
+    super.initState();
   }
 
   @override
@@ -59,16 +58,15 @@ class _SignUpLayoutState extends State<SignUpLayout> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: show different layout on keyboard pop up.
     return Scaffold(
       body: CustomPaint(
         painter: BackgroundPaint(),
-        child: _keyboardState
-            ? buildLayoutWhenKeyboardHidden()
-            : buildLayoutWhenKeyboardHidden(),
+        child: buildLayoutWhenKeyboardHidden(),
       ),
-      floatingActionButton: FabWidget(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FabWidget(topMargin: _keyboardState ? 8 : 64),
+      floatingActionButtonLocation: _keyboardState
+          ? FloatingActionButtonLocation.endDocked
+          : FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -76,13 +74,26 @@ class _SignUpLayoutState extends State<SignUpLayout> {
     return Container(
       child: Column(
         children: <Widget>[
-          Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: HeaderWidget(title: 'Create \nAccount', titleSize: 26)),
+          Visibility(
+            visible: !_keyboardState,
+            child: Flexible(
+                flex: 1,
+                fit: FlexFit.tight,
+                child: HeaderWidget(title: 'Create \nAccount', titleSize: 26)),
+          ),
           Flexible(fit: FlexFit.loose, flex: 3, child: buildInputFields()),
-          Flexible(flex: 1, child: SignUpButtonWidget()),
-          Flexible(flex: 1, child: SignInButtonWidget()),
+          Visibility(
+              visible: !_keyboardState,
+              child: Flexible(
+                flex: 1,
+                child: SignUpButtonWidget(),
+              )),
+          Visibility(
+              visible: !_keyboardState,
+              child: Flexible(
+                flex: 1,
+                child: SignInButtonWidget(),
+              )),
         ],
       ),
     );
@@ -137,14 +148,18 @@ class HeaderWidget extends StatelessWidget {
 }
 
 class FabWidget extends StatelessWidget {
+  final double topMargin;
+
   const FabWidget({
     Key key,
-  }) : super(key: key);
+    @required this.topMargin,
+  })  : assert(topMargin != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 64),
+      margin: EdgeInsets.fromLTRB(16, 16, 16, topMargin),
       child: FloatingActionButton(
         onPressed: null,
         child: IconButton(
@@ -152,7 +167,7 @@ class FabWidget extends StatelessWidget {
               Icons.arrow_forward,
               color: Colors.white,
             ),
-            onPressed: (){}),
+            onPressed: () {}),
       ),
     );
   }
