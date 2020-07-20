@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class SignUpDesign extends StatelessWidget {
   @override
@@ -25,29 +26,123 @@ class SignUpDesign extends StatelessWidget {
   }
 }
 
-class SignUpLayout extends StatelessWidget {
+class SignUpLayout extends StatefulWidget {
+  @override
+  _SignUpLayoutState createState() => _SignUpLayoutState();
+}
+
+class _SignUpLayoutState extends State<SignUpLayout> {
+  KeyboardVisibilityNotification _keyboardVisibility =
+      new KeyboardVisibilityNotification();
+  int _keyboardVisibilitySubscriberId;
+  bool _keyboardState;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _keyboardState = _keyboardVisibility.isKeyboardVisible;
+    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          _keyboardState = visible;
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+  }
+
   @override
   Widget build(BuildContext context) {
+    //TODO: show different layout on keyboard pop up.
     return Scaffold(
       body: CustomPaint(
         painter: BackgroundPaint(),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              buildHeader(),
-              buildInputFields(),
-              buildSignUpButton(),
-              buildSignIn(),
-            ],
-          ),
-        ),
+        child: _keyboardState
+            ? buildLayoutWhenKeyboardHidden()
+            : buildLayoutWhenKeyboardHidden(),
       ),
-      floatingActionButton: buildFab(),
+      floatingActionButton: FabWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
-  Container buildFab() {
+  Container buildLayoutWhenKeyboardHidden() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: HeaderWidget(title: 'Create \nAccount', titleSize: 26)),
+          Flexible(fit: FlexFit.loose, flex: 3, child: buildInputFields()),
+          Flexible(flex: 1, child: SignUpButtonWidget()),
+          Flexible(flex: 1, child: SignInButtonWidget()),
+        ],
+      ),
+    );
+  }
+
+  Container buildLayoutWhenKeyboardShown() {
+    return Container(
+      child: buildInputFields(),
+    );
+  }
+
+  Padding buildInputFields() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          TextFormFieldWidget(name: 'Name'),
+          TextFormFieldWidget(name: 'Email'),
+          TextFormFieldWidget(name: 'Password'),
+        ],
+      ),
+    );
+  }
+}
+
+class HeaderWidget extends StatelessWidget {
+  final title;
+  final double titleSize;
+
+  const HeaderWidget({
+    Key key,
+    @required this.title,
+    @required this.titleSize,
+  })  : assert(title != null),
+        assert(titleSize != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(32, 0, 0, 0),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: TextStyle(
+            fontSize: titleSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
+      ),
+    );
+  }
+}
+
+class FabWidget extends StatelessWidget {
+  const FabWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(16, 16, 16, 64),
       child: FloatingActionButton(
@@ -57,87 +152,23 @@ class SignUpLayout extends StatelessWidget {
               Icons.arrow_forward,
               color: Colors.white,
             ),
-            onPressed: null),
+            onPressed: (){}),
       ),
     );
   }
+}
 
-  Flexible buildSignIn() {
-    return Flexible(
-      flex: 1,
-      child: Container(
-        alignment: Alignment.centerLeft,
-        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
-        child: FlatButton(
-          onPressed: () {},
-          padding: EdgeInsets.all(-8),
-          child: Text(
-            "Sign In",
-            style: TextStyle(
-                fontSize: 18,
-                decoration: TextDecoration.underline,
-                color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
+class TextFormFieldWidget extends StatelessWidget {
+  const TextFormFieldWidget({
+    Key key,
+    @required this.name,
+  })  : assert(name != null),
+        super(key: key);
 
-  Flexible buildSignUpButton() {
-    return Flexible(
-      flex: 1,
-      child: Container(
-        alignment: Alignment.centerLeft,
-        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
-        child: FlatButton(
-          onPressed: () {},
-          child: Text(
-            "Sign up",
-            style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
+  final String name;
 
-  Flexible buildInputFields() {
-    return Flexible(
-      flex: 3,
-      fit: FlexFit.loose,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            buildTextField("Name"),
-            buildTextField("Email"),
-            buildTextField('Password'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Flexible buildHeader() {
-    return Flexible(
-      flex: 1,
-      fit: FlexFit.loose,
-      child: Container(
-        margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
-          child: Text(
-            "Create \nAccount",
-            style: TextStyle(
-                fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container buildTextField(String name) {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(16),
       child: TextFormField(
@@ -154,6 +185,51 @@ class SignUpLayout extends StatelessWidget {
             enabledBorder: UnderlineInputBorder(
                 borderSide:
                     BorderSide(color: Color.fromARGB(100, 255, 255, 255)))),
+      ),
+    );
+  }
+}
+
+class SignInButtonWidget extends StatelessWidget {
+  const SignInButtonWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
+      child: FlatButton(
+        onPressed: () {},
+        padding: EdgeInsets.all(-8),
+        child: Text(
+          "Sign In",
+          style: TextStyle(
+              fontSize: 16,
+              decoration: TextDecoration.underline,
+              color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
+class SignUpButtonWidget extends StatelessWidget {
+  const SignUpButtonWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
+      child: FlatButton(
+        onPressed: () {},
+        child: Text(
+          "Sign up",
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
       ),
     );
   }
