@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
+import 'widgets/FabWidget.dart';
+import 'widgets/HeaderWidget.dart';
+import 'widgets/TextFormFieldWidget.dart';
+
 class SignUpDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class _SignUpLayoutState extends State<SignUpLayout> {
     return Scaffold(
       body: CustomPaint(
         painter: BackgroundPaint(),
-        child: buildLayoutWhenKeyboardHidden(),
+        child: buildLayout(),
       ),
       floatingActionButton: FabWidget(topMargin: _keyboardState ? 8 : 64),
       floatingActionButtonLocation: _keyboardState
@@ -70,7 +74,7 @@ class _SignUpLayoutState extends State<SignUpLayout> {
     );
   }
 
-  Container buildLayoutWhenKeyboardHidden() {
+  Container buildLayout() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -99,107 +103,25 @@ class _SignUpLayoutState extends State<SignUpLayout> {
     );
   }
 
-  Container buildLayoutWhenKeyboardShown() {
-    return Container(
-      child: buildInputFields(),
-    );
-  }
-
   Padding buildInputFields() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
-          TextFormFieldWidget(name: 'Name'),
-          TextFormFieldWidget(name: 'Email'),
-          TextFormFieldWidget(name: 'Password'),
+          TextFormFieldWidget(
+            name: 'Name',
+            labelColor: Colors.white,
+            underlineColor: Color.fromARGB(100, 255, 255, 255),
+          ),
+          TextFormFieldWidget(
+              name: 'Email',
+              labelColor: Colors.white,
+              underlineColor: Color.fromARGB(100, 255, 255, 255)),
+          TextFormFieldWidget(
+              name: 'Password',
+              labelColor: Colors.white,
+              underlineColor: Color.fromARGB(100, 255, 255, 255)),
         ],
-      ),
-    );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  final title;
-  final double titleSize;
-
-  const HeaderWidget({
-    Key key,
-    @required this.title,
-    @required this.titleSize,
-  })  : assert(title != null),
-        assert(titleSize != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(32, 0, 0, 0),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title,
-        style: TextStyle(
-            fontSize: titleSize,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
-      ),
-    );
-  }
-}
-
-class FabWidget extends StatelessWidget {
-  final double topMargin;
-
-  const FabWidget({
-    Key key,
-    @required this.topMargin,
-  })  : assert(topMargin != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, topMargin),
-      child: FloatingActionButton(
-        onPressed: null,
-        child: IconButton(
-            icon: Icon(
-              Icons.arrow_forward,
-              color: Colors.white,
-            ),
-            onPressed: () {}),
-      ),
-    );
-  }
-}
-
-class TextFormFieldWidget extends StatelessWidget {
-  const TextFormFieldWidget({
-    Key key,
-    @required this.name,
-  })  : assert(name != null),
-        super(key: key);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(16),
-      child: TextFormField(
-        keyboardType: TextInputType.text,
-        style: TextStyle(fontSize: 16, color: Colors.pink.shade300),
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: name,
-            contentPadding: EdgeInsets.all(8),
-            labelStyle: TextStyle(color: Colors.white),
-            focusedBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Color.fromARGB(100, 255, 255, 255))),
-            enabledBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Color.fromARGB(100, 255, 255, 255)))),
       ),
     );
   }

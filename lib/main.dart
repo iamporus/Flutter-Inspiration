@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
+import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/SignInDesign.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: darkBlueGray,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignUpDesign(),
+      home: SignInDesign(),
     );
   }
 }
