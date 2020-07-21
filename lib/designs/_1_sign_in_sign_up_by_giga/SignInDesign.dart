@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
+import 'widgets/BoldFlatButtonWidget.dart';
 import 'widgets/FabWidget.dart';
 import 'widgets/HeaderWidget.dart';
 import 'widgets/TextFormFieldWidget.dart';
+import 'widgets/UnderlinedFlatButtonWidget.dart';
 
 class SignInDesign extends StatelessWidget {
   @override
@@ -14,24 +17,57 @@ class SignInDesign extends StatelessWidget {
       body: CustomPaint(
         painter: BackgroundPaint(),
         child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: new AppBar(
+            elevation: 0.0,
             backgroundColor: Colors.transparent,
-            appBar: new AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            body: SignInLayout()),
+          ),
+          body: SignInLayout(),
+        ),
       ),
     );
   }
 }
 
-class SignInLayout extends StatelessWidget {
+class SignInLayout extends StatefulWidget {
+  @override
+  _SignInLayoutState createState() => _SignInLayoutState();
+}
+
+class _SignInLayoutState extends State<SignInLayout> {
+  KeyboardVisibilityNotification _keyboardVisibility =
+      new KeyboardVisibilityNotification();
+  int _keyboardVisibilitySubscriberId;
+  bool _keyboardState;
+
+  @override
+  void initState() {
+    _keyboardState = _keyboardVisibility.isKeyboardVisible;
+    _keyboardVisibilitySubscriberId = _keyboardVisibility.addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          _keyboardState = visible;
+        });
+      },
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _keyboardVisibility.removeListener(_keyboardVisibilitySubscriberId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildLayout();
@@ -42,7 +78,7 @@ class SignInLayout extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Visibility(
-            visible: true,
+            visible: !_keyboardState,
             child: Flexible(
                 flex: 2,
                 fit: FlexFit.loose,
@@ -50,10 +86,13 @@ class SignInLayout extends StatelessWidget {
           ),
           Flexible(fit: FlexFit.loose, flex: 2, child: buildInputFields()),
           Visibility(
-              visible: true,
+              visible: !_keyboardState,
               child: Flexible(
                 flex: 1,
-                child: SignUpButtonWidget(),
+                child: BoldFlatButtonWidget(
+                  title: "Sign in",
+                  color: Colors.black,
+                ),
               )),
           Flexible(
             flex: 1,
@@ -64,8 +103,14 @@ class SignInLayout extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    SignInButtonWidget(),
-                    ForgotPasswordButtonWidget(),
+                    UnderlinedFlatButtonWidget(
+                      title: "Sign up",
+                      color: Colors.black,
+                    ),
+                    UnderlinedFlatButtonWidget(
+                      title: "Forgot Password",
+                      color: Colors.black,
+                    ),
                   ],
                 ),
               ),
@@ -90,76 +135,6 @@ class SignInLayout extends StatelessWidget {
               labelColor: Colors.grey,
               underlineColor: Colors.grey),
         ],
-      ),
-    );
-  }
-}
-
-class SignInButtonWidget extends StatelessWidget {
-  const SignInButtonWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: FlatButton(
-        onPressed: () {},
-        padding: EdgeInsets.all(-8),
-        child: Text(
-          "Sign Up",
-          style: TextStyle(
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-              color: Colors.black),
-        ),
-      ),
-    );
-  }
-}
-
-class ForgotPasswordButtonWidget extends StatelessWidget {
-  const ForgotPasswordButtonWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: FlatButton(
-        onPressed: () {},
-        padding: EdgeInsets.all(-8),
-        child: Text(
-          "Forgot Password",
-          style: TextStyle(
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-              color: Colors.black),
-        ),
-      ),
-    );
-  }
-}
-
-class SignUpButtonWidget extends StatelessWidget {
-  const SignUpButtonWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: FlatButton(
-        onPressed: () {},
-        child: Text(
-          "Sign In",
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
       ),
     );
   }
@@ -216,14 +191,9 @@ class BackgroundPaint extends CustomPainter {
     amberPath.quadraticBezierTo(
         width * 0.29, height * 0.09, width * 0.30, height * 0.09);
     amberPath.quadraticBezierTo(
-        width * 0.40, height * 0.04, width * 0.52, height * 0.035);
+        width * 0.40, height * 0.05, width * 0.48, height * 0.035);
     amberPath.lineTo(width * 0.63, 0);
     amberPath.lineTo(0, 0);
-
-    //    amberPath.quadraticBezierTo(
-//        width * 0.13, height * 0.30, width * 0.18, height * 0.25);
-//    amberPath.quadraticBezierTo(
-//        width * 0.20, height * 0.15, width * 0.22, height * 0.15);
 
     canvas.drawPath(amberPath, paint);
     bluePath.close();

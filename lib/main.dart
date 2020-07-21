@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: darkBlueGray,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignInDesign(),
+      home: SignUpDesign(),
     );
   }
 }

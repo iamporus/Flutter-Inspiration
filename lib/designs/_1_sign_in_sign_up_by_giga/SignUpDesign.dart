@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
+import 'widgets/BoldFlatButtonWidget.dart';
 import 'widgets/FabWidget.dart';
 import 'widgets/HeaderWidget.dart';
 import 'widgets/TextFormFieldWidget.dart';
+import 'widgets/UnderlinedFlatButtonWidget.dart';
 
 class SignUpDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Scaffold(
+      floatingActionButton: FabWidget(
+        topMargin: MediaQuery.of(context).size.height * 0.15,
+      ),
+      body: CustomPaint(
+        painter: BackgroundPaint(),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: new AppBar(
+            elevation: 0.0,
             backgroundColor: Colors.transparent,
-            appBar: new AppBar(
-              elevation: 0.0,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            body: SignUpLayout(),
           ),
-        ],
+          body: SignUpLayout(),
+        ),
       ),
     );
   }
@@ -62,16 +70,7 @@ class _SignUpLayoutState extends State<SignUpLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomPaint(
-        painter: BackgroundPaint(),
-        child: buildLayout(),
-      ),
-      floatingActionButton: FabWidget(topMargin: _keyboardState ? 8 : 64),
-      floatingActionButtonLocation: _keyboardState
-          ? FloatingActionButtonLocation.endDocked
-          : FloatingActionButtonLocation.endFloat,
-    );
+    return buildLayout();
   }
 
   Container buildLayout() {
@@ -83,20 +82,26 @@ class _SignUpLayoutState extends State<SignUpLayout> {
             child: Flexible(
                 flex: 1,
                 fit: FlexFit.tight,
-                child: HeaderWidget(title: 'Create \nAccount', titleSize: 26)),
+                child: HeaderWidget(title: 'Create \nAccount', titleSize: 32)),
           ),
           Flexible(fit: FlexFit.loose, flex: 3, child: buildInputFields()),
           Visibility(
               visible: !_keyboardState,
               child: Flexible(
                 flex: 1,
-                child: SignUpButtonWidget(),
+                child: BoldFlatButtonWidget(
+                  title: "Sign Up",
+                  color: Colors.white,
+                ),
               )),
           Visibility(
               visible: !_keyboardState,
               child: Flexible(
                 flex: 1,
-                child: SignInButtonWidget(),
+                child: UnderlinedFlatButtonWidget(
+                  title: "Sign In",
+                  color: Colors.white,
+                ),
               )),
         ],
       ),
@@ -122,51 +127,6 @@ class _SignUpLayoutState extends State<SignUpLayout> {
               labelColor: Colors.white,
               underlineColor: Color.fromARGB(100, 255, 255, 255)),
         ],
-      ),
-    );
-  }
-}
-
-class SignInButtonWidget extends StatelessWidget {
-  const SignInButtonWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: FlatButton(
-        onPressed: () {},
-        padding: EdgeInsets.all(-8),
-        child: Text(
-          "Sign In",
-          style: TextStyle(
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-              color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class SignUpButtonWidget extends StatelessWidget {
-  const SignUpButtonWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: FlatButton(
-        onPressed: () {},
-        child: Text(
-          "Sign up",
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
       ),
     );
   }
