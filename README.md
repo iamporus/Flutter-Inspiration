@@ -1,2 +1,2 @@
 # Flutter Design Challenges
-Idea is to find a popular design from Dribble and bring it to life through Flutter
+The idea behind the app is to find popular UI designs from Dribbble and bring them to life through Flutter.

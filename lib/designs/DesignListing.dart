@@ -2,6 +2,7 @@ import 'package:flutter_design_challenge/models/Design.dart';
 
 import '_1_sign_in_sign_up_by_giga/SignInDesign.dart';
 import '_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
+import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
 
 class DesignListing {
   static final designs = [
@@ -16,7 +17,14 @@ class DesignListing {
         author: "Giga Tamarashvili",
         link: "https://dribbble.com/shots/6371155-Sign-in-Sign-up-UI",
         imageAsset: "assets/giga_sign_up.png",
-        route: SignUpDesign())
+        route: SignUpDesign()),
+    Design(
+        title: "Simple Game App Concept",
+        author: "Zoltán Czigány",
+        link:
+            "https://dribbble.com/shots/13752058-Daliy-UI-Simple-Game-App-Concept",
+        imageAsset: "assets/game_app_concept_zlotan.png",
+        route: GameAppConceptDesign())
   ];
 
   static int getAvailableDesignCount() {
