@@ -3,7 +3,7 @@ import 'package:flutter_design_challenge/models/Design.dart';
 import '_1_sign_in_sign_up_by_giga/SignInDesign.dart';
 import '_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
 import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
-import '_3_plant_shop/PlantShopDesign.dart';
+import '_3_plant_shop/PlantShopHomeDesign.dart';
 
 class DesignListing {
   static final designs = [
@@ -31,7 +31,7 @@ class DesignListing {
         author: "Julia Jakubiak",
         link: "https://dribbble.com/shots/6158149-Plant-Shop",
         imageAsset: "assets/plant_shop_by_julia_jakubiak.png",
-        route: PlantShopDesign())
+        route: PlantShopHomeDesign())
   ];
 
   static int getAvailableDesignCount() {
