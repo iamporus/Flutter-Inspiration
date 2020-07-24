@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class FabWidget extends StatelessWidget {
   final double topMargin;
+  final VoidCallback onPressed;
 
-  const FabWidget({
-    Key key,
-    @required this.topMargin,
-  })  : assert(topMargin != null),
+  const FabWidget({Key key, @required this.topMargin, this.onPressed})
+      : assert(topMargin != null),
         super(key: key);
 
   @override
@@ -22,7 +21,7 @@ class FabWidget extends StatelessWidget {
               Icons.arrow_forward,
               color: Colors.white,
             ),
-            onPressed: () {}),
+            onPressed: onPressed),
       ),
     );
   }

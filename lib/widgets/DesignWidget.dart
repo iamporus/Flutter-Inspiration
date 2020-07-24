@@ -31,7 +31,10 @@ class DesignWidget extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.fitWidth,
                           alignment: Alignment.topCenter,
-                          image: AssetImage(design.imageAsset),
+                          image: NetworkImage(
+                            design.imageAsset,
+                            scale: 2,
+                          ),
                         ),
                       ))),
                   Padding(

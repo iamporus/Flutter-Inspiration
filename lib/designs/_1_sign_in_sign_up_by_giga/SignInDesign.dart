@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
+import 'SignUpDesign.dart';
 import 'widgets/BoldFlatButtonWidget.dart';
 import 'widgets/FabWidget.dart';
 import 'widgets/HeaderWidget.dart';
@@ -13,9 +14,12 @@ class SignInDesign extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FabWidget(
         topMargin: MediaQuery.of(context).size.height * 0.15,
+        onPressed: () {
+          _navigateToSignUp(context);
+        },
       ),
       body: CustomPaint(
-        painter: BackgroundPaint(),
+        painter: _BackgroundPaint(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: new AppBar(
@@ -70,10 +74,10 @@ class _SignInLayoutState extends State<SignInLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return buildLayout();
+    return _buildLayout();
   }
 
-  Container buildLayout() {
+  Container _buildLayout() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -84,7 +88,7 @@ class _SignInLayoutState extends State<SignInLayout> {
                 fit: FlexFit.loose,
                 child: HeaderWidget(title: 'Welcome \nBack', titleSize: 32)),
           ),
-          Flexible(fit: FlexFit.loose, flex: 2, child: buildInputFields()),
+          Flexible(fit: FlexFit.loose, flex: 2, child: _buildInputFields()),
           Visibility(
               visible: !_keyboardState,
               child: Flexible(
@@ -92,6 +96,9 @@ class _SignInLayoutState extends State<SignInLayout> {
                 child: BoldFlatButtonWidget(
                   title: "Sign in",
                   color: Colors.black,
+                  onPressed: () {
+                    _navigateToSignUp(context);
+                  },
                 ),
               )),
           Flexible(
@@ -121,7 +128,7 @@ class _SignInLayoutState extends State<SignInLayout> {
     );
   }
 
-  Padding buildInputFields() {
+  Padding _buildInputFields() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -140,7 +147,13 @@ class _SignInLayoutState extends State<SignInLayout> {
   }
 }
 
-class BackgroundPaint extends CustomPainter {
+void _navigateToSignUp(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return SignUpDesign();
+  }));
+}
+
+class _BackgroundPaint extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final height = size.height;

@@ -6,31 +6,32 @@ import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
 import '_3_plant_shop/PlantShopHomeDesign.dart';
 
 class DesignListing {
+  static final resolution = "600x445";
   static final designs = [
     Design(
-        title: "Sign In UI",
+        title: "Sign in / Sign up UI",
         author: "Giga Tamarashvili",
         link: "https://dribbble.com/shots/6371155-Sign-in-Sign-up-UI",
-        imageAsset: "assets/giga_sign_in.png",
-        route: SignInDesign()),
-    Design(
-        title: "Sign up UI",
-        author: "Giga Tamarashvili",
-        link: "https://dribbble.com/shots/6371155-Sign-in-Sign-up-UI",
-        imageAsset: "assets/giga_sign_up.png",
+        imageAsset:
+            "https://cdn.dribbble.com/users/952958/screenshots/6371155/2_4x.png?compress=1&resize=" +
+                resolution,
         route: SignUpDesign()),
     Design(
         title: "Simple Game App Concept",
         author: "Zoltán Czigány",
         link:
             "https://dribbble.com/shots/13752058-Daliy-UI-Simple-Game-App-Concept",
-        imageAsset: "assets/game_app_concept_zlotan.png",
+        imageAsset:
+            "https://cdn.dribbble.com/users/4231329/screenshots/13752058/media/c58801393386278c8c36a6f9ab2a9a9b.png?compress=1&resize=" +
+                resolution,
         route: GameAppConceptDesign()),
     Design(
         title: "Plant Shop",
         author: "Julia Jakubiak",
         link: "https://dribbble.com/shots/6158149-Plant-Shop",
-        imageAsset: "assets/plant_shop_by_julia_jakubiak.png",
+        imageAsset:
+            "https://cdn.dribbble.com/users/1558331/screenshots/6158149/6_4x.png?compress=1&resize=" +
+                resolution,
         route: PlantShopHomeDesign())
   ];
 

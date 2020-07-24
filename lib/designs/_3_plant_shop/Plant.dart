@@ -108,7 +108,7 @@ class Plant {
           heightInCm: "35-45cm",
           potWidthInCm: "12cm",
           size: PlantSize.Small,
-          image: "assets/ficus_plant.png",
+          image: "assets/plant_6.png",
           info:
               "Pilea are known for their bright green, coin-shaped leaves. They grow well in dry conditions, and are fast-growing, making them great for beginner plant owners."),
       Plant(

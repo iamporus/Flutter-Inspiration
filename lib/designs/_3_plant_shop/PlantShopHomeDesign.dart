@@ -9,11 +9,11 @@ import 'Plant.dart';
 
 class PlantShopHomeDesign extends StatelessWidget {
   final tabs = [
-    PlantCategoryTabWidget(title: "Top"),
-    PlantCategoryTabWidget(title: "Outdoor"),
-    PlantCategoryTabWidget(title: "Indoor"),
-    PlantCategoryTabWidget(title: "Plant Garden"),
-    PlantCategoryTabWidget(title: "Office"),
+    _PlantCategoryTabWidget(title: "Top"),
+    _PlantCategoryTabWidget(title: "Outdoor"),
+    _PlantCategoryTabWidget(title: "Indoor"),
+    _PlantCategoryTabWidget(title: "Plant Garden"),
+    _PlantCategoryTabWidget(title: "Office"),
   ];
 
   @override
@@ -23,7 +23,7 @@ class PlantShopHomeDesign extends StatelessWidget {
         color: Colors.white,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: _buildPlantShopAppBar(),
+          appBar: _buildPlantShopAppBar(context),
           body: PlantShopHomeLayout(
             tabs: tabs,
             plants: Plant.getDummyPlants(),
@@ -33,7 +33,7 @@ class PlantShopHomeDesign extends StatelessWidget {
     );
   }
 
-  PreferredSize _buildPlantShopAppBar() {
+  PreferredSize _buildPlantShopAppBar(BuildContext context) {
     return PreferredSize(
       child: AppBar(
         elevation: 0,
@@ -45,7 +45,9 @@ class PlantShopHomeDesign extends StatelessWidget {
                 Icons.sort,
                 color: Colors.black.withAlpha(150),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
         ),
         actions: <Widget>[
           Container(
@@ -114,7 +116,6 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   void _handlePageChange() {
     double page = _pageController.page;
     if (page == page.roundToDouble()) {
-      print("Change change " + _pageController.page.toString());
       setState(() {
         _selectedPlantIndex = _pageController.page.toInt();
       });
@@ -135,12 +136,12 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
       children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(32, 24, 0, 0),
-          child: TopPicksWidget(),
+          child: _TopPicksWidget(),
         ),
         SizedBox(height: 16),
         Container(
           margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-          child: CategoryTabBarWidget(
+          child: _CategoryTabBarWidget(
               tabController: _tabController, widget: widget),
         ),
         SizedBox(height: 8),
@@ -151,7 +152,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
           child: PageView(
             controller: _pageController,
             children: <Widget>[
-              for (var plant in widget.plants) PlantCardWidget(plant: plant)
+              for (var plant in widget.plants) _PlantCardWidget(plant: plant)
             ],
           ),
         ),
@@ -167,7 +168,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
         SizedBox(height: 8),
         Container(
           margin: EdgeInsets.fromLTRB(32, 0, 16, 0),
-          child: PlantDescriptionWidget(
+          child: _PlantDescriptionWidget(
               info: widget.plants[_selectedPlantIndex].info),
         ),
       ],
@@ -175,8 +176,8 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   }
 }
 
-class CategoryTabBarWidget extends StatelessWidget {
-  const CategoryTabBarWidget({
+class _CategoryTabBarWidget extends StatelessWidget {
+  const _CategoryTabBarWidget({
     Key key,
     @required TabController tabController,
     @required this.widget,
@@ -213,10 +214,10 @@ class CategoryTabBarWidget extends StatelessWidget {
   }
 }
 
-class PlantCardWidget extends StatelessWidget {
+class _PlantCardWidget extends StatelessWidget {
   final Plant plant;
 
-  const PlantCardWidget({Key key, @required this.plant})
+  const _PlantCardWidget({Key key, @required this.plant})
       : assert(plant != null),
         super(key: key);
 
@@ -246,7 +247,7 @@ class PlantCardWidget extends StatelessWidget {
                         height: 24,
                       ),
                       Center(
-                        child: PlantImageWidget(
+                        child: _PlantImageWidget(
                             plant: plant, imageSize: imageSize),
                       ),
                       SizedBox(
@@ -256,25 +257,26 @@ class PlantCardWidget extends StatelessWidget {
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                          child: PlantCategoryWidget(plant: plant),
+                          child: _PlantCategoryWidget(plant: plant),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                          child: PlantNameWidget(plant: plant),
+                          child: _PlantNameWidget(plant: plant),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
                         child: Row(
                           children: <Widget>[
-                            PlantEnvironmentWidget(icon: Icons.wb_sunny),
+                            _PlantEnvironmentWidget(icon: Icons.wb_sunny),
                             SizedBox(width: 8),
-                            PlantEnvironmentWidget(icon: Icons.cloud),
+                            _PlantEnvironmentWidget(icon: Icons.cloud),
                             SizedBox(width: 8),
-                            PlantEnvironmentWidget(icon: Icons.wb_incandescent),
+                            _PlantEnvironmentWidget(
+                                icon: Icons.wb_incandescent),
                           ],
                         ),
                       )
@@ -302,7 +304,7 @@ class PlantCardWidget extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child: PlantPriceWidget(plant: plant),
+                        child: _PlantPriceWidget(plant: plant),
                       ),
                     ],
                   ),
@@ -314,19 +316,19 @@ class PlantCardWidget extends StatelessWidget {
         Container(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: AddToCartWidget(),
+            child: _AddToCartWidget(),
           ),
         ),
         Positioned.fill(
-          child: SplashCardWidget(plant: plant),
+          child: _SplashCardWidget(plant: plant),
         )
       ],
     );
   }
 }
 
-class SplashCardWidget extends StatelessWidget {
-  const SplashCardWidget({
+class _SplashCardWidget extends StatelessWidget {
+  const _SplashCardWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -352,8 +354,8 @@ class SplashCardWidget extends StatelessWidget {
   }
 }
 
-class AddToCartWidget extends StatelessWidget {
-  const AddToCartWidget({
+class _AddToCartWidget extends StatelessWidget {
+  const _AddToCartWidget({
     Key key,
   }) : super(key: key);
 
@@ -375,8 +377,8 @@ class AddToCartWidget extends StatelessWidget {
   }
 }
 
-class PlantImageWidget extends StatelessWidget {
-  const PlantImageWidget({
+class _PlantImageWidget extends StatelessWidget {
+  const _PlantImageWidget({
     Key key,
     @required this.plant,
     @required this.imageSize,
@@ -395,8 +397,8 @@ class PlantImageWidget extends StatelessWidget {
   }
 }
 
-class PlantNameWidget extends StatelessWidget {
-  const PlantNameWidget({
+class _PlantNameWidget extends StatelessWidget {
+  const _PlantNameWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -413,8 +415,8 @@ class PlantNameWidget extends StatelessWidget {
   }
 }
 
-class PlantCategoryWidget extends StatelessWidget {
-  const PlantCategoryWidget({
+class _PlantCategoryWidget extends StatelessWidget {
+  const _PlantCategoryWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -431,8 +433,8 @@ class PlantCategoryWidget extends StatelessWidget {
   }
 }
 
-class PlantDescriptionWidget extends StatelessWidget {
-  const PlantDescriptionWidget({
+class _PlantDescriptionWidget extends StatelessWidget {
+  const _PlantDescriptionWidget({
     Key key,
     @required this.info,
   })  : assert(info != null),
@@ -453,8 +455,8 @@ class PlantDescriptionWidget extends StatelessWidget {
   }
 }
 
-class PlantPriceWidget extends StatelessWidget {
-  const PlantPriceWidget({
+class _PlantPriceWidget extends StatelessWidget {
+  const _PlantPriceWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -474,10 +476,10 @@ class PlantPriceWidget extends StatelessWidget {
   }
 }
 
-class PlantEnvironmentWidget extends StatelessWidget {
+class _PlantEnvironmentWidget extends StatelessWidget {
   final icon;
 
-  const PlantEnvironmentWidget({
+  const _PlantEnvironmentWidget({
     Key key,
     @required this.icon,
   }) : super(key: key);
@@ -498,10 +500,10 @@ class PlantEnvironmentWidget extends StatelessWidget {
   }
 }
 
-class PlantCategoryTabWidget extends StatelessWidget {
+class _PlantCategoryTabWidget extends StatelessWidget {
   final title;
 
-  const PlantCategoryTabWidget({
+  const _PlantCategoryTabWidget({
     Key key,
     @required this.title,
   })  : assert(title != null),
@@ -524,8 +526,8 @@ class PlantCategoryTabWidget extends StatelessWidget {
   }
 }
 
-class TopPicksWidget extends StatelessWidget {
-  const TopPicksWidget({
+class _TopPicksWidget extends StatelessWidget {
+  const _TopPicksWidget({
     Key key,
   }) : super(key: key);
 

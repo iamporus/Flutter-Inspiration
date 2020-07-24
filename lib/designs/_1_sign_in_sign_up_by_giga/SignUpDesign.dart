@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/SignInDesign.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import 'widgets/BoldFlatButtonWidget.dart';
@@ -13,9 +14,12 @@ class SignUpDesign extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FabWidget(
         topMargin: MediaQuery.of(context).size.height * 0.15,
+        onPressed: () {
+          _navigateToSignIn(context);
+        },
       ),
       body: CustomPaint(
-        painter: BackgroundPaint(),
+        painter: _BackgroundPaint(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: new AppBar(
@@ -70,10 +74,6 @@ class _SignUpLayoutState extends State<SignUpLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return buildLayout();
-  }
-
-  Container buildLayout() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -84,16 +84,18 @@ class _SignUpLayoutState extends State<SignUpLayout> {
                 fit: FlexFit.tight,
                 child: HeaderWidget(title: 'Create \nAccount', titleSize: 32)),
           ),
-          Flexible(fit: FlexFit.loose, flex: 3, child: buildInputFields()),
+          Flexible(fit: FlexFit.loose, flex: 3, child: _buildInputFields()),
           Visibility(
               visible: !_keyboardState,
               child: Flexible(
-                flex: 1,
-                child: BoldFlatButtonWidget(
-                  title: "Sign Up",
-                  color: Colors.white,
-                ),
-              )),
+                  flex: 1,
+                  child: BoldFlatButtonWidget(
+                    title: "Sign Up",
+                    color: Colors.white,
+                    onPressed: () {
+                      _navigateToSignIn(context);
+                    },
+                  ))),
           Visibility(
               visible: !_keyboardState,
               child: Flexible(
@@ -108,7 +110,7 @@ class _SignUpLayoutState extends State<SignUpLayout> {
     );
   }
 
-  Padding buildInputFields() {
+  Padding _buildInputFields() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -132,7 +134,13 @@ class _SignUpLayoutState extends State<SignUpLayout> {
   }
 }
 
-class BackgroundPaint extends CustomPainter {
+void _navigateToSignIn(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return SignInDesign();
+  }));
+}
+
+class _BackgroundPaint extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final height = size.height;

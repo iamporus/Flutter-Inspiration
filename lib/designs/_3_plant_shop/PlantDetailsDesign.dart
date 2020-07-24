@@ -18,7 +18,7 @@ class PlantDetailsDesign extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: _buildPlantShopAppBar(context),
-          body: PlantShopLayout(
+          body: _PlantShopLayout(
             plant: plant,
           ),
         ),
@@ -63,10 +63,10 @@ class PlantDetailsDesign extends StatelessWidget {
   }
 }
 
-class PlantShopLayout extends StatelessWidget {
+class _PlantShopLayout extends StatelessWidget {
   final Plant plant;
 
-  const PlantShopLayout({Key key, @required this.plant})
+  const _PlantShopLayout({Key key, @required this.plant})
       : assert(plant != null),
         super(key: key);
 
@@ -88,35 +88,35 @@ class PlantShopLayout extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    CategoryWidget(
+                    _CategoryWidget(
                       categoryTitle: "INDOOR",
                     ),
                     SizedBox(
                       height: 4,
                     ),
-                    PlantTitleWidget(title: plant.name),
+                    _PlantTitleWidget(title: plant.name),
                     SizedBox(
                       height: 24,
                     ),
-                    CategoryWidget(
+                    _CategoryWidget(
                       categoryTitle: "FROM",
                     ),
                     SizedBox(
                       height: 4,
                     ),
-                    PlantPriceWidget(
+                    _PlantPriceWidget(
                       priceInDollars: plant.price,
                     ),
                     SizedBox(
                       height: 24,
                     ),
-                    CategoryWidget(
+                    _CategoryWidget(
                       categoryTitle: "SIZES",
                     ),
                     SizedBox(
                       height: 4,
                     ),
-                    PlantSizeWidget(
+                    _PlantSizeWidget(
                       plantSize: plant.size,
                     ),
                     SizedBox(
@@ -124,7 +124,7 @@ class PlantShopLayout extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: AddToCartWidget(),
+                      child: _AddToCartWidget(),
                     ),
                     SizedBox(
                       height: 20,
@@ -170,31 +170,31 @@ class PlantShopLayout extends StatelessWidget {
           SizedBox(
             height: 32,
           ),
-          AllToKnowWidget(),
+          _AllToKnowWidget(),
           SizedBox(
             height: 32,
           ),
-          PlantInfoWidget(plant: plant),
+          _PlantInfoWidget(plant: plant),
           SizedBox(
             height: 32,
           ),
-          DetailsWidget(),
+          _DetailsWidget(),
           SizedBox(
             height: 8,
           ),
-          PlantHeightWidget(plant: plant),
+          _PlantHeightWidget(plant: plant),
           SizedBox(
             height: 8,
           ),
-          PotInfoWidget(plant: plant)
+          _PotInfoWidget(plant: plant)
         ],
       ),
     );
   }
 }
 
-class DetailsWidget extends StatelessWidget {
-  const DetailsWidget({
+class _DetailsWidget extends StatelessWidget {
+  const _DetailsWidget({
     Key key,
   }) : super(key: key);
 
@@ -211,8 +211,8 @@ class DetailsWidget extends StatelessWidget {
   }
 }
 
-class AllToKnowWidget extends StatelessWidget {
-  const AllToKnowWidget({
+class _AllToKnowWidget extends StatelessWidget {
+  const _AllToKnowWidget({
     Key key,
   }) : super(key: key);
 
@@ -229,8 +229,8 @@ class AllToKnowWidget extends StatelessWidget {
   }
 }
 
-class PlantHeightWidget extends StatelessWidget {
-  const PlantHeightWidget({
+class _PlantHeightWidget extends StatelessWidget {
+  const _PlantHeightWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -258,8 +258,8 @@ class PlantHeightWidget extends StatelessWidget {
   }
 }
 
-class PotInfoWidget extends StatelessWidget {
-  const PotInfoWidget({
+class _PotInfoWidget extends StatelessWidget {
+  const _PotInfoWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -287,8 +287,8 @@ class PotInfoWidget extends StatelessWidget {
   }
 }
 
-class PlantInfoWidget extends StatelessWidget {
-  const PlantInfoWidget({
+class _PlantInfoWidget extends StatelessWidget {
+  const _PlantInfoWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -309,8 +309,8 @@ class PlantInfoWidget extends StatelessWidget {
   }
 }
 
-class AddToCartWidget extends StatelessWidget {
-  const AddToCartWidget({
+class _AddToCartWidget extends StatelessWidget {
+  const _AddToCartWidget({
     Key key,
   }) : super(key: key);
 
@@ -330,10 +330,10 @@ class AddToCartWidget extends StatelessWidget {
   }
 }
 
-class PlantTitleWidget extends StatelessWidget {
+class _PlantTitleWidget extends StatelessWidget {
   final title;
 
-  const PlantTitleWidget({
+  const _PlantTitleWidget({
     Key key,
     @required this.title,
   })  : assert(title != null),
@@ -352,10 +352,10 @@ class PlantTitleWidget extends StatelessWidget {
   }
 }
 
-class PlantPriceWidget extends StatelessWidget {
+class _PlantPriceWidget extends StatelessWidget {
   final priceInDollars;
 
-  const PlantPriceWidget({Key key, @required this.priceInDollars})
+  const _PlantPriceWidget({Key key, @required this.priceInDollars})
       : assert(priceInDollars != null),
         super(key: key);
 
@@ -372,10 +372,10 @@ class PlantPriceWidget extends StatelessWidget {
   }
 }
 
-class PlantSizeWidget extends StatelessWidget {
+class _PlantSizeWidget extends StatelessWidget {
   final PlantSize plantSize;
 
-  const PlantSizeWidget({Key key, @required this.plantSize})
+  const _PlantSizeWidget({Key key, @required this.plantSize})
       : assert(plantSize != null),
         super(key: key);
 
@@ -392,10 +392,10 @@ class PlantSizeWidget extends StatelessWidget {
   }
 }
 
-class CategoryWidget extends StatelessWidget {
+class _CategoryWidget extends StatelessWidget {
   final categoryTitle;
 
-  const CategoryWidget({Key key, @required this.categoryTitle})
+  const _CategoryWidget({Key key, @required this.categoryTitle})
       : assert(categoryTitle != null),
         super(key: key);
 
