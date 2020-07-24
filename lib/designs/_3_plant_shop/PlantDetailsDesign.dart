@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'Plant.dart';
 
-class PlantShopDesign extends StatelessWidget {
+class PlantDetailsDesign extends StatelessWidget {
+  final Plant plant;
+
+  const PlantDetailsDesign({Key key, @required this.plant})
+      : assert(plant != null),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,29 +17,16 @@ class PlantShopDesign extends StatelessWidget {
         color: Color.fromARGB(255, 49, 160, 95),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: _buildPlantShopAppBar(),
+          appBar: _buildPlantShopAppBar(context),
           body: PlantShopLayout(
-            plant: getDummyPlant(),
+            plant: plant,
           ),
         ),
       ),
     );
   }
 
-  Plant getDummyPlant() {
-    return Plant(
-        name: "Ficus",
-        category: PlantCategory.Indoor,
-        price: 30,
-        heightInCm: "35-45cm",
-        potWidthInCm: "12cm",
-        size: PlantSize.Small,
-        image: "assets/ficus_plant.png",
-        info:
-            "If you're completely new to houseplants then Ficus is a brilliant first plant to adopt, it is very easy to look after and won't occupy too much space.");
-  }
-
-  PreferredSize _buildPlantShopAppBar() {
+  PreferredSize _buildPlantShopAppBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(58),
       child: AppBar(
@@ -46,7 +39,9 @@ class PlantShopDesign extends StatelessWidget {
                 Icons.arrow_back,
                 color: Colors.white.withAlpha(150),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
         ),
         actions: <Widget>[
           Container(
@@ -77,6 +72,8 @@ class PlantShopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageSize = MediaQuery.of(context).size.width * 0.6;
+
     return Stack(
       children: <Widget>[
         Container(
@@ -153,10 +150,11 @@ class PlantShopLayout extends StatelessWidget {
         Container(
           margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
           child: Align(
-              alignment: Alignment(0.8, -0.8),
+              alignment: Alignment(0.9, -0.4),
               child: Image.asset(
                 plant.image,
-                scale: 1.1,
+                height: imageSize,
+                width: imageSize,
               )),
         )
       ],
@@ -331,7 +329,6 @@ class AddToCartWidget extends StatelessWidget {
     );
   }
 }
-
 
 class PlantTitleWidget extends StatelessWidget {
   final title;
