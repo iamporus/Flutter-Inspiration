@@ -1,12 +1,19 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' as Services;
 
 import 'screens/DesignListScreen.dart';
 
+final kReleaseMode = false;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MyApp());
+  await Services.SystemChrome.setPreferredOrientations(
+      [Services.DeviceOrientation.portraitUp]);
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Design Challenges',
+      builder: DevicePreview.appBuilder,
       theme: ThemeData(
         primarySwatch: darkBlueGray,
         visualDensity: VisualDensity.adaptivePlatformDensity,
