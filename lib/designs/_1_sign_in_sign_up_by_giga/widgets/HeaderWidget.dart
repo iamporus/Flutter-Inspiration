@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class HeaderWidget extends StatelessWidget {
+class HeaderWidget extends BaseStatelessWidget {
   final title;
-  final double titleSize;
 
   const HeaderWidget({
     Key key,
     @required this.title,
-    @required this.titleSize,
   })  : assert(title != null),
-        assert(titleSize != null),
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
-      margin: EdgeInsets.fromLTRB(32, 0, 0, 0),
       alignment: Alignment.centerLeft,
       child: Text(
         title,
         style: TextStyle(
-            fontSize: titleSize,
+            fontSize: screenSizeInfo.textSizeXLarge,
             fontWeight: FontWeight.bold,
             color: Colors.white),
       ),

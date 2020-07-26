@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class BoldFlatButtonWidget extends StatelessWidget {
+class BoldFlatButtonWidget extends BaseStatelessWidget {
   final title;
   final color;
   final VoidCallback onPressed;
@@ -12,16 +14,17 @@ class BoldFlatButtonWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
       child: FlatButton(
         onPressed: onPressed,
         child: Text(
           title,
           style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: color),
+              fontSize: screenSizeInfo.textSizeLarge,
+              fontWeight: FontWeight.bold,
+              color: color),
         ),
       ),
     );

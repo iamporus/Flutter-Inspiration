@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class FabWidget extends StatelessWidget {
+class FabWidget extends BaseStatelessWidget {
   final double topMargin;
   final VoidCallback onPressed;
 
@@ -9,17 +11,23 @@ class FabWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
-      height: MediaQuery.of(context).size.width * 0.2,
-      width: MediaQuery.of(context).size.width * 0.2,
-      margin: EdgeInsets.fromLTRB(16, 16, 16, topMargin),
+      height: screenSizeInfo.screenWidth * 0.18,
+      width: screenSizeInfo.screenWidth * 0.18,
+      margin: EdgeInsets.fromLTRB(
+        screenSizeInfo.paddingMedium,
+        screenSizeInfo.paddingMedium,
+        screenSizeInfo.paddingMedium,
+        topMargin,
+      ),
       child: FloatingActionButton(
         onPressed: null,
         child: IconButton(
             icon: Icon(
               Icons.arrow_forward,
               color: Colors.white,
+              size: screenSizeInfo.textSizeMedium,
             ),
             onPressed: onPressed),
       ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/SignInDesign.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import 'widgets/BoldFlatButtonWidget.dart';
@@ -8,31 +11,33 @@ import 'widgets/HeaderWidget.dart';
 import 'widgets/TextFormFieldWidget.dart';
 import 'widgets/UnderlinedFlatButtonWidget.dart';
 
-class SignUpDesign extends StatelessWidget {
+class SignUpDesign extends BaseStatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Scaffold(
-      floatingActionButton: FabWidget(
-        topMargin: MediaQuery.of(context).size.height * 0.15,
-        onPressed: () {
-          _navigateToSignIn(context);
-        },
-      ),
       body: CustomPaint(
         painter: _BackgroundPaint(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: new AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(screenSizeInfo.screenHeight * 0.1),
+            child: Padding(
+              padding:
+                  EdgeInsets.fromLTRB(screenSizeInfo.paddingSmall, 0, 0, 0),
+              child: new AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: screenSizeInfo.textSizeMedium,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
           ),
           body: SignUpLayout(),
@@ -74,40 +79,65 @@ class _SignUpLayoutState extends State<SignUpLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Visibility(
-            visible: !_keyboardState,
-            child: Flexible(
-                flex: 1,
-                fit: FlexFit.tight,
-                child: HeaderWidget(title: 'Create \nAccount', titleSize: 32)),
+    return BaseBuilderWidget(builder: (context, screenSizeInfo) {
+      return Scaffold(
+        backgroundColor: Colors.transparent,
+        floatingActionButton: FabWidget(
+          topMargin: !_keyboardState
+              ? screenSizeInfo.screenHeight * 0.15
+              : screenSizeInfo.screenHeight * 0.30,
+          onPressed: () {
+            _navigateToSignIn(context);
+          },
+        ),
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              Visibility(
+                visible: (!_keyboardState ||
+                    screenSizeInfo.deviceScreenType == DeviceScreenType.Tablet),
+                child: Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(
+                            screenSizeInfo.paddingLarge, 0, 0, 0),
+                        child: HeaderWidget(title: 'Create \nAccount'))),
+              ),
+              Flexible(fit: FlexFit.loose, flex: 3, child: _buildInputFields()),
+              Visibility(
+                  visible: !_keyboardState,
+                  child: Flexible(
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(
+                            screenSizeInfo.paddingMedium, 0, 0, 0),
+                        child: BoldFlatButtonWidget(
+                          title: "Sign Up",
+                          color: Colors.white,
+                          onPressed: () {
+                            _navigateToSignIn(context);
+                          },
+                        ),
+                      ))),
+              Visibility(
+                  visible: !_keyboardState,
+                  child: Flexible(
+                    flex: 1,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(
+                          screenSizeInfo.paddingMedium, 0, 0, 0),
+                      child: UnderlinedFlatButtonWidget(
+                        title: "Sign In",
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+            ],
           ),
-          Flexible(fit: FlexFit.loose, flex: 3, child: _buildInputFields()),
-          Visibility(
-              visible: !_keyboardState,
-              child: Flexible(
-                  flex: 1,
-                  child: BoldFlatButtonWidget(
-                    title: "Sign Up",
-                    color: Colors.white,
-                    onPressed: () {
-                      _navigateToSignIn(context);
-                    },
-                  ))),
-          Visibility(
-              visible: !_keyboardState,
-              child: Flexible(
-                flex: 1,
-                child: UnderlinedFlatButtonWidget(
-                  title: "Sign In",
-                  color: Colors.white,
-                ),
-              )),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Padding _buildInputFields() {
