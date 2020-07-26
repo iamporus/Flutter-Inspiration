@@ -105,17 +105,17 @@ class ScreenSizeInfo {
   }
 
   void setupPadding() {
-    paddingSmall = textScaleFactor * 1.5;
-    paddingMedium = textScaleFactor * 2.5;
-    paddingLarge = textScaleFactor * 4.5;
-    paddingXLarge = textScaleFactor * 6;
+    paddingSmall = (textScaleFactor * 1.5).roundToDouble();
+    paddingMedium = (textScaleFactor * 2.5).roundToDouble();
+    paddingLarge = (textScaleFactor * 4.5).roundToDouble();
+    paddingXLarge = (textScaleFactor * 6).roundToDouble();
   }
 
   void setupTextSizes() {
-    textSizeSmall = textScaleFactor * 1.5;
-    textSizeMedium = textScaleFactor * 2.5;
-    textSizeLarge = textScaleFactor * 4.5;
-    textSizeXLarge = textScaleFactor * 6;
+    textSizeSmall = (textScaleFactor * 1.5).roundToDouble();
+    textSizeMedium = (textScaleFactor * 2.5).roundToDouble();
+    textSizeLarge = (textScaleFactor * 4.5).roundToDouble();
+    textSizeXLarge = (textScaleFactor * 6).roundToDouble();
   }
 
   @override
