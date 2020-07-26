@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class AddToCartWidget extends StatelessWidget {
+class AddToCartWidget extends BaseStatelessWidget {
   const AddToCartWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FlatButton(
-          onPressed: () {},
-          color: Colors.redAccent.shade700,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Add to Cart",
-              style: TextStyle(fontSize: 18, color: Colors.white),
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return FlatButton(
+        onPressed: () {},
+        color: Colors.redAccent.shade700,
+        child: Padding(
+          padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
+          child: Text(
+            "Add to Cart",
+            style: TextStyle(
+              fontSize: screenSizeInfo.textSizeMedium,
+              color: Colors.white,
             ),
-          )),
-    );
+          ),
+        ));
   }
 }

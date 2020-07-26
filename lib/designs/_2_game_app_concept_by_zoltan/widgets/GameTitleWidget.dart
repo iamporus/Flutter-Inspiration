@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class GameTitleWidget extends StatelessWidget {
+class GameTitleWidget extends BaseStatelessWidget {
   final gameTitle;
 
   const GameTitleWidget({Key key, @required this.gameTitle})
@@ -8,17 +10,14 @@ class GameTitleWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Text(
-          gameTitle,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 32,
-          ),
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Text(
+        gameTitle,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: screenSizeInfo.textSizeLarge,
         ),
       ),
     );

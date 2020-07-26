@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class GamePriceWidget extends StatelessWidget {
+class GamePriceWidget extends BaseStatelessWidget {
   final priceInDollars;
 
   const GamePriceWidget({Key key, @required this.priceInDollars})
@@ -8,12 +10,12 @@ class GamePriceWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-      child: Text(
-        "\$" + priceInDollars.toString(),
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Text(
+      "\$" + priceInDollars.toString(),
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: screenSizeInfo.textSizeLarge,
       ),
     );
   }

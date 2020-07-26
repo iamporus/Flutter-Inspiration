@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
 import 'widgets/AddToCartWidget.dart';
 import 'widgets/FloatingUpArrowWidget.dart';
@@ -9,30 +11,31 @@ import 'widgets/GameTitleWidget.dart';
 class GameAppConceptDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GameAppConceptLayout();
+    return GameAppConceptLayout(
+      game: Game(
+          "Ghost of Tsushima",
+          "Ghost of Tsushima is an action-adventure stealth game played from a third-person perspective. It feature a large open world without any waypoints and can be explored without guidance. Players can quickly travel to different parts of the game's world by riding a horse.",
+          59.99,
+          "assets/ghost_preview.png"),
+    );
   }
 }
 
-class GameAppConceptLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/ghost_preview.png"),
-                fit: BoxFit.cover)),
-        child: Scaffold(
-          appBar: _buildAppBar(context),
-          backgroundColor: Colors.transparent,
-          body: _buildLayout(context),
-        ),
-      ),
-    );
-  }
+class Game {
+  final String title;
+  final String info;
+  final double priceInDollars;
+  final String imagePath;
 
-  AppBar _buildAppBar(BuildContext context) {
+  Game(this.title, this.info, this.priceInDollars, this.imagePath);
+}
+
+class GameAppConceptLayout extends BaseStatelessWidget {
+  final Game game;
+
+  GameAppConceptLayout({@required this.game});
+
+  AppBar _buildAppBar(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return new AppBar(
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -47,7 +50,7 @@ class GameAppConceptLayout extends StatelessWidget {
       ),
       actions: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
           child: IconButton(
             icon: Icon(
               Icons.favorite,
@@ -60,64 +63,99 @@ class GameAppConceptLayout extends StatelessWidget {
     );
   }
 
-  Container _buildLayout(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: FloatingUpArrowWidget(
-          onPressed: () {
-            _showModalBottomSheet(context);
-          },
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Scaffold(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage(game.imagePath),
+          fit: BoxFit.cover,
+        )),
+        child: Scaffold(
+          appBar: _buildAppBar(context, screenSizeInfo),
+          backgroundColor: Colors.transparent,
+          body: Container(
+            margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingSmall, 0, 0,
+                screenSizeInfo.paddingXLarge),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingUpArrowWidget(
+                onPressed: () {
+                  _showModalBottomSheet(context, screenSizeInfo);
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
+
+  void _showModalBottomSheet(
+      BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        enableDrag: true,
+        isScrollControlled: false,
+        barrierColor: Colors.black.withAlpha(50),
+        builder: (builder) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(50.0),
+                topRight: const Radius.circular(50.0),
+              ),
+            ),
+            child: GameInfoCard(game: game),
+            padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+          );
+        });
+  }
 }
 
-void _showModalBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-      enableDrag: true,
-      isScrollControlled: false,
-      barrierColor: Colors.black.withAlpha(50),
-      builder: (builder) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(50.0),
-              topRight: const Radius.circular(50.0),
+class GameInfoCard extends BaseStatelessWidget {
+  final Game game;
+
+  const GameInfoCard({
+    Key key,
+    @required this.game,
+  }) : super(key: key);
+
+  @override
+  bool printLogs() {
+    return true;
+  }
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        GameTitleWidget(
+          gameTitle: game.title,
+        ),
+        GameInfoWidget(
+          infoText: game.info,
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                screenSizeInfo.paddingSmall, 0, screenSizeInfo.paddingSmall, 0),
+            child: GamePriceWidget(
+              priceInDollars: game.priceInDollars,
             ),
           ),
-          child: _getGameDescription(),
-          padding: EdgeInsets.all(12.0),
-        );
-      });
-}
-
-Column _getGameDescription() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: <Widget>[
-      GameTitleWidget(
-        gameTitle: 'Ghost of Tsushima',
-      ),
-      GameInfoWidget(
-        infoText:
-            "Ghost of Tsushima is an action-adventure stealth game played from a third-person perspective. It feature a large open world without any waypoints and can be explored without guidance. Players can quickly travel to different parts of the game's world by riding a horse.  it revolves around Jin Sakai, one of the last samurai on Tsushima Island during the first Mongol invasion of Japan in 1274.",
-      ),
-      Align(
-        alignment: Alignment.topRight,
-        child: GamePriceWidget(
-          priceInDollars: 59.99,
         ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        child: AddToCartWidget(),
-      )
-    ],
-  );
+        SizedBox(
+          width: screenSizeInfo.screenWidth,
+          child: AddToCartWidget(),
+        )
+      ],
+    );
+  }
 }
