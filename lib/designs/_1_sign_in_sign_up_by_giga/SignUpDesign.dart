@@ -8,6 +8,7 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'widgets/BoldFlatButtonWidget.dart';
 import 'widgets/FabWidget.dart';
 import 'widgets/HeaderWidget.dart';
+import 'widgets/SigningAppBarWidget.dart';
 import 'widgets/TextFormFieldWidget.dart';
 import 'widgets/UnderlinedFlatButtonWidget.dart';
 
@@ -21,24 +22,7 @@ class SignUpDesign extends BaseStatelessWidget {
           backgroundColor: Colors.transparent,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(screenSizeInfo.screenHeight * 0.1),
-            child: Padding(
-              padding:
-                  EdgeInsets.fromLTRB(screenSizeInfo.paddingSmall, 0, 0, 0),
-              child: new AppBar(
-                elevation: 0.0,
-                backgroundColor: Colors.transparent,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: screenSizeInfo.textSizeMedium,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            ),
+            child: SigningAppBarWidget(),
           ),
           body: SignUpLayout(),
         ),
@@ -84,8 +68,8 @@ class _SignUpLayoutState extends State<SignUpLayout> {
         backgroundColor: Colors.transparent,
         floatingActionButton: FabWidget(
           topMargin: !_keyboardState
-              ? screenSizeInfo.screenHeight * 0.15
-              : screenSizeInfo.screenHeight * 0.30,
+              ? screenSizeInfo.screenHeight * 0.10
+              : screenSizeInfo.screenHeight * 0.05,
           onPressed: () {
             _navigateToSignIn(context);
           },
