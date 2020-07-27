@@ -1,23 +1,43 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/designs/_3_plant_shop/widgets/PlantShopAppBar.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
 import 'Plant.dart';
 
-class PlantDetailsDesign extends StatelessWidget {
+class PlantDetailsDesign extends BaseStatelessWidget {
   final Plant plant;
 
   const PlantDetailsDesign({Key key, @required this.plant})
       : assert(plant != null),
         super(key: key);
 
+  PreferredSize _buildPlantShopAppBar(
+      BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(screenSizeInfo.paddingMedium * 2.5),
+      child: PlantShopAppBar(
+        leadingIcon: Icon(
+          Icons.arrow_back,
+          color: Colors.white.withAlpha(150),
+        ),
+        shopActionIcon: Icon(
+          Icons.shopping_cart,
+          color: Colors.white.withAlpha(200),
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Scaffold(
       body: Container(
         color: Color.fromARGB(255, 49, 160, 95),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: _buildPlantShopAppBar(context),
+          appBar: _buildPlantShopAppBar(context, screenSizeInfo),
           body: _PlantShopLayout(
             plant: plant,
           ),
@@ -25,45 +45,9 @@ class PlantDetailsDesign extends StatelessWidget {
       ),
     );
   }
-
-  PreferredSize _buildPlantShopAppBar(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(58),
-      child: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: Container(
-          margin: EdgeInsets.fromLTRB(24, 24, 0, 0),
-          child: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white.withAlpha(150),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-        ),
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 24, 24, 0),
-            child: CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.white.withAlpha(25),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {}),
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }
 
-class _PlantShopLayout extends StatelessWidget {
+class _PlantShopLayout extends BaseStatelessWidget {
   final Plant plant;
 
   const _PlantShopLayout({Key key, @required this.plant})
@@ -71,9 +55,8 @@ class _PlantShopLayout extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width * 0.6;
-
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    final imageSize = screenSizeInfo.screenWidth * 0.6;
     return Stack(
       children: <Widget>[
         Container(
@@ -81,76 +64,66 @@ class _PlantShopLayout extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.fromLTRB(48, 8, 0, 0),
+                margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingXLarge,
+                    screenSizeInfo.paddingMedium, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    SizedBox(
-                      height: 8,
-                    ),
                     _CategoryWidget(
                       categoryTitle: "INDOOR",
                     ),
-                    SizedBox(
-                      height: 4,
-                    ),
                     _PlantTitleWidget(title: plant.name),
                     SizedBox(
-                      height: 24,
+                      height: screenSizeInfo.paddingMedium,
                     ),
                     _CategoryWidget(
                       categoryTitle: "FROM",
-                    ),
-                    SizedBox(
-                      height: 4,
                     ),
                     _PlantPriceWidget(
                       priceInDollars: plant.price,
                     ),
                     SizedBox(
-                      height: 24,
+                      height: screenSizeInfo.paddingMedium,
                     ),
                     _CategoryWidget(
                       categoryTitle: "SIZES",
-                    ),
-                    SizedBox(
-                      height: 4,
                     ),
                     _PlantSizeWidget(
                       plantSize: plant.size,
                     ),
                     SizedBox(
-                      height: 32,
+                      height: screenSizeInfo.paddingLarge,
                     ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: _AddToCartWidget(),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: screenSizeInfo.paddingSmall,
                     ),
                   ],
                 ),
               ),
               Expanded(
                 child: Container(
-                  child: _buildPlantInfoLayout(),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
                       )),
-                  width: MediaQuery.of(context).size.width,
+                  child: PlantInfoWidget(plant: plant),
+                  width: screenSizeInfo.screenWidth,
                 ),
               )
             ],
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
+          margin: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingSmall, 0),
           child: Align(
-              alignment: Alignment(0.9, -0.4),
+              alignment: Alignment(1.3, -0.5),
               child: Image.asset(
                 plant.image,
                 height: imageSize,
@@ -160,32 +133,29 @@ class _PlantShopLayout extends StatelessWidget {
       ],
     );
   }
+}
 
-  _buildPlantInfoLayout() {
+class PlantInfoWidget extends BaseStatelessWidget {
+  const PlantInfoWidget({
+    Key key,
+    @required this.plant,
+  }) : super(key: key);
+
+  final Plant plant;
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(32, 16, 16, 0),
+      padding: EdgeInsets.fromLTRB(
+          screenSizeInfo.paddingLarge, 0, screenSizeInfo.paddingMedium, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          SizedBox(
-            height: 32,
-          ),
           _AllToKnowWidget(),
-          SizedBox(
-            height: 32,
-          ),
           _PlantInfoWidget(plant: plant),
-          SizedBox(
-            height: 32,
-          ),
           _DetailsWidget(),
-          SizedBox(
-            height: 8,
-          ),
           _PlantHeightWidget(plant: plant),
-          SizedBox(
-            height: 8,
-          ),
           _PotInfoWidget(plant: plant)
         ],
       ),
@@ -193,43 +163,43 @@ class _PlantShopLayout extends StatelessWidget {
   }
 }
 
-class _DetailsWidget extends StatelessWidget {
+class _DetailsWidget extends BaseStatelessWidget {
   const _DetailsWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       "Details",
       style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
-        fontSize: 20,
+        fontSize: screenSizeInfo.textSizeSmall * 2,
       ),
     );
   }
 }
 
-class _AllToKnowWidget extends StatelessWidget {
+class _AllToKnowWidget extends BaseStatelessWidget {
   const _AllToKnowWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       "All to know...",
       style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
-        fontSize: 22,
+        fontSize: screenSizeInfo.textSizeLarge,
       ),
     );
   }
 }
 
-class _PlantHeightWidget extends StatelessWidget {
+class _PlantHeightWidget extends BaseStatelessWidget {
   const _PlantHeightWidget({
     Key key,
     @required this.plant,
@@ -238,7 +208,7 @@ class _PlantHeightWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Row(
       children: <Widget>[
         Text(
@@ -246,19 +216,21 @@ class _PlantHeightWidget extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w300,
-            fontSize: 14,
+            fontSize: screenSizeInfo.textSizeMedium,
           ),
         ),
         Text(
           plant.heightInCm,
-          style: TextStyle(fontWeight: FontWeight.w300),
+          style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: screenSizeInfo.textSizeMedium),
         )
       ],
     );
   }
 }
 
-class _PotInfoWidget extends StatelessWidget {
+class _PotInfoWidget extends BaseStatelessWidget {
   const _PotInfoWidget({
     Key key,
     @required this.plant,
@@ -267,7 +239,7 @@ class _PotInfoWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Row(
       children: <Widget>[
         Text(
@@ -275,19 +247,21 @@ class _PotInfoWidget extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w300,
-            fontSize: 14,
+            fontSize: screenSizeInfo.textSizeMedium,
           ),
         ),
         Text(
           plant.potWidthInCm,
-          style: TextStyle(fontWeight: FontWeight.w300),
+          style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: screenSizeInfo.textSizeMedium),
         )
       ],
     );
   }
 }
 
-class _PlantInfoWidget extends StatelessWidget {
+class _PlantInfoWidget extends BaseStatelessWidget {
   const _PlantInfoWidget({
     Key key,
     @required this.plant,
@@ -296,33 +270,33 @@ class _PlantInfoWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       plant.info,
       style: TextStyle(
         color: Colors.black,
         height: 1.5,
         fontWeight: FontWeight.w300,
-        fontSize: 14,
+        fontSize: screenSizeInfo.textSizeMedium,
       ),
     );
   }
 }
 
-class _AddToCartWidget extends StatelessWidget {
+class _AddToCartWidget extends BaseStatelessWidget {
   const _AddToCartWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return CircleAvatar(
-      radius: 30,
+      radius: screenSizeInfo.paddingLarge,
       backgroundColor: Colors.black.withAlpha(230),
       child: IconButton(
           icon: Icon(
             Icons.add_shopping_cart,
-            size: 30,
+            size: screenSizeInfo.textSizeLarge,
             color: Colors.white,
           ),
           onPressed: () {}),
@@ -330,7 +304,7 @@ class _AddToCartWidget extends StatelessWidget {
   }
 }
 
-class _PlantTitleWidget extends StatelessWidget {
+class _PlantTitleWidget extends BaseStatelessWidget {
   final title;
 
   const _PlantTitleWidget({
@@ -340,11 +314,11 @@ class _PlantTitleWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 30,
+        fontSize: screenSizeInfo.textSizeLarge,
         color: Colors.white,
         fontWeight: FontWeight.bold,
       ),
@@ -352,7 +326,7 @@ class _PlantTitleWidget extends StatelessWidget {
   }
 }
 
-class _PlantPriceWidget extends StatelessWidget {
+class _PlantPriceWidget extends BaseStatelessWidget {
   final priceInDollars;
 
   const _PlantPriceWidget({Key key, @required this.priceInDollars})
@@ -360,11 +334,11 @@ class _PlantPriceWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       "\$" + priceInDollars.toString(),
       style: TextStyle(
-        fontSize: 16,
+        fontSize: screenSizeInfo.textSizeMedium,
         color: Colors.white,
         fontWeight: FontWeight.w400,
       ),
@@ -372,7 +346,7 @@ class _PlantPriceWidget extends StatelessWidget {
   }
 }
 
-class _PlantSizeWidget extends StatelessWidget {
+class _PlantSizeWidget extends BaseStatelessWidget {
   final PlantSize plantSize;
 
   const _PlantSizeWidget({Key key, @required this.plantSize})
@@ -380,11 +354,11 @@ class _PlantSizeWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       describeEnum(plantSize),
       style: TextStyle(
-        fontSize: 16,
+        fontSize: screenSizeInfo.textSizeMedium,
         color: Colors.white,
         fontWeight: FontWeight.w400,
       ),
@@ -392,7 +366,7 @@ class _PlantSizeWidget extends StatelessWidget {
   }
 }
 
-class _CategoryWidget extends StatelessWidget {
+class _CategoryWidget extends BaseStatelessWidget {
   final categoryTitle;
 
   const _CategoryWidget({Key key, @required this.categoryTitle})
@@ -400,11 +374,11 @@ class _CategoryWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       categoryTitle,
       style: TextStyle(
-        fontSize: 12,
+        fontSize: screenSizeInfo.textSizeSmall,
         color: Colors.white.withAlpha(125),
         fontWeight: FontWeight.w500,
       ),

@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_design_challenge/designs/_3_plant_shop/PlantDetailsDesign.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
 import 'Plant.dart';
+import 'PlantDetailsDesign.dart';
+import 'widgets/PlantShopAppBar.dart';
 
-class PlantShopHomeDesign extends StatelessWidget {
+class PlantShopHomeDesign extends BaseStatelessWidget {
   final tabs = [
     _PlantCategoryTabWidget(title: "Top"),
     _PlantCategoryTabWidget(title: "Outdoor"),
@@ -17,13 +21,13 @@ class PlantShopHomeDesign extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Scaffold(
       body: Container(
         color: Colors.white,
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: _buildPlantShopAppBar(context),
+          appBar: _buildPlantShopAppBar(context, screenSizeInfo),
           body: PlantShopHomeLayout(
             tabs: tabs,
             plants: Plant.getDummyPlants(),
@@ -33,40 +37,26 @@ class PlantShopHomeDesign extends StatelessWidget {
     );
   }
 
-  PreferredSize _buildPlantShopAppBar(BuildContext context) {
+  PreferredSize _buildPlantShopAppBar(
+      BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return PreferredSize(
-      child: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: Container(
-          margin: EdgeInsets.fromLTRB(24, 24, 0, 0),
-          child: IconButton(
-              icon: Icon(
-                Icons.sort,
-                color: Colors.black.withAlpha(150),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
+      child: PlantShopAppBar(
+        leadingIcon: Icon(
+          Icons.sort,
+          color: Colors.black.withAlpha(150),
         ),
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 18, 18, 0),
-            child: CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.black.withAlpha(15),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.black.withAlpha(200),
-                  ),
-                  onPressed: () {}),
-            ),
-          )
-        ],
+        shopActionIcon: Icon(
+          Icons.shopping_cart,
+          color: Colors.black.withAlpha(150),
+        ),
       ),
-      preferredSize: Size.fromHeight(58),
+      preferredSize: Size.fromHeight(screenSizeInfo.paddingMedium * 2.5),
     );
+  }
+
+  @override
+  bool printLogs() {
+    return true;
   }
 }
 
@@ -106,7 +96,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
           (_tabController.index * _noOfPlantsInCategory) *
               MediaQuery.of(context).size.width *
               0.8,
-          curve: Curves.easeIn,
+          curve: Curves.linear,
           duration: const Duration(milliseconds: 500),
         );
       });
@@ -131,52 +121,55 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.fromLTRB(32, 24, 0, 0),
-          child: _TopPicksWidget(),
-        ),
-        SizedBox(height: 16),
-        Container(
-          margin: EdgeInsets.fromLTRB(16, 0, 0, 0),
-          child: _CategoryTabBarWidget(
-              tabController: _tabController, widget: widget),
-        ),
-        SizedBox(height: 8),
-        Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
-          padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: PageView(
-            controller: _pageController,
-            children: <Widget>[
-              for (var plant in widget.plants) _PlantCardWidget(plant: plant)
-            ],
+    return BaseBuilderWidget(builder: (context, screenSizeInfo) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(
+                screenSizeInfo.paddingLarge, screenSizeInfo.paddingSmall, 0, 0),
+            child: _TopPicksWidget(),
           ),
-        ),
-        SizedBox(height: 8),
-        Container(
-          margin: EdgeInsets.fromLTRB(32, 0, 0, 0),
-          child: Text(
-            "Description",
-            style: TextStyle(
-                fontWeight: FontWeight.w500, fontSize: 18, color: Colors.black),
+          Container(
+            margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingMedium, 0, 0, 0),
+            child: _CategoryTabBarWidget(
+                tabController: _tabController, widget: widget),
           ),
-        ),
-        SizedBox(height: 8),
-        Container(
-          margin: EdgeInsets.fromLTRB(32, 0, 16, 0),
-          child: _PlantDescriptionWidget(
-              info: widget.plants[_selectedPlantIndex].info),
-        ),
-      ],
-    );
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 0, screenSizeInfo.paddingSmall),
+            padding: EdgeInsets.fromLTRB(screenSizeInfo.paddingSmall, 0, 0, 0),
+            height: screenSizeInfo.screenHeight * 0.51,
+            child: PageView(
+              controller: _pageController,
+              children: <Widget>[
+                for (var plant in widget.plants) _PlantCardWidget(plant: plant)
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge, 0, 0, 0),
+            child: Text(
+              "Description",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: screenSizeInfo.paddingMedium,
+                  color: Colors.black),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge, 0,
+                screenSizeInfo.paddingMedium, 0),
+            child: _PlantDescriptionWidget(
+                info: widget.plants[_selectedPlantIndex].info),
+          ),
+        ],
+      );
+    });
   }
 }
 
-class _CategoryTabBarWidget extends StatelessWidget {
+class _CategoryTabBarWidget extends BaseStatelessWidget {
   const _CategoryTabBarWidget({
     Key key,
     @required TabController tabController,
@@ -188,9 +181,9 @@ class _CategoryTabBarWidget extends StatelessWidget {
   final PlantShopHomeLayout widget;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return SizedBox(
-      height: 48,
+      height: screenSizeInfo.paddingLarge * 1.9,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -214,7 +207,7 @@ class _CategoryTabBarWidget extends StatelessWidget {
   }
 }
 
-class _PlantCardWidget extends StatelessWidget {
+class _PlantCardWidget extends BaseStatelessWidget {
   final Plant plant;
 
   const _PlantCardWidget({Key key, @required this.plant})
@@ -222,16 +215,13 @@ class _PlantCardWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width * 0.4;
-    final cardSize = MediaQuery.of(context).size.height * 0.47;
-    final cardWidth = MediaQuery.of(context).size.width * 0.9;
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Stack(
       children: <Widget>[
         Container(
-          height: cardSize,
-          width: cardWidth,
-          padding: EdgeInsets.fromLTRB(0, 16, 16, 0),
+          height: screenSizeInfo.screenHeight * 0.48,
+          width: screenSizeInfo.screenWidth * 0.9,
+          padding: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingSmall, 0),
           child: Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -239,42 +229,51 @@ class _PlantCardWidget extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       SizedBox(
-                        height: 24,
+                        height: screenSizeInfo.paddingLarge,
                       ),
                       Center(
                         child: _PlantImageWidget(
-                            plant: plant, imageSize: imageSize),
-                      ),
-                      SizedBox(
-                        height: 12,
+                            plant: plant,
+                            imageSize: screenSizeInfo.screenWidth * 0.4),
                       ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                          padding: EdgeInsets.fromLTRB(
+                              screenSizeInfo.paddingMedium,
+                              4,
+                              screenSizeInfo.paddingMedium,
+                              4),
                           child: _PlantCategoryWidget(plant: plant),
                         ),
                       ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                          padding: EdgeInsets.fromLTRB(
+                              screenSizeInfo.paddingMedium,
+                              0,
+                              screenSizeInfo.paddingMedium,
+                              screenSizeInfo.paddingMedium),
                           child: _PlantNameWidget(plant: plant),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
+                        padding: EdgeInsets.fromLTRB(
+                            screenSizeInfo.paddingMedium,
+                            0,
+                            0,
+                            screenSizeInfo.paddingSmall),
                         child: Row(
                           children: <Widget>[
                             _PlantEnvironmentWidget(icon: Icons.wb_sunny),
-                            SizedBox(width: 8),
+                            SizedBox(width: screenSizeInfo.paddingSmall),
                             _PlantEnvironmentWidget(icon: Icons.cloud),
-                            SizedBox(width: 8),
+                            SizedBox(width: screenSizeInfo.paddingSmall),
                             _PlantEnvironmentWidget(
                                 icon: Icons.wb_incandescent),
                           ],
@@ -284,20 +283,22 @@ class _PlantCardWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  padding: EdgeInsets.fromLTRB(0, 16, 16, 0),
+                  width: screenSizeInfo.screenWidth * 0.70,
+                  padding: EdgeInsets.fromLTRB(0, screenSizeInfo.paddingSmall,
+                      screenSizeInfo.paddingMedium, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topRight,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 4, 0),
+                          padding: EdgeInsets.fromLTRB(
+                              0, screenSizeInfo.paddingSmall, 4, 0),
                           child: Text(
                             "FROM",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: screenSizeInfo.textSizeSmall,
                                 fontWeight: FontWeight.w200),
                           ),
                         ),
@@ -314,9 +315,10 @@ class _PlantCardWidget extends StatelessWidget {
           ),
         ),
         Container(
+          margin: EdgeInsets.fromLTRB(0, screenSizeInfo.paddingMedium, 0, 0),
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: _AddToCartWidget(),
+            child: Container(child: _AddToCartWidget()),
           ),
         ),
         Positioned.fill(
@@ -327,7 +329,7 @@ class _PlantCardWidget extends StatelessWidget {
   }
 }
 
-class _SplashCardWidget extends StatelessWidget {
+class _SplashCardWidget extends BaseStatelessWidget {
   const _SplashCardWidget({
     Key key,
     @required this.plant,
@@ -336,11 +338,12 @@ class _SplashCardWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Material(
       color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(4, 18, 18, 4),
+        padding: EdgeInsets.fromLTRB(
+            4, screenSizeInfo.paddingMedium, screenSizeInfo.paddingMedium, 4),
         child: InkWell(
           customBorder:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -354,30 +357,31 @@ class _SplashCardWidget extends StatelessWidget {
   }
 }
 
-class _AddToCartWidget extends StatelessWidget {
+class _AddToCartWidget extends BaseStatelessWidget {
   const _AddToCartWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-      width: MediaQuery.of(context).size.width * 0.50,
+      padding: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingSmall, 0),
+      width: screenSizeInfo.screenWidth * 0.50,
       child: CircleAvatar(
           backgroundColor: Colors.black,
-          radius: 25,
+          radius: screenSizeInfo.paddingSmall * 2.5,
           child: IconButton(
               icon: Icon(
                 Icons.add_shopping_cart,
                 color: Colors.white,
+                size: screenSizeInfo.textSizeMedium,
               ),
               onPressed: () {})),
     );
   }
 }
 
-class _PlantImageWidget extends StatelessWidget {
+class _PlantImageWidget extends BaseStatelessWidget {
   const _PlantImageWidget({
     Key key,
     @required this.plant,
@@ -388,7 +392,7 @@ class _PlantImageWidget extends StatelessWidget {
   final double imageSize;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Image.asset(
       plant.image,
       height: imageSize,
@@ -397,7 +401,7 @@ class _PlantImageWidget extends StatelessWidget {
   }
 }
 
-class _PlantNameWidget extends StatelessWidget {
+class _PlantNameWidget extends BaseStatelessWidget {
   const _PlantNameWidget({
     Key key,
     @required this.plant,
@@ -406,16 +410,19 @@ class _PlantNameWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       plant.name,
       style: TextStyle(
-          color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+        color: Colors.white,
+        fontSize: screenSizeInfo.textSizeMedium,
+        fontWeight: FontWeight.w400,
+      ),
     );
   }
 }
 
-class _PlantCategoryWidget extends StatelessWidget {
+class _PlantCategoryWidget extends BaseStatelessWidget {
   const _PlantCategoryWidget({
     Key key,
     @required this.plant,
@@ -424,16 +431,19 @@ class _PlantCategoryWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       describeEnum(plant.category).toUpperCase(),
       style: TextStyle(
-          color: Colors.white, fontSize: 12, fontWeight: FontWeight.w200),
+        color: Colors.white,
+        fontSize: screenSizeInfo.textSizeSmall,
+        fontWeight: FontWeight.w300,
+      ),
     );
   }
 }
 
-class _PlantDescriptionWidget extends StatelessWidget {
+class _PlantDescriptionWidget extends BaseStatelessWidget {
   const _PlantDescriptionWidget({
     Key key,
     @required this.info,
@@ -443,19 +453,20 @@ class _PlantDescriptionWidget extends StatelessWidget {
   final String info;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
-      info,
+      info + '\n',
+      maxLines: 4,
       style: TextStyle(
-          fontWeight: FontWeight.w200,
-          fontSize: 15,
-          height: 1.3,
+          fontWeight: FontWeight.w300,
+          fontSize: screenSizeInfo.textSizeMedium,
+          height: 1.2,
           color: Colors.black),
     );
   }
 }
 
-class _PlantPriceWidget extends StatelessWidget {
+class _PlantPriceWidget extends BaseStatelessWidget {
   const _PlantPriceWidget({
     Key key,
     @required this.plant,
@@ -464,19 +475,18 @@ class _PlantPriceWidget extends StatelessWidget {
   final Plant plant;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 4, 0),
-      child: Text(
-        "\$" + plant.price.toString(),
-        style: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
-      ),
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Text(
+      "\$" + plant.price.toString(),
+      style: TextStyle(
+          color: Colors.white,
+          fontSize: screenSizeInfo.textSizeSmall * 2,
+          fontWeight: FontWeight.w400),
     );
   }
 }
 
-class _PlantEnvironmentWidget extends StatelessWidget {
+class _PlantEnvironmentWidget extends BaseStatelessWidget {
   final icon;
 
   const _PlantEnvironmentWidget({
@@ -485,22 +495,22 @@ class _PlantEnvironmentWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white.withAlpha(75), width: 1.0),
           borderRadius: BorderRadius.circular(5)),
       child: Icon(
         icon,
-        size: 18,
+        size: screenSizeInfo.textSizeMedium,
         color: Colors.white.withAlpha(200),
       ),
     );
   }
 }
 
-class _PlantCategoryTabWidget extends StatelessWidget {
+class _PlantCategoryTabWidget extends BaseStatelessWidget {
   final title;
 
   const _PlantCategoryTabWidget({
@@ -510,34 +520,32 @@ class _PlantCategoryTabWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Tab(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-          ),
+      iconMargin: EdgeInsets.all(0),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: screenSizeInfo.textSizeMedium,
         ),
       ),
     );
   }
 }
 
-class _TopPicksWidget extends StatelessWidget {
+class _TopPicksWidget extends BaseStatelessWidget {
   const _TopPicksWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
       "Top Picks",
       style: TextStyle(
         fontWeight: FontWeight.w400,
-        fontSize: 28,
+        fontSize: screenSizeInfo.textSizeSmall * 2,
         color: Colors.black,
       ),
     );
