@@ -6,7 +6,7 @@ import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 /// as [buildResponsive] provides [ScreenSizeInfo] object which has all detailed information
 /// about screen size, orientation, and text scale factor.
 abstract class BaseStatelessWidget extends StatelessWidget {
-  const BaseStatelessWidget({Key key});
+  const BaseStatelessWidget({Key key}) : super(key: key);
 
   bool printLogs() {
     return false;
