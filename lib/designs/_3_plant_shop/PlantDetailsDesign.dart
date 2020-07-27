@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/designs/_3_plant_shop/widgets/PlantImageWidget.dart';
 import 'package:flutter_design_challenge/designs/_3_plant_shop/widgets/PlantShopAppBar.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
@@ -80,6 +81,9 @@ class _PlantShopLayout extends BaseStatelessWidget {
                     _CategoryWidget(
                       categoryTitle: "FROM",
                     ),
+                    SizedBox(
+                      height: screenSizeInfo.paddingSmall * 0.5,
+                    ),
                     _PlantPriceWidget(
                       priceInDollars: plant.price,
                     ),
@@ -88,6 +92,9 @@ class _PlantShopLayout extends BaseStatelessWidget {
                     ),
                     _CategoryWidget(
                       categoryTitle: "SIZES",
+                    ),
+                    SizedBox(
+                      height: screenSizeInfo.paddingSmall * 0.5,
                     ),
                     _PlantSizeWidget(
                       plantSize: plant.size,
@@ -124,10 +131,9 @@ class _PlantShopLayout extends BaseStatelessWidget {
           margin: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingSmall, 0),
           child: Align(
               alignment: Alignment(1.3, -0.5),
-              child: Image.asset(
-                plant.image,
-                height: imageSize,
-                width: imageSize,
+              child: PlantImageWidget(
+                plant: plant,
+                imageSize: imageSize,
               )),
         )
       ],
@@ -155,8 +161,7 @@ class PlantInfoWidget extends BaseStatelessWidget {
           _AllToKnowWidget(),
           _PlantInfoWidget(plant: plant),
           _DetailsWidget(),
-          _PlantHeightWidget(plant: plant),
-          _PotInfoWidget(plant: plant)
+          _PlantDetailsWidget(plant: plant),
         ],
       ),
     );
@@ -193,14 +198,14 @@ class _AllToKnowWidget extends BaseStatelessWidget {
       style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
-        fontSize: screenSizeInfo.textSizeLarge,
+        fontSize: screenSizeInfo.textSizeMedium * 1.5,
       ),
     );
   }
 }
 
-class _PlantHeightWidget extends BaseStatelessWidget {
-  const _PlantHeightWidget({
+class _PlantDetailsWidget extends BaseStatelessWidget {
+  const _PlantDetailsWidget({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -209,52 +214,44 @@ class _PlantHeightWidget extends BaseStatelessWidget {
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Row(
+    return Column(
       children: <Widget>[
-        Text(
-          "Plant height: ",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w300,
-            fontSize: screenSizeInfo.textSizeMedium,
-          ),
+        Row(
+          children: <Widget>[
+            Text(
+              "Plant height: ",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w200,
+                fontSize: screenSizeInfo.textSizeSmall * 1.4,
+              ),
+            ),
+            Text(
+              plant.heightInCm,
+              style: TextStyle(
+                  fontWeight: FontWeight.w200,
+                  fontSize: screenSizeInfo.textSizeSmall * 1.4),
+            )
+          ],
         ),
-        Text(
-          plant.heightInCm,
-          style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: screenSizeInfo.textSizeMedium),
-        )
-      ],
-    );
-  }
-}
-
-class _PotInfoWidget extends BaseStatelessWidget {
-  const _PotInfoWidget({
-    Key key,
-    @required this.plant,
-  }) : super(key: key);
-
-  final Plant plant;
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Row(
-      children: <Widget>[
-        Text(
-          "Nursery pot width: ",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w300,
-            fontSize: screenSizeInfo.textSizeMedium,
-          ),
-        ),
-        Text(
-          plant.potWidthInCm,
-          style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: screenSizeInfo.textSizeMedium),
+        SizedBox(height: 4,),
+        Row(
+          children: <Widget>[
+            Text(
+              "Nursery pot width: ",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w200,
+                fontSize: screenSizeInfo.textSizeSmall * 1.4,
+              ),
+            ),
+            Text(
+              plant.potWidthInCm,
+              style: TextStyle(
+                  fontWeight: FontWeight.w200,
+                  fontSize: screenSizeInfo.textSizeSmall * 1.4),
+            )
+          ],
         )
       ],
     );
@@ -276,8 +273,8 @@ class _PlantInfoWidget extends BaseStatelessWidget {
       style: TextStyle(
         color: Colors.black,
         height: 1.5,
-        fontWeight: FontWeight.w300,
-        fontSize: screenSizeInfo.textSizeMedium,
+        fontWeight: FontWeight.w200,
+        fontSize: screenSizeInfo.textSizeSmall * 1.4,
       ),
     );
   }

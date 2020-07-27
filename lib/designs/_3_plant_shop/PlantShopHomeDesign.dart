@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
 import 'Plant.dart';
 import 'PlantDetailsDesign.dart';
+import 'widgets/PlantImageWidget.dart';
 import 'widgets/PlantShopAppBar.dart';
 
 class PlantShopHomeDesign extends BaseStatelessWidget {
@@ -80,6 +82,8 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   int _selectedPlantIndex = 0;
   num _noOfPlantsInCategory = 2;
 
+  Widget _plantDescriptionWidget;
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +91,8 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
         TabController(length: widget.tabs.length, initialIndex: 0, vsync: this);
     _tabController.addListener(_handleTabChange);
     _pageController.addListener(_handlePageChange);
+    _plantDescriptionWidget = _PlantDescriptionWidget(info: widget.plants[0].info,
+      key: ValueKey(0),);
   }
 
   void _handleTabChange() {
@@ -108,6 +114,9 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
     if (page == page.roundToDouble()) {
       setState(() {
         _selectedPlantIndex = _pageController.page.toInt();
+        _plantDescriptionWidget = _PlantDescriptionWidget(
+            key: ValueKey(page),
+            info: widget.plants[_selectedPlantIndex].info);
       });
     }
   }
@@ -122,6 +131,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,11 +168,14 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge, 0,
-                screenSizeInfo.paddingMedium, 0),
-            child: _PlantDescriptionWidget(
-                info: widget.plants[_selectedPlantIndex].info),
-          ),
+              margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge, 0,
+                  screenSizeInfo.paddingMedium, 0),
+              child: AnimatedSwitcher(
+                duration: Duration(
+                  milliseconds: 300,
+                ),
+                child: _plantDescriptionWidget,
+              )),
         ],
       );
     });
@@ -216,6 +229,8 @@ class _PlantCardWidget extends BaseStatelessWidget {
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    timeDilation = 1.5;
+
     return Stack(
       children: <Widget>[
         Container(
@@ -236,9 +251,10 @@ class _PlantCardWidget extends BaseStatelessWidget {
                         height: screenSizeInfo.paddingLarge,
                       ),
                       Center(
-                        child: _PlantImageWidget(
-                            plant: plant,
-                            imageSize: screenSizeInfo.screenWidth * 0.4),
+                        child: PlantImageWidget(
+                          plant: plant,
+                          imageSize: screenSizeInfo.screenWidth * 0.4,
+                        ),
                       ),
                       Align(
                         alignment: Alignment.topLeft,
@@ -381,26 +397,6 @@ class _AddToCartWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantImageWidget extends BaseStatelessWidget {
-  const _PlantImageWidget({
-    Key key,
-    @required this.plant,
-    @required this.imageSize,
-  }) : super(key: key);
-
-  final Plant plant;
-  final double imageSize;
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Image.asset(
-      plant.image,
-      height: imageSize,
-      width: imageSize,
-    );
-  }
-}
-
 class _PlantNameWidget extends BaseStatelessWidget {
   const _PlantNameWidget({
     Key key,
@@ -458,9 +454,9 @@ class _PlantDescriptionWidget extends BaseStatelessWidget {
       info + '\n',
       maxLines: 4,
       style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: screenSizeInfo.textSizeMedium,
-          height: 1.2,
+          fontWeight: FontWeight.w200,
+          fontSize: screenSizeInfo.textSizeSmall * 1.3,
+          height: 1.4,
           color: Colors.black),
     );
   }
