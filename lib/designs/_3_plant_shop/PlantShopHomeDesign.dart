@@ -91,8 +91,10 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
         TabController(length: widget.tabs.length, initialIndex: 0, vsync: this);
     _tabController.addListener(_handleTabChange);
     _pageController.addListener(_handlePageChange);
-    _plantDescriptionWidget = _PlantDescriptionWidget(info: widget.plants[0].info,
-      key: ValueKey(0),);
+    _plantDescriptionWidget = _PlantDescriptionWidget(
+      info: widget.plants[0].info,
+      key: ValueKey(0),
+    );
   }
 
   void _handleTabChange() {
@@ -115,8 +117,9 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
       setState(() {
         _selectedPlantIndex = _pageController.page.toInt();
         _plantDescriptionWidget = _PlantDescriptionWidget(
-            key: ValueKey(page),
-            info: widget.plants[_selectedPlantIndex].info);
+          key: ValueKey(page),
+          info: widget.plants[_selectedPlantIndex].info,
+        );
       });
     }
   }
@@ -131,7 +134,6 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -252,9 +254,15 @@ class _PlantCardWidget extends BaseStatelessWidget {
                       ),
                       Center(
                         child: PlantImageWidget(
-                          plant: plant,
-                          imageSize: screenSizeInfo.screenWidth * 0.4,
-                        ),
+                            plant: plant,
+                            imageSize: screenSizeInfo.screenWidth * 0.4,
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return PlantDetailsDesign(plant: plant);
+                                }),
+                              );
+                            }),
                       ),
                       Align(
                         alignment: Alignment.topLeft,

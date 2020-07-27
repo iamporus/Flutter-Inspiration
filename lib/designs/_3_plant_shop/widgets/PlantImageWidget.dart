@@ -5,10 +5,13 @@ import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import '../Plant.dart';
 
 class PlantImageWidget extends BaseStatelessWidget {
+  final VoidCallback onTap;
+
   const PlantImageWidget({
     Key key,
     @required this.plant,
     @required this.imageSize,
+    this.onTap,
   }) : super(key: key);
 
   final Plant plant;
@@ -23,6 +26,7 @@ class PlantImageWidget extends BaseStatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
+            onTap: onTap,
             child: Image.asset(
               plant.image,
               height: imageSize,
