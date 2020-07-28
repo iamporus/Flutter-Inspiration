@@ -4,7 +4,7 @@ import 'package:flutter/services.dart' as Services;
 
 import 'screens/DesignListScreen.dart';
 
-final kReleaseMode = false;
+final kReleaseMode = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
+import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-class DesignWidget extends StatelessWidget {
+class DesignWidget extends BaseStatelessWidget {
   final Design design;
 
   const DesignWidget({Key key, @required this.design});
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
@@ -18,7 +20,11 @@ class DesignWidget extends StatelessWidget {
       child: Container(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+            padding: EdgeInsets.fromLTRB(
+                screenSizeInfo.paddingLarge,
+                screenSizeInfo.paddingSmall,
+                screenSizeInfo.paddingLarge,
+                screenSizeInfo.paddingSmall),
             child: Card(
               color: Colors.blueGrey.shade500,
               elevation: 2.0,
@@ -38,7 +44,7 @@ class DesignWidget extends StatelessWidget {
                         ),
                       ))),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
                     child: Text(
                       design.title,
                       style: TextStyle(
@@ -48,7 +54,11 @@ class DesignWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                    padding: EdgeInsets.fromLTRB(
+                        screenSizeInfo.paddingSmall,
+                        0,
+                        screenSizeInfo.paddingSmall,
+                        screenSizeInfo.paddingSmall),
                     child: Text(
                       "by " + design.author,
                       style: TextStyle(
