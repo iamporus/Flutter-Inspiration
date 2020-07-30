@@ -6,14 +6,16 @@ class Design {
   final link;
   final imageAsset;
   final route;
+  Color paletteColor;
 
-  const Design(
+  Design(
       {Key key,
       @required this.title,
       @required this.author,
       @required this.link,
       @required this.imageAsset,
-      @required this.route})
+      @required this.route,
+      this.paletteColor})
       : assert(title != null),
         assert(author != null),
         assert(imageAsset != null),
