@@ -1,9 +1,9 @@
 import 'package:flutter_design_challenge/models/Design.dart';
 
-import '_1_sign_in_sign_up_by_giga/SignInDesign.dart';
 import '_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
 import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
 import '_3_plant_shop/PlantShopHomeDesign.dart';
+import '_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
 
 class DesignListing {
   static final resolution = "600x445";
@@ -32,7 +32,14 @@ class DesignListing {
         imageAsset:
             "https://cdn.dribbble.com/users/1558331/screenshots/6158149/6_4x.png?compress=1&resize=" +
                 resolution,
-        route: PlantShopHomeDesign())
+        route: PlantShopHomeDesign()),
+    Design(
+        title: "iPhone X Social App",
+        author: "Shakuro",
+        link: "https://dribbble.com/shots/3898209-iPhone-X-Social-App",
+        imageAsset:
+            "https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2.gif",
+        route: IPhoneXSocialAppDesign()),
   ];
 
   static int getAvailableDesignCount() {
