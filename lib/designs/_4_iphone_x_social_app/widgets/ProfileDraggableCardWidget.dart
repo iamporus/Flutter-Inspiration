@@ -1,12 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/StateCurrentPage.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:provider/provider.dart';
+
+import '../UserProfile.dart';
 
 class ProfileDraggableCardWidget extends StatefulWidget {
+  final double dragPosition;
+  final List<UserProfile> userProfiles;
+
   const ProfileDraggableCardWidget({
     Key key,
+    @required this.dragPosition,
+    @required this.userProfiles,
   }) : super(key: key);
 
   @override
@@ -19,138 +29,183 @@ class _ProfileDraggableCardWidgetState
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
-      return Material(
-        color: Colors.transparent,
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.transparent,
-              height: screenSizeInfo.screenHeight * 0.08,
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(screenSizeInfo.paddingLarge),
-                  topLeft: Radius.circular(screenSizeInfo.paddingLarge),
+      return Consumer<StateCurrentPage>(
+        builder: (context, profileModel, _) => Material(
+          color: Colors.transparent,
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.transparent,
+                height: screenSizeInfo.screenHeight * 0.08,
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(screenSizeInfo.paddingLarge),
+                    topLeft: Radius.circular(screenSizeInfo.paddingLarge),
+                  ),
+                  color: Colors.black.withOpacity(0.05),
                 ),
-                color: Colors.black.withOpacity(0.05),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SocialInfoWidget(
-                    title: "869",
-                    subtitle: "followers",
-                  ),
-                  SocialInfoWidget(
-                    title: "135",
-                    subtitle: "posts",
-                  ),
-                  SocialInfoWidget(
-                    title: "485",
-                    subtitle: "following",
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(screenSizeInfo.paddingLarge),
-                  topLeft: Radius.circular(screenSizeInfo.paddingLarge),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SocialInfoWidget(
+                      title: widget.userProfiles[profileModel.currentPage]
+                          .socialInfo.followers
+                          .toString(),
+                      subtitle: "followers",
+                    ),
+                    SocialInfoWidget(
+                      title: widget.userProfiles[profileModel.currentPage]
+                          .socialInfo.posts
+                          .toString(),
+                      subtitle: "posts",
+                    ),
+                    SocialInfoWidget(
+                      title: widget.userProfiles[profileModel.currentPage]
+                          .socialInfo.following
+                          .toString(),
+                      subtitle: "following",
+                    ),
+                  ],
                 ),
               ),
-              height: screenSizeInfo.screenHeight * 0.45,
-              width: screenSizeInfo.screenWidth,
-              padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
-              margin: EdgeInsets.all(screenSizeInfo.paddingSmall * 0.5),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ProfileWidget(
-                        name: "Lori Perez",
-                        location: "France, Nantes",
-                      ),
-                      Spacer(),
-                      FollowButtonWidget()
-                    ],
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(screenSizeInfo.paddingLarge),
+                    topLeft: Radius.circular(screenSizeInfo.paddingLarge),
                   ),
-                  SizedBox(height: 10,),
-                  Padding(
-                    padding: EdgeInsets.all(screenSizeInfo.paddingSmall * 1.5),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Photos",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: screenSizeInfo.textSizeSmall * 1.5),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: screenSizeInfo.screenHeight * 0.10,
-                    width: screenSizeInfo.screenWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: EdgeInsets.fromLTRB(
-                        screenSizeInfo.paddingSmall * 1.5, 0, 0, 0),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
+                ),
+                height: screenSizeInfo.screenHeight * 0.45,
+                width: screenSizeInfo.screenWidth,
+                padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+                margin: EdgeInsets.all(screenSizeInfo.paddingSmall * 0.5),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(
-                          height: 150,
-                          width: 90,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child:
-                                Image.asset("assets/ivana_cajina_unsplash.jpg"),
-                          ),
+                        ProfileWidget(
+                          name: widget
+                              .userProfiles[profileModel.currentPage].name,
+                          location: widget
+                              .userProfiles[profileModel.currentPage].location,
                         ),
-                        SizedBox(width: 10,),
-                        SizedBox(
-                          height: 150,
-                          width: 90,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child:
-                                Image.asset("assets/ivana_cajina_unsplash.jpg"),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        SizedBox(
-                          height: 150,
-                          width: 90,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child:
-                                Image.asset("assets/ivana_cajina_unsplash.jpg"),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        SizedBox(
-                          height: 150,
-                          width: 90,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child:
-                            Image.asset("assets/ivana_cajina_unsplash.jpg"),
-                          ),
-                        ),
+                        Spacer(),
+                        FollowButtonWidget()
                       ],
                     ),
-                  )
-                ],
+                    Opacity(
+                      opacity: (widget.dragPosition * 3) - 1.2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: buildEdgeInsets(screenSizeInfo),
+                            child: Text(
+                              widget
+                                  .userProfiles[profileModel.currentPage].info,
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: screenSizeInfo.textSizeSmall * 1.3,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenSizeInfo.paddingLarge * 1.1,
+                          ),
+                          Padding(
+                            padding: buildEdgeInsets(screenSizeInfo),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Photos",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize:
+                                        screenSizeInfo.textSizeSmall * 1.5),
+                              ),
+                            ),
+                          ),
+                          UserPhotosWidget(
+                              widget.userProfiles[profileModel.currentPage])
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });
+  }
+
+  EdgeInsets buildEdgeInsets(ScreenSizeInfo screenSizeInfo) {
+    return EdgeInsets.fromLTRB(screenSizeInfo.paddingSmall * 1.5, 0,
+        screenSizeInfo.paddingSmall * 1.5, 0);
+  }
+}
+
+class UserPhotosWidget extends BaseStatelessWidget {
+  final UserProfile userProfile;
+
+  const UserPhotosWidget(
+    this.userProfile, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Container(
+      height: screenSizeInfo.screenHeight * 0.15,
+      width: screenSizeInfo.screenWidth,
+      padding: EdgeInsets.fromLTRB(
+          screenSizeInfo.paddingSmall, screenSizeInfo.paddingSmall, 0, 0),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          for (var image in userProfile.galleryPhotos)
+            UserPhotoListItemWidget(imagePath: image),
+        ],
+      ),
+    );
+  }
+}
+
+class UserPhotoListItemWidget extends BaseStatelessWidget {
+  final imagePath;
+
+  const UserPhotoListItemWidget({
+    Key key,
+    @required this.imagePath,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          0, screenSizeInfo.paddingMedium, screenSizeInfo.paddingMedium, 0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          height: 150,
+          width: 110,
+          color: Colors.redAccent,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: CachedNetworkImage(
+              imageUrl: imagePath,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -208,14 +263,15 @@ class ProfileWidget extends BaseStatelessWidget {
             name,
             style: TextStyle(
               color: Colors.black,
-              fontSize: screenSizeInfo.textSizeMedium * 1.2,
+              fontSize: screenSizeInfo.textSizeMedium * 1.1,
             ),
           ),
           Text(
             location,
             style: TextStyle(
-              color: Colors.grey,
-              fontSize: screenSizeInfo.textSizeSmall * 1.3,
+              color: Colors.grey.shade600,
+              fontSize: screenSizeInfo.textSizeSmall * 1.2,
+              letterSpacing: 1.2,
               fontWeight: FontWeight.w400,
             ),
           )

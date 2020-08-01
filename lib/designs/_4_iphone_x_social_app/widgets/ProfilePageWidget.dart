@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePageWidget extends StatelessWidget {
@@ -14,8 +15,8 @@ class ProfilePageWidget extends StatelessWidget {
       fit: BoxFit.cover,
       child: Align(
         alignment: Alignment.center,
-        child: Image.asset(
-          profilePictureImage,
+        child: CachedNetworkImage(
+          imageUrl: profilePictureImage,
         ),
       ),
     );

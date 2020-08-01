@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/StateCurrentPage.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:provider/provider.dart';
 
+import '../UserProfile.dart';
 import 'ProfilePageWidget.dart';
 
 class PicturePageViewWidget extends StatefulWidget {
   final dragPosition;
-  final profilePictureImage;
+  final List<UserProfile> userProfiles;
 
-  const PicturePageViewWidget(
-      {Key key,
-      @required this.profilePictureImage,
-        @required this.dragPosition})
-      : super(key: key);
+  const PicturePageViewWidget({
+    Key key,
+    @required this.userProfiles,
+    @required this.dragPosition,
+  }) : super(key: key);
 
   @override
   _PicturePageViewWidgetState createState() => _PicturePageViewWidgetState();
 }
 
 class _PicturePageViewWidgetState extends State<PicturePageViewWidget> {
-  PageController _pageController = PageController(viewportFraction: 0.75);
+  PageController _pageController = PageController();
+  int _selectedPageIndex;
+
+  @override
+  void initState() {
+    _pageController.addListener(_handlePageChange);
+    super.initState();
+  }
+
+  void _handlePageChange() {
+    double page = _pageController.page;
+    if (page == page.roundToDouble()) {
+      final profileModal = Provider.of<StateCurrentPage>(context, listen: false);
+
+      setState(() {
+        _selectedPageIndex = _pageController.page.toInt();
+        profileModal.currentPageValue = _selectedPageIndex;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -34,11 +56,11 @@ class _PicturePageViewWidgetState extends State<PicturePageViewWidget> {
             (screenSizeInfo.screenHeight * 0.85) * (0.40 / widget.dragPosition),
         width: screenSizeInfo.screenWidth,
         child: PageView(
+          controller: _pageController,
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            ProfilePageWidget(profilePictureImage: widget.profilePictureImage),
-            ProfilePageWidget(profilePictureImage: widget.profilePictureImage),
-            ProfilePageWidget(profilePictureImage: widget.profilePictureImage),
+            for (var profile in widget.userProfiles)
+              ProfilePageWidget(profilePictureImage: profile.profileImage),
           ],
         ),
       );
