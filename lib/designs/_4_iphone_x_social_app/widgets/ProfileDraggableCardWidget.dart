@@ -9,6 +9,7 @@ import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
 import 'package:provider/provider.dart';
 
 import '../UserProfile.dart';
+import 'FollowButtonWidget.dart';
 
 class ProfileDraggableCardWidget extends StatefulWidget {
   final double dragPosition;
@@ -97,7 +98,17 @@ class _ProfileDraggableCardWidgetState
                             location: currentProfile.location,
                           ),
                           Spacer(),
-                          FollowButtonWidget()
+                          Padding(
+                            padding: EdgeInsets.all(
+                                screenSizeInfo.paddingSmall * 1.5),
+                            child: ShowUpTransitionWidget(
+                              key: ValueKey(currentProfile.name),
+                              child: FollowButtonWidget(
+                                key: ValueKey(currentProfile.name),
+                                animationDuration: Duration(milliseconds: 500),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                       Opacity(
@@ -208,39 +219,6 @@ class UserPhotoListItemWidget extends BaseStatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class FollowButtonWidget extends StatefulWidget {
-  @override
-  _FollowButtonWidgetState createState() => _FollowButtonWidgetState();
-}
-
-class _FollowButtonWidgetState extends State<FollowButtonWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return BaseBuilderWidget(
-      builder: (context, screenSizeInfo) {
-        return Padding(
-          padding: EdgeInsets.all(8.0),
-          child: OutlineButton(
-            onPressed: () {},
-            textColor: Colors.red.shade700,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            borderSide: BorderSide(
-                color: Colors.red.shade700, style: BorderStyle.solid),
-            child: Text(
-              "FOLLOW",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.1,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
