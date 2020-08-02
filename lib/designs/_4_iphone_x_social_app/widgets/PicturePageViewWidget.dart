@@ -22,7 +22,7 @@ class PicturePageViewWidget extends StatefulWidget {
 
 class _PicturePageViewWidgetState extends State<PicturePageViewWidget> {
   PageController _pageController = PageController();
-  int _selectedPageIndex;
+  int _selectedPageIndex = 0;
 
   @override
   void initState() {
@@ -31,15 +31,14 @@ class _PicturePageViewWidgetState extends State<PicturePageViewWidget> {
   }
 
   void _handlePageChange() {
+    final profileModal = Provider.of<StateCurrentPage>(context, listen: false);
     double page = _pageController.page;
-    if (page == page.roundToDouble()) {
-      final profileModal = Provider.of<StateCurrentPage>(context, listen: false);
-
-      setState(() {
-        _selectedPageIndex = _pageController.page.toInt();
-        profileModal.currentPageValue = _selectedPageIndex;
-      });
-    }
+//    if (page.roundToDouble() == page) {
+    setState(() {
+      _selectedPageIndex = _pageController.page.toInt();
+      profileModal.currentPageValue = _selectedPageIndex;
+    });
+//    }
   }
 
   @override
