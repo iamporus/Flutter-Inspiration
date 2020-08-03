@@ -73,7 +73,7 @@ class ScreenSizeInfo {
     //widget sizes to know and debug exact size taken by widgets
     widgetSize = Size(boxConstraints.maxWidth, boxConstraints.maxHeight);
 
-    if (!kReleaseMode && printLogs) print(this);
+    if (!kReleaseMode || printLogs) print(this);
   }
 
   void setupTextScalingFactor() {

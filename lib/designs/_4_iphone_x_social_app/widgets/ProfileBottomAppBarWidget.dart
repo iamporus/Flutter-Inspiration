@@ -5,12 +5,10 @@ import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 class ProfileBottomAppBarWidget extends BaseStatelessWidget {
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    var margin = screenSizeInfo.paddingSmall * 0.5;
     return Material(
       color: Colors.transparent,
       child: Container(
         padding: EdgeInsets.all(screenSizeInfo.paddingMedium * 1.5),
-        margin: EdgeInsets.fromLTRB(margin, 0, margin, 0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

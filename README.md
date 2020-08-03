@@ -21,3 +21,11 @@ by [Julia Jakubiak](https://dribbble.com/juliajakubiak)
 Checkout [Source Code](https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_3_plant_shop)
 
 <img width="300"  src="https://cdn.dribbble.com/users/1558331/screenshots/6158149/6_4x.png?compress=1&resize=300x225">
+
+
+### 4. [iPhone X Social App](https://dribbble.com/shots/3898209-iPhone-X-Social-App)
+by [Shakuro](https://dribbble.com/shakuro)
+
+Checkout [Source Code](https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_4_iphone_x_social_app)
+
+<img width="300"  src="https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2_still_2x.gif">

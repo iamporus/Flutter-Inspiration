@@ -44,51 +44,52 @@ class _IPhoneXSocialAppDesignState extends State<IPhoneXSocialAppDesign>
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
       return SafeArea(
           child: ChangeNotifierProvider(
-            create: (_) => StateCurrentPage(),
-            child: Stack(
-              children: <Widget>[
-                PicturePageViewWidget(
-                  userProfiles: userProfiles,
-                  dragPosition: position,
-                ),
-                ProfileAppBar(),
-                StreamBuilder(
-                    stream: controller.stream,
-                    builder: (context, snapshot) {
-                      return NotificationListener<DraggableScrollableNotification>(
-                        onNotification: (notification) {
-                          position = notification.extent;
-                          setState(() {});
-                          return true;
-                        },
-                        child: ScrollConfiguration(
-                          behavior: GlowLessScrollBehavior(),
-                          child: DraggableScrollableSheet(
-                            initialChildSize: 0.40,
-                            minChildSize: 0.40,
-                            maxChildSize: 0.68,
-                            expand: true,
-                            builder: (BuildContext context,
-                                ScrollController scrollController) {
-                              return SingleChildScrollView(
-                                controller: scrollController,
-                                child: ProfileDraggableCardWidget(
-                                  dragPosition: position,
-                                  userProfiles: userProfiles,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ProfileBottomAppBarWidget(),
-                )
-              ],
+        create: (_) => StateCurrentPage(),
+        child: Stack(
+          children: <Widget>[
+            PicturePageViewWidget(
+              userProfiles: userProfiles,
+              dragPosition: position,
             ),
-          ));
+            ProfileAppBar(),
+            StreamBuilder(
+                stream: controller.stream,
+                builder: (context, snapshot) {
+                  return NotificationListener<DraggableScrollableNotification>(
+                    onNotification: (notification) {
+                      position = notification.extent;
+                      setState(() {});
+                      return true;
+                    },
+                    child: ScrollConfiguration(
+                      behavior: GlowLessScrollBehavior(),
+                      child: DraggableScrollableSheet(
+                        initialChildSize: 0.40,
+                        minChildSize: 0.40,
+                        maxChildSize: 0.68,
+                        expand: true,
+                        builder: (BuildContext context,
+                            ScrollController scrollController) {
+                          return SingleChildScrollView(
+                            controller: scrollController,
+                            physics: new ClampingScrollPhysics(),
+                            child: ProfileDraggableCardWidget(
+                              dragPosition: position,
+                              userProfiles: userProfiles,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ProfileBottomAppBarWidget(),
+            )
+          ],
+        ),
+      ));
     });
   }
 }

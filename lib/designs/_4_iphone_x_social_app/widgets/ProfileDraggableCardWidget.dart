@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/StateCurrentPage.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
@@ -75,8 +76,8 @@ class _ProfileDraggableCardWidgetState
                       ),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black.withOpacity(0.8),
-                            spreadRadius: 15,
+                            color: Colors.black.withOpacity(0.6),
+                            spreadRadius: 13,
                             blurRadius: 13)
                       ]),
                   height: screenSizeInfo.screenHeight * 0.45,
@@ -105,7 +106,7 @@ class _ProfileDraggableCardWidgetState
                               key: ValueKey(currentProfile.name),
                               child: FollowButtonWidget(
                                 key: ValueKey(currentProfile.name),
-                                animationDuration: Duration(milliseconds: 500),
+                                animationDuration: Duration(milliseconds: 400),
                               ),
                             ),
                           )
@@ -204,12 +205,16 @@ class UserPhotoListItemWidget extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          0, screenSizeInfo.paddingMedium, screenSizeInfo.paddingMedium, 0),
+        0,
+        screenSizeInfo.paddingMedium,
+        screenSizeInfo.paddingMedium,
+        0,
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          height: 150,
-          width: 110,
+          height: screenSizeInfo.screenHeight * 0.16,
+          width: screenSizeInfo.screenWidth * 0.30,
           color: Colors.redAccent,
           child: FittedBox(
             fit: BoxFit.cover,
@@ -288,45 +293,49 @@ class SocialInfoWidget extends BaseStatelessWidget {
     return ShowUpTransitionWidget(
       key: ValueKey(title),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-            screenSizeInfo.paddingLarge,
-            screenSizeInfo.paddingSmall,
-            screenSizeInfo.paddingLarge,
-            screenSizeInfo.paddingSmall),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: screenSizeInfo.textSizeSmall * 1.5,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 2.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ]),
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
-                    fontSize: screenSizeInfo.textSizeSmall * 1.5,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 2.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ]),
-              )
-            ],
-          ),
+        padding: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge,
+            screenSizeInfo.paddingSmall, screenSizeInfo.paddingMedium, 0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: screenSizeInfo.textSizeSmall * 1.4,
+                      shadows: <Shadow>[
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 2.0,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ]),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white,
+                      fontSize: screenSizeInfo.textSizeSmall * 1.5,
+                      shadows: <Shadow>[
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 2.0,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ]),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

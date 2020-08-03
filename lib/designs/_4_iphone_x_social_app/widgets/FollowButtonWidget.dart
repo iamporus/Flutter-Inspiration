@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 
 class FollowButtonWidget extends StatefulWidget {
   final Duration animationDuration;
@@ -12,47 +13,59 @@ class FollowButtonWidget extends StatefulWidget {
 }
 
 class _FollowButtonWidgetState extends State<FollowButtonWidget> {
-  static double _initialButtonWidth = 100;
-  static double _finalButtonWidth = 45;
+  static double _initialButtonWidth;
+  static double _finalButtonWidth;
   static Color _initialBorderColor = Colors.red.shade700;
   static Color _finalBorderColor = Colors.white;
   Color _borderColor = _initialBorderColor;
   Color _color = _finalBorderColor;
-  double _width = _initialButtonWidth;
+  double _width = 0.0;
   ButtonState _buttonState = ButtonState.SHOW_TEXT;
 
   @override
+  void didChangeDependencies() {
+    _initialButtonWidth = MediaQuery.of(context).size.width * 0.30;
+    _finalButtonWidth = MediaQuery.of(context).size.width * 0.13;
+    _width = _initialButtonWidth;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: _changeState,
-        child: AnimatedContainer(
-          height: 40,
-          width: _width,
-          duration: widget.animationDuration,
-          decoration: BoxDecoration(
-              color: _color,
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: _borderColor)),
-          child: _buttonState == ButtonState.SHOW_ICON
-              ? Icon(
-                  Icons.person_outline,
-                  color: Colors.white,
-                )
-              : Center(
-                  child: Text(
-                    "FOLLOW",
-                    style: TextStyle(
-                      wordSpacing: 1.1,
-                      fontWeight: FontWeight.bold,
-                      color: _initialBorderColor,
+    return BaseBuilderWidget(builder: (context, screenSizeInfo) {
+      double buttonHeight = screenSizeInfo.screenHeight * 0.06;
+
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _changeState,
+          child: AnimatedContainer(
+            height: buttonHeight,
+            width: _width,
+            duration: widget.animationDuration,
+            decoration: BoxDecoration(
+                color: _color,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: _borderColor)),
+            child: _buttonState == ButtonState.SHOW_ICON
+                ? Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                  )
+                : Center(
+                    child: Text(
+                      "FOLLOW",
+                      style: TextStyle(
+                          wordSpacing: 1.1,
+                          fontWeight: FontWeight.bold,
+                          color: _initialBorderColor,
+                          fontSize: screenSizeInfo.textSizeSmall * 1.5),
                     ),
                   ),
-                ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void _changeState() {
