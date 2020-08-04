@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DesignWidget extends StatefulWidget {
   final Design design;
@@ -46,6 +47,8 @@ class _DesignWidgetState extends State<DesignWidget> {
                 screenSizeInfo.paddingSmall),
             child: Card(
               color: widget.design.paletteColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               elevation: 3.0,
               child: Material(
                 color: Colors.transparent,
@@ -56,43 +59,70 @@ class _DesignWidgetState extends State<DesignWidget> {
                       return widget.design.route;
                     }));
                   },
-                  child: Column(
+                  child: Stack(
                     children: <Widget>[
                       AspectRatio(
-                          aspectRatio: 4 / 3,
+                          aspectRatio: 1.1,
                           child: Container(
-                            height: screenSizeInfo.screenHeight * 0.4,
-                            child: CachedNetworkImage(
-                              imageUrl: widget.design.imageAsset,
-                              placeholder: (context, imageUrl) {
-                                return Image.memory(kTransparentImage);
-                              },
-                              placeholderFadeInDuration:
-                                  Duration(milliseconds: 300),
+                            height: screenSizeInfo.screenHeight * 0.3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.design.imageAsset,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => AspectRatio(
+                                  aspectRatio: 1.1,
+                                  child:
+                                      BlurHash(hash: widget.design.imageHash),
+                                ),
+                                placeholderFadeInDuration:
+                                    Duration(milliseconds: 300),
+                              ),
                             ),
                           )),
-                      Padding(
-                        padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
-                        child: Text(
-                          widget.design.title,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            screenSizeInfo.paddingSmall,
-                            0,
-                            screenSizeInfo.paddingSmall,
-                            screenSizeInfo.paddingSmall),
-                        child: Text(
-                          "by " + widget.design.author,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.normal),
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          width: screenSizeInfo.screenWidth,
+                          padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                            colors: [
+                              widget.design.paletteColor == null
+                                  ? Colors.black.withOpacity(0.4)
+                                  : widget.design.paletteColor,
+                              Colors.transparent
+                            ],
+                          )),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                widget.design.title,
+                                style: GoogleFonts.quicksand(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            screenSizeInfo.textSizeMedium)),
+                              ),
+                              SizedBox(
+                                height: screenSizeInfo.paddingSmall * 0.5,
+                              ),
+                              Text(
+                                "by " + widget.design.author,
+                                style: GoogleFonts.quicksand(
+                                    textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: screenSizeInfo.textSizeSmall * 1.3,
+                                  fontWeight: FontWeight.w300,
+                                )),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

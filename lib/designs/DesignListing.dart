@@ -15,6 +15,7 @@ class DesignListing {
         imageAsset:
             "https://cdn.dribbble.com/users/952958/screenshots/6371155/2_4x.png?compress=1&resize=" +
                 resolution,
+        imageHash: "*YONUe\$y~B9FWB%M-4NcNx-;xZRj-;n~Iox]WBWAkCR+WCxuW=Rj",
         route: SignUpDesign()),
     Design(
         title: "Simple Game App Concept",
@@ -24,6 +25,7 @@ class DesignListing {
         imageAsset:
             "https://cdn.dribbble.com/users/4231329/screenshots/13752058/media/c58801393386278c8c36a6f9ab2a9a9b.png?compress=1&resize=" +
                 resolution,
+        imageHash: "LAFGILJA00~WTz%M-;Io00xu^+9Z",
         route: GameAppConceptDesign()),
     Design(
         title: "Plant Shop",
@@ -32,6 +34,7 @@ class DesignListing {
         imageAsset:
             "https://cdn.dribbble.com/users/1558331/screenshots/6158149/6_4x.png?compress=1&resize=" +
                 resolution,
+        imageHash: "LfM*a7Rknn%3WCRjofxu~Ea{IoNF",
         route: PlantShopHomeDesign()),
     Design(
         title: "iPhone X Social App",
@@ -39,6 +42,7 @@ class DesignListing {
         link: "https://dribbble.com/shots/3898209-iPhone-X-Social-App",
         imageAsset:
             "https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2.gif",
+        imageHash: "LkP?,ZRj~qxuWBj[t7ax-;j[IUay",
         route: IPhoneXSocialAppDesign()),
   ];
 
