@@ -7,21 +7,21 @@ class Design {
   final imageAsset;
   final String imageHash;
   final route;
-  Color paletteColor;
+  final Color paletteColor;
 
-  Design(
-      {Key key,
-      @required this.title,
-      @required this.author,
-      @required this.link,
-      @required this.imageAsset,
-      @required this.imageHash,
-      @required this.route,
-      this.paletteColor})
+  Design({Key key,
+    @required this.title,
+    @required this.author,
+    @required this.link,
+    @required this.imageAsset,
+    @required this.imageHash,
+    @required this.paletteColor,
+    @required this.route})
       : assert(title != null),
         assert(author != null),
         assert(imageAsset != null),
         assert(imageHash != null),
+        assert(paletteColor != null),
         assert(route != null),
         assert(link != null);
 }
