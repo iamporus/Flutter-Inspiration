@@ -18,7 +18,8 @@ class DesignListing {
                 resolution,
         imageHash: "*YONUe\$y~B9FWB%M-4NcNx-;xZRj-;n~Iox]WBWAkCR+WCxuW=Rj",
         paletteColor: Color(0xFF53859C),
-        route: SignUpDesign()),
+        route: SignUpDesign(),
+        isFavorite: false),
     Design(
         title: "Simple Game App Concept",
         author: "Zoltán Czigány",
@@ -29,7 +30,8 @@ class DesignListing {
                 resolution,
         imageHash: "LAFGILJA00~WTz%M-;Io00xu^+9Z",
         paletteColor: Color(0xFF536D80),
-        route: GameAppConceptDesign()),
+        route: GameAppConceptDesign(),
+        isFavorite: true),
     Design(
         title: "Plant Shop",
         author: "Julia Jakubiak",
@@ -39,7 +41,8 @@ class DesignListing {
                 resolution,
         imageHash: "LfM*a7Rknn%3WCRjofxu~Ea{IoNF",
         paletteColor: Color(0xFF359A58),
-        route: PlantShopHomeDesign()),
+        route: PlantShopHomeDesign(),
+        isFavorite: false),
     Design(
         title: "iPhone X Social App",
         author: "Shakuro",
@@ -48,7 +51,8 @@ class DesignListing {
             "https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2.gif",
         imageHash: "LkP?,ZRj~qxuWBj[t7ax-;j[IUay",
         paletteColor: Color(0xFF35322E),
-        route: IPhoneXSocialAppDesign()),
+        route: IPhoneXSocialAppDesign(),
+        isFavorite: false),
   ];
 
   static int getAvailableDesignCount() {

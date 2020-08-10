@@ -15,10 +15,7 @@ class DesignListScreen extends StatefulWidget {
 
 class _DesignListScreenState extends State<DesignListScreen>
     with TickerProviderStateMixin {
-
   AnimationController _animController;
-  FixedExtentScrollController _designScrollController =
-      FixedExtentScrollController();
   FixedExtentScrollController _designInfoScrollController =
       FixedExtentScrollController();
   Design _previousDesign = DesignListing.getAvailableDesigns()[0];
@@ -28,8 +25,9 @@ class _DesignListScreenState extends State<DesignListScreen>
   @override
   void initState() {
     _animController = AnimationController(
+      reverseDuration: const Duration(seconds: 3),
       duration: const Duration(
-        milliseconds: 500,
+        seconds: 3,
       ),
       vsync: this,
     );
@@ -47,50 +45,27 @@ class _DesignListScreenState extends State<DesignListScreen>
   Widget build(BuildContext context) {
     return BaseBuilderWidget(
       builder: (context, screenSizeInfo) {
-        return AnimatedBuilder(
-          animation: _animController,
-          builder: (context, child) {
-            return Scaffold(
-                body: Scaffold(
-              backgroundColor: _backgroundTweenSequence.evaluate(
-                AlwaysStoppedAnimation(_animController.value),
-              ),
-              appBar: _buildAppBar(screenSizeInfo),
-              body: Column(
+        return Scaffold(
+          backgroundColor: _backgroundTweenSequence
+              .evaluate(AlwaysStoppedAnimation(_animController.value)),
+          appBar: _buildAppBar(screenSizeInfo),
+          body: AnimatedBuilder(
+            animation: _animController,
+            builder: (context, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Flexible(
-                    child: Container(
-                      color: Colors.transparent,
-                      width: screenSizeInfo.screenWidth,
-                      child: HorizontalListWheelScrollView(
-                        itemExtent: screenSizeInfo.screenHeight * 0.65,
-                        scrollDirection: Axis.horizontal,
-                        controller: _designScrollController,
-                        squeeze: 1.3,
-                        diameterRatio: 3,
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute<void>(
-                            builder: (BuildContext context) {
-                              return _currentDesign.route;
-                            },
-                          ));
-                        },
-                        onSelectedItemChanged: _onDesignItemChanged,
-                        builder: (context, index) {
-                          var design =
-                              DesignListing.getAvailableDesigns()[index];
-                          return DesignWidget(design: design);
-                        },
-                      ),
-                    ),
-                  ),
                   Container(
-                    height: screenSizeInfo.screenHeight * 0.15,
+                    color: Colors.transparent,
+                    height: screenSizeInfo.screenHeight * 0.62,
+                    width: screenSizeInfo.screenWidth,
                     child: HorizontalListWheelScrollView(
-                      itemExtent: screenSizeInfo.screenHeight * 0.5,
+                      itemExtent: screenSizeInfo.screenHeight * 0.49,
                       scrollDirection: Axis.horizontal,
-                      squeeze: 1.3,
-                      diameterRatio: 20,
+                      scrollPhysics: FixedExtentScrollPhysics(),
+                      squeeze: 1.2,
+                      diameterRatio: 1.75,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
@@ -98,7 +73,88 @@ class _DesignListScreenState extends State<DesignListScreen>
                           },
                         ));
                       },
-                      onSelectedItemChanged: _onDesignInfoItemChanged,
+                      onSelectedItemChanged: _onDesignItemChanged,
+                      builder: (context, index) {
+                        var design = DesignListing.getAvailableDesigns()[index];
+                        return DesignWidget(design: design);
+                      },
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      RawChip(
+                        onPressed: () {},
+                        labelPadding:
+                            EdgeInsets.all(screenSizeInfo.paddingSmall * 0.5),
+                        deleteIcon: Icon(Icons.code,
+                            color: _currentDesign.paletteColor),
+                        elevation: 15,
+                        pressElevation: 10,
+                        onDeleted: () {},
+                        deleteButtonTooltipMessage: "View Source",
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                          topLeft: Radius.zero,
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                          bottomLeft: Radius.zero,
+                        )),
+                        label: Text(
+                          "View Source",
+                          style: GoogleFonts.quicksand(
+                            textStyle: TextStyle(
+                              color: _currentDesign.paletteColor,
+                              fontSize: screenSizeInfo.textSizeMedium * 0.8,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      ActionChip(
+                        labelPadding:
+                            EdgeInsets.all(screenSizeInfo.paddingSmall * 0.5),
+                        onPressed: () {},
+                        elevation: 15,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.zero,
+                            bottomRight: Radius.zero,
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
+                        label: Text(
+                          "Favourite",
+                          style: GoogleFonts.quicksand(
+                            textStyle: TextStyle(
+                              color: _currentDesign.paletteColor,
+                              fontSize: screenSizeInfo.textSizeMedium * 0.8,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: Icon(
+                            _currentDesign.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.pink,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: screenSizeInfo.screenHeight * 0.12,
+                    color: Colors.transparent,
+                    child: HorizontalListWheelScrollView(
+                      itemExtent: screenSizeInfo.screenHeight * 0.55,
+                      scrollDirection: Axis.horizontal,
+                      squeeze: 1.3,
+                      scrollPhysics: NeverScrollableScrollPhysics(),
+                      diameterRatio: 15,
                       controller: _designInfoScrollController,
                       builder: (context, index) {
                         var design = DesignListing.getAvailableDesigns()[index];
@@ -107,31 +163,29 @@ class _DesignListScreenState extends State<DesignListScreen>
                     ),
                   ),
                 ],
-              ),
-            ));
-          },
+              );
+            },
+          ),
         );
       },
     );
   }
 
-  PreferredSize _buildAppBar(ScreenSizeInfo screenSizeInfo) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(screenSizeInfo.screenHeight * 0.1),
-      child: AppBar(
-        elevation: 1.0,
-        backgroundColor: Colors.transparent,
-        title: Center(
-          child: Padding(
-            padding: EdgeInsets.all(screenSizeInfo.paddingMedium * 1.2),
-            child: Text(
-              "Flutter Design Gallery",
-              style: GoogleFonts.quicksand(
-                textStyle: TextStyle(
-                  fontSize: screenSizeInfo.textSizeMedium * 1.3,
+  AppBar _buildAppBar(ScreenSizeInfo screenSizeInfo) {
+    return AppBar(
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      title: Center(
+        child: Padding(
+          padding: EdgeInsets.all(screenSizeInfo.paddingMedium * 1.5),
+          child: Text(
+            "Flutter Design Gallery",
+            style: GoogleFonts.quicksand(
+              textStyle: TextStyle(
+                  fontSize: screenSizeInfo.textSizeMedium * 1.4,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 3.0)]),
             ),
           ),
         ),
@@ -142,19 +196,10 @@ class _DesignListScreenState extends State<DesignListScreen>
   void _onDesignItemChanged(int page) {
     _designInfoScrollController.animateToItem(
       page,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 600),
       curve: Curves.linear,
     );
     _onItemChanged(page);
-  }
-
-  void _onDesignInfoItemChanged(int info) {
-    _designScrollController.animateToItem(
-      info,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.linear,
-    );
-    _onItemChanged(info);
   }
 
   void _onItemChanged(int info) {
@@ -170,8 +215,8 @@ class _DesignListScreenState extends State<DesignListScreen>
       TweenSequenceItem(
         weight: 1.0,
         tween: ColorTween(
-          begin: _previousDesign.paletteColor.withOpacity(0.9),
-          end: _currentDesign.paletteColor.withOpacity(0.9),
+          begin: _currentDesign.paletteColor.withOpacity(0.9),
+          end: _previousDesign.paletteColor.withOpacity(0.9),
         ),
       ),
     ]);

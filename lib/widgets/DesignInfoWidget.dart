@@ -18,44 +18,34 @@ class DesignInfoWidget extends BaseStatelessWidget {
     return Container(
       width: screenSizeInfo.screenWidth,
       padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              spreadRadius: 2.0,
-              blurRadius: 2.0,
-              color: Colors.black,
-            )
-          ],
-          gradient: LinearGradient(
-            colors: [
-              design.paletteColor,
-              Colors.black,
-            ],
-          )),
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              design.title,
-              style: GoogleFonts.quicksand(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: screenSizeInfo.textSizeMedium * 1.2,
+            Center(
+              child: Text(
+                design.title,
+                style: GoogleFonts.quicksand(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: screenSizeInfo.textSizeMedium * 1.1,
+                  ),
                 ),
               ),
             ),
-            Text(
-              "by " + design.author,
-              style: GoogleFonts.quicksand(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: screenSizeInfo.textSizeSmall * 1.5,
-                  fontWeight: FontWeight.w300,
+            Center(
+              child: Text(
+                "by " + design.author,
+                style: GoogleFonts.quicksand(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenSizeInfo.textSizeSmall * 1.3,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
             ),

@@ -15,43 +15,43 @@ class DesignWidget extends BaseStatelessWidget {
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(
-        0,
-        screenSizeInfo.paddingMedium,
-        screenSizeInfo.paddingMedium,
-        screenSizeInfo.paddingMedium,
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(15),
       ),
-      child: Center(
-        child: Card(
-          color: Colors.transparent,
-          elevation: 4.0,
-          child: Material(
+      child: Container(
+        child: Center(
+          child: Card(
             color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return design.route;
-                  },
-                ));
-              },
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    height: screenSizeInfo.screenHeight * 0.48,
-                    width: screenSizeInfo.screenHeight * 0.48,
-                    child: CachedNetworkImage(
-                      imageUrl: design.imageAsset,
-                      fit: BoxFit.fitHeight,
-                      placeholder: (context, url) => AspectRatio(
-                        aspectRatio: 0.9,
-                        child: BlurHash(hash: design.imageHash),
+            elevation: 8.0,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                    builder: (BuildContext context) {
+                      return design.route;
+                    },
+                  ));
+                },
+                child: Stack(
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: 0.9,
+                      child: Container(
+                        color: design.paletteColor,
+                        child: CachedNetworkImage(
+                          imageUrl: design.imageAsset,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              BlurHash(hash: design.imageHash),
+                          placeholderFadeInDuration:
+                              Duration(milliseconds: 300),
+                        ),
                       ),
-                      placeholderFadeInDuration: Duration(milliseconds: 300),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

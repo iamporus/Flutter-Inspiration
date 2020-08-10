@@ -14,6 +14,8 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
   final double squeeze;
   final VoidCallback onTap;
 
+  final ScrollPhysics scrollPhysics;
+
   const HorizontalListWheelScrollView({
     Key key,
     @required this.builder,
@@ -24,6 +26,7 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
     this.diameterRatio = 7,
     this.squeeze,
     this.onTap,
+    this.scrollPhysics,
   }) : super(key: key);
 
   @override
@@ -38,16 +41,15 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
           itemExtent: itemExtent,
           squeeze: squeeze,
           diameterRatio: diameterRatio,
-          physics: FixedExtentScrollPhysics(),
-          childDelegate: ListWheelChildBuilderDelegate(
-            childCount: DesignListing.getAvailableDesignCount(),
-            builder: (context, index) {
-              return RotatedBox(
-                quarterTurns: scrollDirection == Axis.horizontal ? 1 : 0,
-                child: builder(context, index),
-              );
-            },
-          ),
+          physics: scrollPhysics,
+          childDelegate: ListWheelChildLoopingListDelegate(
+              children: List<Widget>.generate(
+                  DesignListing.getAvailableDesignCount(),
+                  (index) => RotatedBox(
+                        quarterTurns:
+                            scrollDirection == Axis.horizontal ? 1 : 0,
+                        child: builder(context, index),
+                      ))),
         ),
       ),
     );
