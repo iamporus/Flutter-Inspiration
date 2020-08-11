@@ -32,6 +32,7 @@ class DesignInfoWidget extends BaseStatelessWidget {
                   textStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    shadows: [Shadow(blurRadius: 3.0)],
                     fontSize: screenSizeInfo.textSizeMedium * 1.1,
                   ),
                 ),
@@ -43,7 +44,8 @@ class DesignInfoWidget extends BaseStatelessWidget {
                 style: GoogleFonts.quicksand(
                   textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: screenSizeInfo.textSizeSmall * 1.3,
+                    fontSize: screenSizeInfo.textSizeSmall * 1.4,
+                    shadows: [Shadow(blurRadius: 1.0)],
                     fontWeight: FontWeight.w300,
                   ),
                 ),

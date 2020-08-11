@@ -32,6 +32,9 @@ String thumbnailWidth = "200";
 String profilePictureWidth = "750";
 
 List<UserProfile> getDummyUserProfiles() {
+
+  //TODO: use http://randomuser.me/ instead of dummy data
+
   return [
     UserProfile(
       SocialInfo(followers: 198, following: 665, posts: 135),
