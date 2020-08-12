@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/DesignListing.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
+import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignInfoWidget.dart';
+import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignWidget.dart';
 import 'package:flutter_design_challenge/widgets/FavouriteChipWidget.dart';
 import 'package:flutter_design_challenge/widgets/HorizontalListViewScrollView.dart';
 import 'package:flutter_design_challenge/widgets/ViewSourceChipWidget.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class DesignListScreen extends StatefulWidget {
   @override
@@ -19,6 +21,8 @@ class _DesignListScreenState extends State<DesignListScreen>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   FixedExtentScrollController _designInfoScrollController =
+      FixedExtentScrollController();
+  FixedExtentScrollController _designScrollController =
       FixedExtentScrollController();
   Design _previousDesign = DesignListing.getAvailableDesigns()[0];
   Design _currentDesign = DesignListing.getAvailableDesigns()[0];
@@ -43,6 +47,13 @@ class _DesignListScreenState extends State<DesignListScreen>
     });
     _animationController.forward();
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _designScrollController.animateTo(
+        100.0,
+        duration: Duration(seconds: 2),
+        curve: Curves.easeInCubic,
+      );
+    });
     super.initState();
   }
 
@@ -66,55 +77,7 @@ class _DesignListScreenState extends State<DesignListScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    width: screenSizeInfo.screenWidth,
-                    padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 0.2,
-                            spreadRadius: 0.2)
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Flutter Inspiration",
-                          style: GoogleFonts.quicksand(
-                            textStyle: TextStyle(
-                                fontSize: screenSizeInfo.textSizeMedium * 1.3,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                shadows: [Shadow(blurRadius: 3.0)]),
-                          ),
-                        ),
-                        Spacer(),
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              left: 1.0,
-                              top: 1.0,
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.settings,
-                                    color: Colors.black54,
-                                  )),
-                            ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.settings,
-                                  color: Colors.white,
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  DesignListAppBarWidget(),
                   _buildDesignCarousel(screenSizeInfo, context),
                   Row(
                     children: <Widget>[
@@ -147,6 +110,7 @@ class _DesignListScreenState extends State<DesignListScreen>
         scrollPhysics: FixedExtentScrollPhysics(),
         squeeze: 1.2,
         diameterRatio: 1.75,
+        controller: _designScrollController,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute<void>(
             builder: (BuildContext context) {
@@ -182,28 +146,6 @@ class _DesignListScreenState extends State<DesignListScreen>
     );
   }
 
-  AppBar _buildAppBar(ScreenSizeInfo screenSizeInfo) {
-    return AppBar(
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      title: Center(
-        child: Padding(
-          padding: EdgeInsets.all(screenSizeInfo.paddingMedium * 1.5),
-          child: Text(
-            "Flutter Design Gallery",
-            style: GoogleFonts.quicksand(
-              textStyle: TextStyle(
-                  fontSize: screenSizeInfo.textSizeMedium * 1.4,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  shadows: [Shadow(blurRadius: 3.0)]),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _onDesignItemChanged(int page) {
     _designInfoScrollController.animateToItem(
       page,
@@ -217,6 +159,10 @@ class _DesignListScreenState extends State<DesignListScreen>
     setState(() {
       _previousDesign = _currentDesign;
       _currentDesign = DesignListing.getAvailableDesigns()[info];
+
+      var designChangeModel =
+          Provider.of<DesignChangeModel>(context, listen: false);
+      designChangeModel.currentDesignValue = info;
 
       Color _beginColor = _previousDesign.paletteColor;
       Color _endColor = _currentDesign.paletteColor;
