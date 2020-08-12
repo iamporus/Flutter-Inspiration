@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
+import 'package:flutter_design_challenge/screens/SettingsScreen.dart';
+import 'package:flutter_design_challenge/widgets/BackdropWidget.dart';
 
 import 'screens/DesignListScreen.dart';
 
@@ -26,7 +28,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: darkBlueGray,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: DesignListScreen(),
+      home: BackdropWidget(
+        settingsScreen: SettingsScreen(),
+        homeScreen: DesignListScreen(),
+      ),
     );
   }
 
