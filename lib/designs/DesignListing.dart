@@ -10,6 +10,18 @@ class DesignListing {
   static final resolution = "600x445";
   static final designs = [
     Design(
+        id: 0,
+        title: "iPhone X Social App",
+        author: "Shakuro",
+        link: "https://dribbble.com/shots/3898209-iPhone-X-Social-App",
+        imageAsset:
+            "https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2.gif",
+        imageHash: "LkP?,ZRj~qxuWBj[t7ax-;j[IUay",
+        paletteColor: Color(0xFF35322E),
+        route: IPhoneXSocialAppDesign(),
+        sourceCodeUrl:
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart"),
+    Design(
       id: 0,
       title: "Sign in / Sign up UI",
       author: "Giga Tamarashvili",
@@ -51,18 +63,6 @@ class DesignListing {
         route: PlantShopHomeDesign(),
         sourceCodeUrl:
             "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/PlantShopHomeDesign.dart"),
-    Design(
-        id: 3,
-        title: "iPhone X Social App",
-        author: "Shakuro",
-        link: "https://dribbble.com/shots/3898209-iPhone-X-Social-App",
-        imageAsset:
-            "https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2.gif",
-        imageHash: "LkP?,ZRj~qxuWBj[t7ax-;j[IUay",
-        paletteColor: Color(0xFF35322E),
-        route: IPhoneXSocialAppDesign(),
-        sourceCodeUrl:
-            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart"),
   ];
 
   static int getAvailableDesignCount() {

@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 class BackdropWidget extends StatefulWidget {
   const BackdropWidget({
-    this.settingsScreen,
-    this.homeScreen,
+    @required this.settingsScreen,
+    @required this.homeScreen,
   });
 
   final Widget settingsScreen;

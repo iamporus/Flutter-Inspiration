@@ -163,6 +163,7 @@ class _DesignListScreenState extends State<DesignListScreen>
       var designChangeModel =
           Provider.of<DesignChangeModel>(context, listen: false);
       designChangeModel.currentDesignValue = info;
+      designChangeModel.previousDesignValue = info == 0 ? 0 : info - 1;
 
       Color _beginColor = _previousDesign.paletteColor;
       Color _endColor = _currentDesign.paletteColor;
