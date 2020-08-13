@@ -29,9 +29,9 @@ class _DesignListScreenState extends State<DesignListScreen>
   Design _currentDesign = DesignListing.getAvailableDesigns()[0];
   TweenSequence<Color> _backgroundTweenSequence;
   PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
+    appName: 'Flutter Inspiration',
     packageName: 'Unknown',
-    version: 'Unknown',
+    version: '1.0.0',
     buildNumber: 'Unknown',
   );
 
@@ -68,7 +68,7 @@ class _DesignListScreenState extends State<DesignListScreen>
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
-      _packageInfo = info;
+      if (info.appName != null && info.version != null) _packageInfo = info;
     });
   }
 

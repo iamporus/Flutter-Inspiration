@@ -25,9 +25,9 @@ class _SettingsScreenState extends State<SettingsScreen>
   Color _previousBackgroundColor;
   Color _currentBackgroundColor;
   PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
+    appName: 'Flutter Inspiration',
     packageName: 'Unknown',
-    version: 'Unknown',
+    version: '1.0.0',
     buildNumber: 'Unknown',
   );
 
@@ -44,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
-      _packageInfo = info;
+      if (info.appName != null && info.version != null) _packageInfo = info;
     });
   }
 
