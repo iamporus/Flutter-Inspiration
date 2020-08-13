@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Design Challenges',
+      title: 'Flutter Inspiration',
       builder: DevicePreview.appBuilder,
       theme: ThemeData(
         primarySwatch: darkBlueGray,

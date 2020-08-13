@@ -10,6 +10,7 @@ import 'package:flutter_design_challenge/widgets/DesignWidget.dart';
 import 'package:flutter_design_challenge/widgets/FavouriteChipWidget.dart';
 import 'package:flutter_design_challenge/widgets/HorizontalListViewScrollView.dart';
 import 'package:flutter_design_challenge/widgets/ViewSourceChipWidget.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class DesignListScreen extends StatefulWidget {
@@ -27,6 +28,12 @@ class _DesignListScreenState extends State<DesignListScreen>
   Design _previousDesign = DesignListing.getAvailableDesigns()[0];
   Design _currentDesign = DesignListing.getAvailableDesigns()[0];
   TweenSequence<Color> _backgroundTweenSequence;
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
 
   @override
   void initState() {
@@ -54,7 +61,15 @@ class _DesignListScreenState extends State<DesignListScreen>
         curve: Curves.easeInCubic,
       );
     });
+    _initPackageInfo();
     super.initState();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 
   @override
@@ -66,6 +81,7 @@ class _DesignListScreenState extends State<DesignListScreen>
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(
+      printLogs: true,
       builder: (context, screenSizeInfo) {
         return SafeArea(
           child: Material(
@@ -77,7 +93,9 @@ class _DesignListScreenState extends State<DesignListScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  DesignListAppBarWidget(),
+                  DesignListAppBarWidget(
+                    appBarTitle: _packageInfo.appName,
+                  ),
                   _buildDesignCarousel(screenSizeInfo, context),
                   Row(
                     children: <Widget>[
@@ -109,7 +127,7 @@ class _DesignListScreenState extends State<DesignListScreen>
         scrollDirection: Axis.horizontal,
         scrollPhysics: FixedExtentScrollPhysics(),
         squeeze: 1.2,
-        diameterRatio: 1.75,
+        diameterRatio: 1.7,
         controller: _designScrollController,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute<void>(
@@ -132,7 +150,7 @@ class _DesignListScreenState extends State<DesignListScreen>
       height: screenSizeInfo.screenHeight * 0.12,
       color: Colors.transparent,
       child: HorizontalListWheelScrollView(
-        itemExtent: screenSizeInfo.screenHeight * 0.55,
+        itemExtent: screenSizeInfo.screenHeight * 0.65,
         scrollDirection: Axis.horizontal,
         squeeze: 1.3,
         scrollPhysics: NeverScrollableScrollPhysics(),

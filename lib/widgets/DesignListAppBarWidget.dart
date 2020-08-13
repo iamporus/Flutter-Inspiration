@@ -5,7 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'BaseStatelessWidget.dart';
 
 class DesignListAppBarWidget extends BaseStatelessWidget {
+  final String appBarTitle;
+
   const DesignListAppBarWidget({
+    @required this.appBarTitle,
     Key key,
   }) : super(key: key);
 
@@ -17,7 +20,7 @@ class DesignListAppBarWidget extends BaseStatelessWidget {
       child: Align(
         alignment: Alignment.centerRight,
         child: Text(
-          "Flutter Inspiration",
+          appBarTitle,
           style: GoogleFonts.quicksand(
             textStyle: TextStyle(
                 fontSize: screenSizeInfo.textSizeMedium * 1.3,

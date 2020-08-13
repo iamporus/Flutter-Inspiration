@@ -34,6 +34,7 @@ dependencies:
   flutter_blurhash: ^0.5.0
   url_launcher: ^5.5.0
   shared_preferences: ^0.5.8
+  package_info: ^0.4.1
 
 
 dev_dependencies:
