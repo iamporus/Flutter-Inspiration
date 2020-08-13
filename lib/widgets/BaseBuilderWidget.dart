@@ -9,10 +9,11 @@ class BaseBuilderWidget extends StatelessWidget {
   final Widget Function(BuildContext context, ScreenSizeInfo screenSizeInfo)
       builder;
 
-  const BaseBuilderWidget({
-    Key key,
-    @required this.builder,
-  }) : super(key: key);
+  final bool printLogs;
+
+  const BaseBuilderWidget(
+      {Key key, @required this.builder, this.printLogs = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class BaseBuilderWidget extends StatelessWidget {
     return ScreenSizeInfo(
       context: context,
       boxConstraints: boxConstraints,
-      printLogs: false,
+      printLogs: printLogs,
     );
   }
 }
