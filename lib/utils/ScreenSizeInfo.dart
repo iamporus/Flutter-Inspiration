@@ -50,8 +50,8 @@ class ScreenSizeInfo {
     //device screen sizes
     _screenSize = mediaQueryData.size;
 
-    screenWidth = this._screenSize.shortestSide;
-    screenHeight = this._screenSize.longestSide;
+    screenWidth = this._screenSize.shortestSide.roundToDouble();
+    screenHeight = this._screenSize.longestSide.roundToDouble();
 
     //device type
     deviceScreenType = _getDeviceType(screenWidth);
