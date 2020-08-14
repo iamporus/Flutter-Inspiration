@@ -36,10 +36,12 @@ dependencies:
   shared_preferences: ^0.5.8
   package_info: ^0.4.1
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  test:
+  linter: ^0.1.116
+  lint: ^1.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
