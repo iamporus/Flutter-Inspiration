@@ -13,7 +13,7 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
   final void Function(int) onSelectedItemChanged;
   final double squeeze;
   final VoidCallback onTap;
-
+  final double offAxisFraction;
   final ScrollPhysics scrollPhysics;
 
   const HorizontalListWheelScrollView({
@@ -27,6 +27,7 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
     this.squeeze,
     this.onTap,
     this.scrollPhysics,
+    this.offAxisFraction = 0.0,
   }) : super(key: key);
 
   @override
@@ -42,6 +43,7 @@ class HorizontalListWheelScrollView extends BaseStatelessWidget {
           squeeze: squeeze,
           diameterRatio: diameterRatio,
           physics: scrollPhysics,
+          offAxisFraction: offAxisFraction,
           childDelegate: ListWheelChildLoopingListDelegate(
               children: List<Widget>.generate(
                   DesignListing.getAvailableDesignCount(),
