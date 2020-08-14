@@ -68,13 +68,10 @@ class _SettingsScreenState extends State<SettingsScreen>
               color: Colors.transparent,
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 500),
-                padding: EdgeInsets.fromLTRB(
-                    screenSizeInfo.paddingSmall,
-                    screenSizeInfo.paddingLarge,
-                    screenSizeInfo.paddingSmall,
-                    0),
+                padding:
+                    EdgeInsets.fromLTRB(0, screenSizeInfo.paddingLarge, 0, 0),
                 margin:
-                    EdgeInsets.only(bottom: screenSizeInfo.screenHeight * 0.1),
+                    EdgeInsets.only(bottom: screenSizeInfo.screenHeight * 0.15),
                 width: screenSizeInfo.screenWidth,
                 height: screenSizeInfo.screenHeight,
                 color: _backgroundTweenSequence.evaluate(
@@ -82,18 +79,11 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: Column(
                   children: <Widget>[
                     DesignListAppBarWidget(
-                      appBarTitle: "Menu",
+                      appBarTitle: "",
                     ),
-                    Expanded(
+                    Flexible(
                       child: Container(
                         decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 0.5,
-                                spreadRadius: 0.5,
-                              )
-                            ],
                             gradient: LinearGradient(
                               colors: [
                                 _previousBackgroundColor ==
@@ -118,9 +108,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                               height: screenSizeInfo.paddingSmall,
                             ),
                             _AppTitleWidget(packageInfo: _packageInfo),
-                            Spacer(),
                             SizedBox(
-                              height: screenSizeInfo.paddingSmall,
+                              height: screenSizeInfo.paddingLarge,
                             ),
                             _SettingsListItem(
                               title: "Share Feedback",
@@ -150,17 +139,13 @@ class _SettingsScreenState extends State<SettingsScreen>
                                   );
                                 }),
                             SizedBox(
-                              height: screenSizeInfo.paddingSmall,
+                              height: screenSizeInfo.paddingMedium,
                               child: Divider(
                                 height: 1.0,
                                 color: Colors.white70,
                               ),
                             ),
-                            _SourceCodeListItem(),
-                            SizedBox(
-                              height: screenSizeInfo.paddingSmall,
-                            ),
-                            _GithubIconListItem(),
+//                            _GithubIconListItem(),
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
@@ -251,11 +236,11 @@ class _AppLogoWidget extends BaseStatelessWidget {
             child: Icon(
               Icons.whatshot,
               color: Colors.red,
-              size: screenSizeInfo.textSizeXLarge * 1.5,
+              size: screenSizeInfo.textSizeXLarge,
             ),
           ),
         ),
-        radius: screenSizeInfo.paddingXLarge * 1.5,
+        radius: screenSizeInfo.paddingXLarge,
         backgroundColor: Colors.white.withOpacity(0.1),
       ),
     );

@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 class BackdropWidget extends StatefulWidget {
   const BackdropWidget({
     @required this.settingsScreen,
-    @required this.homeScreen,
+    @required this.homeBuilder,
   });
 
   final Widget settingsScreen;
-  final Widget homeScreen;
+  final Widget Function(BuildContext context, bool isSettingsOpen) homeBuilder;
 
   @override
   _BackdropWidgetState createState() => _BackdropWidgetState();
@@ -27,7 +27,7 @@ class _BackdropWidgetState extends State<BackdropWidget>
     super.initState();
     _settingsPanelController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 750),
     );
     _isSettingsOpenNotifier = ValueNotifier(false);
   }
@@ -56,7 +56,7 @@ class _BackdropWidgetState extends State<BackdropWidget>
         parent: _settingsPanelController,
         curve: const Interval(
           0.0,
-          0.4,
+          1.0,
           curve: Curves.ease,
         ),
       ),
@@ -65,7 +65,7 @@ class _BackdropWidgetState extends State<BackdropWidget>
 
   Animation<RelativeRect> _slideDownHomeScreenAnimation(
       BoxConstraints constraints) {
-    final homeActionBarHeight = constraints.biggest.height * 0.15;
+    final homeActionBarHeight = constraints.biggest.height * 0.2;
     return RelativeRectTween(
       begin: const RelativeRect.fromLTRB(0, 0, 0, 0),
       end: RelativeRect.fromLTRB(
@@ -79,7 +79,7 @@ class _BackdropWidgetState extends State<BackdropWidget>
         parent: _settingsPanelController,
         curve: const Interval(
           0.0,
-          0.4,
+          1.0,
           curve: Curves.ease,
         ),
       ),
@@ -97,7 +97,7 @@ class _BackdropWidgetState extends State<BackdropWidget>
     final Widget homePage = ValueListenableBuilder<bool>(
       valueListenable: _isSettingsOpenNotifier,
       builder: (context, isSettingsOpen, child) {
-        return widget.homeScreen;
+        return widget.homeBuilder(context, isSettingsOpen);
       },
     );
 

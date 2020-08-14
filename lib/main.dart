@@ -30,7 +30,11 @@ class MyApp extends StatelessWidget {
       ),
       home: BackdropWidget(
         settingsScreen: SettingsScreen(),
-        homeScreen: DesignListScreen(),
+        homeBuilder: (context, isSettingsOpen) {
+          return DesignListScreen(
+            isSettingsOpen: isSettingsOpen,
+          );
+        },
       ),
     );
   }

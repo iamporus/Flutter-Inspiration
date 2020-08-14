@@ -14,20 +14,29 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 class DesignListScreen extends StatefulWidget {
+  final bool isSettingsOpen;
+
+  DesignListScreen({Key key, this.isSettingsOpen}) : super(key: key);
+
   @override
   _DesignListScreenState createState() => _DesignListScreenState();
 }
 
 class _DesignListScreenState extends State<DesignListScreen>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  AnimationController _colorAnimController;
+  AnimationController _carouselAnimController;
   FixedExtentScrollController _designInfoScrollController =
       FixedExtentScrollController();
   FixedExtentScrollController _designScrollController =
       FixedExtentScrollController();
   Design _previousDesign = DesignListing.getAvailableDesigns()[0];
   Design _currentDesign = DesignListing.getAvailableDesigns()[0];
-  TweenSequence<Color> _backgroundTweenSequence;
+  Animation<Color> _backgroundColorAnimation;
+  Animation<double> _carouselHeightAnimation;
+  Animation<double> _carouselSqueezeAnimation;
+  Animation<double> _carouselOffAxisFractionAnimation;
+
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Flutter Inspiration',
     packageName: 'Unknown',
@@ -36,33 +45,72 @@ class _DesignListScreenState extends State<DesignListScreen>
   );
 
   @override
-  void initState() {
-    Color _beginColor = _previousDesign.paletteColor;
-    Color _endColor = _currentDesign.paletteColor;
+  void didUpdateWidget(DesignListScreen oldWidget) {
+    if (widget.isSettingsOpen) {
+      _carouselAnimController.reverse();
+    } else {
+      _carouselAnimController.forward();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
-    _backgroundTweenSequence =
-        _getBackgroundTweenSequence(_beginColor, _endColor);
-    _animationController = AnimationController(
+  @override
+  void initState() {
+    _setupColorAnimation();
+
+    _setupCarouselAnimation();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _designScrollController
+          .animateTo(
+            150.0,
+            duration: Duration(milliseconds: 1750),
+            curve: Curves.easeIn,
+          )
+          .then((value) => _carouselAnimController.forward());
+    });
+    _initPackageInfo();
+    super.initState();
+  }
+
+  void _setupCarouselAnimation() {
+    _carouselAnimController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _carouselHeightAnimation =
+        Tween(begin: 0.31, end: 0.62).animate(_carouselAnimController);
+
+    _carouselSqueezeAnimation =
+        Tween(begin: 1.5, end: 1.0).animate(_carouselAnimController);
+
+    _carouselOffAxisFractionAnimation =
+        Tween(begin: 0.4, end: 0.0).animate(_carouselAnimController);
+
+    _carouselAnimController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  void _setupColorAnimation() {
+    _colorAnimController = AnimationController(
       vsync: this,
       duration: Duration(
         milliseconds: 500,
       ),
-    );
+    )..addListener(() {
+        setState(() {});
+      });
 
-    _animationController.addListener(() {
-      setState(() {});
-    });
-    _animationController.forward();
+    _setupColorTween(_previousDesign.paletteColor, _currentDesign.paletteColor);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _designScrollController.animateTo(
-        100.0,
-        duration: Duration(seconds: 2),
-        curve: Curves.easeInCubic,
-      );
-    });
-    _initPackageInfo();
-    super.initState();
+  void _setupColorTween(_beginColor, _endColor) {
+    _backgroundColorAnimation = ColorTween(
+      begin: _beginColor,
+      end: _endColor,
+    ).animate(_colorAnimController);
   }
 
   Future<void> _initPackageInfo() async {
@@ -74,27 +122,28 @@ class _DesignListScreenState extends State<DesignListScreen>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _colorAnimController.dispose();
+    _carouselAnimController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(
-      printLogs: true,
       builder: (context, screenSizeInfo) {
         return SafeArea(
           child: Material(
-            child: AnimatedContainer(
-              color: _backgroundTweenSequence
-                  .evaluate(AlwaysStoppedAnimation(_animationController.value)),
-              duration: Duration(milliseconds: 750),
+            child: Container(
+              color: _backgroundColorAnimation.value,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  DesignListAppBarWidget(
-                    appBarTitle: _packageInfo.appName,
+                  Visibility(
+                    visible: !widget.isSettingsOpen,
+                    child: DesignListAppBarWidget(
+                      appBarTitle: _packageInfo.appName,
+                    ),
                   ),
                   _buildDesignCarousel(screenSizeInfo, context),
                   Row(
@@ -120,14 +169,15 @@ class _DesignListScreenState extends State<DesignListScreen>
       ScreenSizeInfo screenSizeInfo, BuildContext context) {
     return Container(
       color: Colors.transparent,
-      height: screenSizeInfo.screenHeight * 0.62,
+      height: screenSizeInfo.screenHeight * _carouselHeightAnimation.value,
       width: screenSizeInfo.screenWidth,
       child: HorizontalListWheelScrollView(
         itemExtent: screenSizeInfo.screenHeight * 0.49,
         scrollDirection: Axis.horizontal,
         scrollPhysics: FixedExtentScrollPhysics(),
-        squeeze: 1.2,
-        diameterRatio: 1.7,
+        squeeze: _carouselSqueezeAnimation.value,
+        offAxisFraction: _carouselOffAxisFractionAnimation.value,
+        diameterRatio: 2.0,
         controller: _designScrollController,
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute<void>(
@@ -183,24 +233,11 @@ class _DesignListScreenState extends State<DesignListScreen>
       designChangeModel.currentDesignValue = info;
       designChangeModel.previousDesignValue = info == 0 ? 0 : info - 1;
 
-      Color _beginColor = _previousDesign.paletteColor;
-      Color _endColor = _currentDesign.paletteColor;
+      _setupColorTween(
+          _previousDesign.paletteColor, _currentDesign.paletteColor);
 
-      _backgroundTweenSequence =
-          _getBackgroundTweenSequence(_beginColor, _endColor);
+      _colorAnimController.reset();
+      _colorAnimController.forward();
     });
-  }
-
-  TweenSequence<Color> _getBackgroundTweenSequence(
-      Color beginColor, Color endColor) {
-    return TweenSequence<Color>([
-      TweenSequenceItem(
-        weight: 1.0,
-        tween: ColorTween(
-          begin: beginColor,
-          end: endColor,
-        ),
-      ),
-    ]);
   }
 }
