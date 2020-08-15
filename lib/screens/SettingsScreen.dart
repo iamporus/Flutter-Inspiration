@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/DesignListing.dart';
+import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
-import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen>
     with TickerProviderStateMixin {
   AnimationController _animationController;
-  TweenSequence<Color> _backgroundTweenSequence;
+  Animation<Color> _backgroundColorAnimation;
   Color _previousBackgroundColor;
   Color _currentBackgroundColor;
   PackageInfo _packageInfo = PackageInfo(
@@ -74,36 +73,34 @@ class _SettingsScreenState extends State<SettingsScreen>
                     EdgeInsets.only(bottom: screenSizeInfo.screenHeight * 0.15),
                 width: screenSizeInfo.screenWidth,
                 height: screenSizeInfo.screenHeight,
-                color: _backgroundTweenSequence.evaluate(
-                    AlwaysStoppedAnimation(_animationController.value)),
+                color: _backgroundColorAnimation.value,
                 child: Column(
                   children: <Widget>[
-                    DesignListAppBarWidget(
-                      appBarTitle: "",
+                    SizedBox(
+                      height: screenSizeInfo.paddingMedium,
                     ),
                     Flexible(
                       child: Container(
                         decoration: BoxDecoration(
+                            backgroundBlendMode: BlendMode.dstIn,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25)),
                             gradient: LinearGradient(
-                              colors: [
-                                _previousBackgroundColor ==
-                                        _currentBackgroundColor
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .secondaryVariant
-                                    : _previousBackgroundColor,
-                                _currentBackgroundColor,
-                              ],
-                              transform: GradientRotation(90),
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(25))),
+                                colors: [
+                                  _currentBackgroundColor.withOpacity(0.2),
+                                  _currentBackgroundColor.withOpacity(0.8),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter)),
                         child: Column(
                           children: <Widget>[
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
-                            _AppLogoWidget(),
+                            _AppLogoWidget(
+                              iconColor: Colors.redAccent,
+                            ),
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
@@ -131,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                                     context: context,
                                     applicationIcon: Icon(
                                       Icons.whatshot,
-                                      color: Colors.red,
+                                      color: _currentBackgroundColor,
                                       size: screenSizeInfo.textSizeXLarge * 1.5,
                                     ),
                                     applicationVersion: _packageInfo.version,
@@ -169,20 +166,15 @@ class _SettingsScreenState extends State<SettingsScreen>
     _currentBackgroundColor =
         DesignListing.getAvailableDesigns()[currentDesignIndex].paletteColor;
 
-    _backgroundTweenSequence = _getBackgroundTweenSequence();
+    _backgroundColorAnimation = _getBackgroundColorTween();
     _animationController.forward();
   }
 
-  TweenSequence<Color> _getBackgroundTweenSequence() {
-    return TweenSequence<Color>([
-      TweenSequenceItem(
-        weight: 1.0,
-        tween: ColorTween(
-          begin: _previousBackgroundColor,
-          end: _currentBackgroundColor,
-        ),
-      ),
-    ]);
+  Animation<Color> _getBackgroundColorTween() {
+    return ColorTween(
+      begin: _previousBackgroundColor,
+      end: _currentBackgroundColor,
+    ).animate(_animationController);
   }
 }
 
@@ -221,8 +213,11 @@ class _AppTitleWidget extends BaseStatelessWidget {
 }
 
 class _AppLogoWidget extends BaseStatelessWidget {
+  final iconColor;
+
   const _AppLogoWidget({
     Key key,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -235,7 +230,7 @@ class _AppLogoWidget extends BaseStatelessWidget {
             onTap: () {},
             child: Icon(
               Icons.whatshot,
-              color: Colors.red,
+              color: iconColor,
               size: screenSizeInfo.textSizeXLarge,
             ),
           ),
@@ -247,6 +242,7 @@ class _AppLogoWidget extends BaseStatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _GithubIconListItem extends BaseStatelessWidget {
   const _GithubIconListItem({
     Key key,
@@ -272,6 +268,7 @@ class _GithubIconListItem extends BaseStatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _SourceCodeListItem extends BaseStatelessWidget {
   const _SourceCodeListItem({
     Key key,
