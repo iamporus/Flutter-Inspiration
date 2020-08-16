@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: screenSizeInfo.paddingMedium,
+                      height: screenSizeInfo.paddingXLarge * 1.5,
                     ),
                     Flexible(
                       child: Container(
@@ -313,7 +313,8 @@ class _SettingsListItem extends BaseStatelessWidget {
         child: ListTile(
           leading: Icon(
             icon,
-            color: Colors.white70,
+            color: Colors.white,
+            size: screenSizeInfo.textSizeMedium * 1.5,
           ),
           title: Text(
             title,

@@ -200,6 +200,7 @@ class _SettingsIconState extends State<_SettingsIcon>
                     alignment: AlignmentDirectional.bottomEnd,
                     child: AnimatedIcon(
                       icon: AnimatedIcons.menu_close,
+                      size: screenSizeInfo.textSizeLarge * 0.8,
                       progress: _animationController,
                       color: Colors.white,
                     ),

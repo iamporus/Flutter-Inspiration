@@ -19,7 +19,11 @@ class ViewSourceChipWidget extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return RawChip(
       labelPadding: EdgeInsets.all(screenSizeInfo.paddingSmall * 0.5),
-      deleteIcon: Icon(Icons.code, color: _currentDesign.paletteColor),
+      deleteIcon: Icon(
+        Icons.code,
+        color: _currentDesign.paletteColor,
+        size: screenSizeInfo.textSizeMedium * 1.5,
+      ),
       elevation: 15,
       pressElevation: 10,
       onPressed: () {

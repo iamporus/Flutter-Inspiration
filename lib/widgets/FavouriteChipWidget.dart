@@ -108,10 +108,12 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
             child: _isFavourite
                 ? Icon(
                     Icons.favorite,
+                    size: screenSizeInfo.textSizeMedium * 1.5,
                     color: _backgroundTweenColor.value,
                   )
                 : Icon(
                     Icons.favorite_border,
+                    size: screenSizeInfo.textSizeMedium * 1.5,
                     color: _backgroundTweenColor.value,
                   ),
           ),
