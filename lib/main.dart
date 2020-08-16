@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_design_challenge/screens/SettingsScreen.dart';
 import 'package:flutter_design_challenge/widgets/BackdropWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcase_widget.dart';
 
 import 'screens/DesignListScreen.dart';
 
 final kReleaseMode = true;
+const String PREFS_KEY_IS_FIRST_TIME = "is_firstTime";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,14 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: darkBlueGray,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BackdropWidget(
-        settingsScreen: SettingsScreen(),
-        homeBuilder: (context, isSettingsOpen) {
-          return DesignListScreen(
-            isSettingsOpen: isSettingsOpen,
-          );
-        },
-      ),
+      home: HomeBuilder(),
     );
   }
 
@@ -54,4 +50,68 @@ class MyApp extends StatelessWidget {
       900: const Color(0xFF37474f),
     },
   );
+}
+
+class HomeBuilder extends StatefulWidget {
+  @override
+  _HomeBuilderState createState() => _HomeBuilderState();
+}
+
+class _HomeBuilderState extends State<HomeBuilder> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  bool _isFirstTime;
+
+  @override
+  void initState() {
+    _getIsFirstTimeState();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isFirstTime == null) {
+      return Container(
+        color: Colors.black,
+      );
+    } else
+      return _isFirstTime ? _buildHomeWithShowCase(context) : _getHome();
+  }
+
+  ShowCaseWidget _buildHomeWithShowCase(BuildContext context) {
+    return ShowCaseWidget(
+      builder: Builder(builder: (context) {
+        return _getHome();
+      }),
+      onFinish: () {
+        //TODO: notify user about end of showcase.
+        _setIsFirstTimeState();
+      },
+    );
+  }
+
+  Future _getIsFirstTimeState() async {
+    final SharedPreferences prefs = await _prefs;
+
+    _isFirstTime = prefs.get(PREFS_KEY_IS_FIRST_TIME) ?? true;
+    setState(() {});
+  }
+
+  void _setIsFirstTimeState() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setBool(PREFS_KEY_IS_FIRST_TIME, false).then((value) {
+      _isFirstTime = false;
+    });
+  }
+
+  Widget _getHome() {
+    return BackdropWidget(
+      settingsScreen: SettingsScreen(),
+      homeBuilder: (context, isSettingsOpen) {
+        return DesignListScreen(
+          isSettingsOpen: isSettingsOpen,
+          isFirstTime: _isFirstTime,
+        );
+      },
+    );
+  }
 }
