@@ -23,7 +23,7 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
     with TickerProviderStateMixin {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   AnimationController _animationController;
-  TweenSequence<Color> _backgroundTweenSequence;
+  Animation<Color> _backgroundTweenColor;
 
   bool _isFavourite = false;
   String _designPrefsKey;
@@ -36,14 +36,14 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
     Color _endColor =
         _isFavourite ? widget._currentDesign.paletteColor : Colors.pink;
 
-    _backgroundTweenSequence =
-        _getBackgroundTweenSequence(_beginColor, _endColor);
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
         milliseconds: 500,
       ),
     );
+
+    _backgroundTweenColor = _getBackgroundColorTween(_beginColor, _endColor);
 
     _animationController.addListener(() {
       setState(() {});
@@ -52,24 +52,17 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
     super.initState();
   }
 
-
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
 
-  TweenSequence<Color> _getBackgroundTweenSequence(
-      Color beginColor, Color endColor) {
-    return TweenSequence<Color>([
-      TweenSequenceItem(
-        weight: 1.0,
-        tween: ColorTween(
-          begin: beginColor,
-          end: endColor,
-        ),
-      ),
-    ]);
+  Animation<Color> _getBackgroundColorTween(Color beginColor, Color endColor) {
+    return ColorTween(
+      begin: beginColor,
+      end: endColor,
+    ).animate(_animationController);
   }
 
   Future _getFavoriteState() async {
@@ -115,13 +108,11 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
             child: _isFavourite
                 ? Icon(
                     Icons.favorite,
-                    color: _backgroundTweenSequence.evaluate(
-                        AlwaysStoppedAnimation(_animationController.value)),
+                    color: _backgroundTweenColor.value,
                   )
                 : Icon(
                     Icons.favorite_border,
-                    color: _backgroundTweenSequence.evaluate(
-                        AlwaysStoppedAnimation(_animationController.value)),
+                    color: _backgroundTweenColor.value,
                   ),
           ),
         ),
