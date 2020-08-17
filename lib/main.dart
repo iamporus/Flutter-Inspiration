@@ -2,23 +2,24 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_design_challenge/screens/SettingsScreen.dart';
+import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/BackdropWidget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
 import 'screens/DesignListScreen.dart';
 
 final kReleaseMode = true;
-const String PREFS_KEY_IS_FIRST_TIME = "is_firstTime";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Services.SystemChrome.setPreferredOrientations(
       [Services.DeviceOrientation.portraitUp]);
-  runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MyApp(),
-  ));
+  runApp(kReleaseMode
+      ? MyApp()
+      : DevicePreview(
+          enabled: !kReleaseMode,
+          builder: (context) => MyApp(),
+        ));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,12 +59,14 @@ class HomeBuilder extends StatefulWidget {
 }
 
 class _HomeBuilderState extends State<HomeBuilder> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool _isFirstTime;
 
   @override
   void initState() {
-    _getIsFirstTimeState();
+    getIsFirstTimeState().then((value) {
+      _isFirstTime = value;
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -84,23 +87,9 @@ class _HomeBuilderState extends State<HomeBuilder> {
       }),
       onFinish: () {
         //TODO: notify user about end of showcase.
-        _setIsFirstTimeState();
+        dissolveFirstTimeState().then((value) => _isFirstTime = value);
       },
     );
-  }
-
-  Future _getIsFirstTimeState() async {
-    final SharedPreferences prefs = await _prefs;
-
-    _isFirstTime = prefs.get(PREFS_KEY_IS_FIRST_TIME) ?? true;
-    setState(() {});
-  }
-
-  void _setIsFirstTimeState() async {
-    final SharedPreferences prefs = await _prefs;
-    prefs.setBool(PREFS_KEY_IS_FIRST_TIME, false).then((value) {
-      _isFirstTime = false;
-    });
   }
 
   Widget _getHome() {

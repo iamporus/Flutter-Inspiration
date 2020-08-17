@@ -40,7 +40,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test:
   linter: ^0.1.116
   lint: ^1.2.0
   flutter_launcher_icons: "^0.7.3"
