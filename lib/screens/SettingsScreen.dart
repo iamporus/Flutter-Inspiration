@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/DesignListing.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/AppLogoWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,13 +99,16 @@ class _SettingsScreenState extends State<SettingsScreen>
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
-                            _AppLogoWidget(
-                              iconColor: Colors.redAccent,
+                            AppLogoWidget(
+                              radius: screenSizeInfo.paddingXLarge,
+                              padding: screenSizeInfo.paddingMedium,
                             ),
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
-                            _AppTitleWidget(packageInfo: _packageInfo),
+                            _AppTitleWidget(
+                              packageInfo: _packageInfo,
+                            ),
                             SizedBox(
                               height: screenSizeInfo.paddingLarge,
                             ),
@@ -126,11 +130,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 onTap: () {
                                   showLicensePage(
                                     context: context,
-                                    applicationIcon: Icon(
-                                      Icons.whatshot,
-                                      color: _currentBackgroundColor,
-                                      size: screenSizeInfo.textSizeXLarge * 1.5,
-                                    ),
                                     applicationVersion: _packageInfo.version,
                                     applicationName: _packageInfo.appName,
                                   );
@@ -207,36 +206,6 @@ class _AppTitleWidget extends BaseStatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 shadows: [Shadow(blurRadius: 3.0)])),
-      ),
-    );
-  }
-}
-
-class _AppLogoWidget extends BaseStatelessWidget {
-  final iconColor;
-
-  const _AppLogoWidget({
-    Key key,
-    this.iconColor,
-  }) : super(key: key);
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Center(
-      child: CircleAvatar(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {},
-            child: Icon(
-              Icons.whatshot,
-              color: iconColor,
-              size: screenSizeInfo.textSizeXLarge,
-            ),
-          ),
-        ),
-        radius: screenSizeInfo.paddingXLarge,
-        backgroundColor: Colors.white.withOpacity(0.1),
       ),
     );
   }
