@@ -3,6 +3,7 @@ import 'package:flutter_design_challenge/designs/DesignListing.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/scale_route.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignInfoWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
@@ -191,11 +192,7 @@ class _DesignListScreenState extends State<DesignListScreen>
         diameterRatio: 2.0,
         controller: _designScrollController,
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute<void>(
-            builder: (BuildContext context) {
-              return _currentDesign.route;
-            },
-          ));
+          Navigator.push(context, ScaleRoute(page: _currentDesign.route));
         },
         onSelectedItemChanged: _onDesignItemChanged,
         builder: (context, index) {
