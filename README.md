@@ -1,4 +1,6 @@
 # Flutter Design Challenges
+[![Build Status](https://travis-ci.com/iamporus/flutter_design_challenges.svg?token=UxnvqrsFA948y7vAyDbz&branch=master)](https://travis-ci.com/iamporus/flutter_design_challenges)
+
 The idea behind the app is to find popular UI designs from Dribbble and bring them to life through Flutter.
 
 ### 1. [Sign in / Sign up UI](https://dribbble.com/shots/6371155-Sign-in-Sign-up-UI)
