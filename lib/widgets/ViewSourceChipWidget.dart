@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -54,6 +55,8 @@ class ViewSourceChipWidget extends BaseStatelessWidget {
   }
 
   _launchURL(BuildContext context, String sourceCodeUrl) async {
+    AnalyticsService().logViewSourceClicked(_currentDesign.id);
+
     if (await canLaunch(sourceCodeUrl)) {
       await launch(sourceCodeUrl);
       //TODO: force WebView with desktop site

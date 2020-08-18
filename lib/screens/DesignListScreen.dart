@@ -192,7 +192,13 @@ class _DesignListScreenState extends State<DesignListScreen>
         diameterRatio: 2.0,
         controller: _designScrollController,
         onTap: () {
-          Navigator.push(context, ScaleRoute(page: _currentDesign.route));
+          Navigator.push(
+            context,
+            ScaleRoute(
+              page: _currentDesign.route,
+              name: _currentDesign.title,
+            ),
+          );
         },
         onSelectedItemChanged: _onDesignItemChanged,
         builder: (context, index) {

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "788474797054",
+    "firebase_url": "https://flutter-inspiration.firebaseio.com",
+    "project_id": "flutter-inspiration",
+    "storage_bucket": "flutter-inspiration.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788474797054:android:79b99edba473e236b47eaf",
+        "android_client_info": {
+          "package_name": "com.prush.flutter_design_challenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788474797054-17e2e573mdidbi21anuo5nmqmrde96cf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXqYoDGMsXlfeec8r9ypK_grO_lQzUzE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "788474797054-17e2e573mdidbi21anuo5nmqmrde96cf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "788474797054-6j4u4q837h29kunkit46q3e9do6b96kh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.prush.flutterDesignChallenge"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

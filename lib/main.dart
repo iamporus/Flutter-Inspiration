@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_design_challenge/screens/SettingsScreen.dart';
+import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/BackdropWidget.dart';
 import 'package:showcaseview/showcase_widget.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeBuilder(),
+      navigatorObservers: [
+        AnalyticsService().getAnalyticsObserver(),
+      ],
     );
   }
 

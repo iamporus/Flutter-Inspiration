@@ -36,6 +36,7 @@ dependencies:
   shared_preferences: ^0.5.8
   package_info: ^0.4.1
   showcaseview: ^0.1.5
+  firebase_analytics: ^6.0.0
 
 dev_dependencies:
   flutter_test:
