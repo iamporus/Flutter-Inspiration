@@ -1,4 +1,4 @@
-# Flutter Design Challenges
+# Flutter Inspiration
 [![Build Status](https://travis-ci.com/iamporus/flutter_design_challenges.svg?token=UxnvqrsFA948y7vAyDbz&branch=master)](https://travis-ci.com/iamporus/flutter_design_challenges)
 
 The idea behind the app is to find popular UI designs from Dribbble and bring them to life through Flutter.
