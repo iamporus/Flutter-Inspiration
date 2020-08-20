@@ -22,7 +22,7 @@ class DesignListScreen extends StatefulWidget {
 
   DesignListScreen({
     Key key,
-    this.isSettingsOpen,
+    this.isSettingsOpen = false,
     this.isFirstTime,
   }) : super(key: key);
 

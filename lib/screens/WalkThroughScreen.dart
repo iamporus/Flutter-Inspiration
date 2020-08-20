@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_design_challenge/screens/HomeScreen.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WalkThroughScreen extends StatefulWidget {
@@ -31,48 +33,60 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
               PageView(
                 onPageChanged: _handlePageChanged,
                 children: [
-                  WalkThroughPage(
-                    backgroundColor: Colors.orange,
+                  _WalkThroughPageWidget(
+                    backgroundColor: Colors.red.shade700,
+                    assetUrl: "assets/app_logo_512.webp",
+                    titleText: "Flutter Inspiration",
+                    descriptionText:
+                        "Find Beautiful designs and know how to implement them!\n ",
                   ),
-                  WalkThroughPage(
-                    backgroundColor: Colors.green,
-                  ),
-                  WalkThroughPage(
-                    backgroundColor: Colors.pink,
-                  ),
-                  WalkThroughPage(
+                  _WalkThroughPageWidget(
                     backgroundColor: Colors.blue,
+                    assetUrl: "assets/walkthrough_designs.webp",
+                    titleText: "Find Designs",
+                    descriptionText:
+                        "Popular designs from Dribbble brought to life through Flutter code",
+                  ),
+                  _WalkThroughPageWidget(
+                    backgroundColor: Colors.green,
+                    assetUrl: "assets/walkthrough_source_code.webp",
+                    titleText: "View Source Code",
+                    descriptionText:
+                        "Check out the Source Code to know how it is implemented",
+                  ),
+                  _WalkThroughPageWidget(
+                    backgroundColor: Colors.orange.shade700,
+                    assetUrl: "assets/walkthrough_notifications.webp",
+                    titleText: "Get Notified",
+                    descriptionText:
+                        "Receive notifications when new Designs get added.",
                   ),
                 ],
               ),
               Positioned(
-                  bottom: screenSizeInfo.paddingXLarge * 2,
-                  width: screenSizeInfo.screenWidth,
-                  child: Stack(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          for (int i = 0; i < _pageCount; i++)
-                            LineIndicatorWidget(
-                                indicatorState: LineIndicatorState.GRAY),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          for (int i = 0; i < _pageCount; i++)
-                            if (i <= _selectedPageIndex)
-                              LineIndicatorWidget(
-                                  indicatorState: LineIndicatorState.WHITE)
-                            else
-                              LineIndicatorWidget(
-                                  indicatorState:
-                                      LineIndicatorState.TRANSPARENT)
-                        ],
-                      ),
-                    ],
-                  ))
+                bottom: screenSizeInfo.paddingXLarge * 2.8,
+                width: screenSizeInfo.screenWidth,
+                child: ShowUpTransitionWidget(
+                  direction: AxisDirection.up,
+                  delayInMilliseconds: 2000,
+                  animationDurationInMilliseconds: 750,
+                  child: _PageIndicatorWidget(
+                    pageCount: _pageCount,
+                    selectedPageIndex: _selectedPageIndex,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: screenSizeInfo.paddingMedium * 1.5,
+                left: screenSizeInfo.paddingMedium,
+                right: screenSizeInfo.paddingMedium,
+                child: ShowUpTransitionWidget(
+                  delayInMilliseconds: 2000,
+                  animationDurationInMilliseconds: 750,
+                  direction: AxisDirection.up,
+                  child: _StartButtonWidget(),
+                ),
+              )
             ],
           ),
         );
@@ -86,32 +100,122 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 }
 
-class WalkThroughPage extends StatefulWidget {
-  final Color backgroundColor;
-
-  const WalkThroughPage({
+class _PageIndicatorWidget extends StatelessWidget {
+  const _PageIndicatorWidget({
     Key key,
-    @required this.backgroundColor,
+    @required int pageCount,
+    @required int selectedPageIndex,
+  })  : _pageCount = pageCount,
+        _selectedPageIndex = selectedPageIndex,
+        super(key: key);
+
+  final int _pageCount;
+  final int _selectedPageIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (int i = 0; i < _pageCount; i++)
+              _LineIndicatorWidget(indicatorState: LineIndicatorState.GRAY),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            for (int i = 0; i < _pageCount; i++)
+              if (i <= _selectedPageIndex)
+                _LineIndicatorWidget(indicatorState: LineIndicatorState.WHITE)
+              else
+                _LineIndicatorWidget(
+                    indicatorState: LineIndicatorState.TRANSPARENT)
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _StartButtonWidget extends BaseStatelessWidget {
+  const _StartButtonWidget({
+    Key key,
   }) : super(key: key);
 
   @override
-  _WalkThroughPageState createState() => _WalkThroughPageState();
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return RaisedButton(
+      color: Colors.white,
+      onPressed: () {
+        Navigator.pop(context);
+        _navigateToHomeScreen(context);
+      },
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+        Radius.circular(screenSizeInfo.paddingMedium),
+      )),
+      child: Padding(
+        padding: EdgeInsets.all(screenSizeInfo.paddingSmall * 1.8),
+        child: Text(
+          "Start",
+          style: GoogleFonts.quicksand(
+            textStyle: TextStyle(
+              color: Colors.blue,
+              fontSize: screenSizeInfo.textSizeMedium * 1.2,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return HomeScreen(
+            isFirstTime: true,
+          );
+        },
+        settings: RouteSettings(name: "HomeScreen"),
+      ),
+    );
+  }
 }
 
-class _WalkThroughPageState extends State<WalkThroughPage>
+class _WalkThroughPageWidget extends StatefulWidget {
+  final Color backgroundColor;
+  final String assetUrl;
+  final String titleText;
+  final String descriptionText;
+
+  const _WalkThroughPageWidget(
+      {Key key,
+      @required this.backgroundColor,
+      @required this.assetUrl,
+      @required this.titleText,
+      @required this.descriptionText})
+      : super(key: key);
+
+  @override
+  _WalkThroughPageWidgetState createState() => _WalkThroughPageWidgetState();
+}
+
+class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _scaleAnimation;
-  Animation<double> _opacityAnimation;
 
   @override
   void initState() {
-    _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 750));
     final Animation curve =
         CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
-    _scaleAnimation = Tween(begin: 0.1, end: 0.4).animate(_animationController);
-    _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(curve);
+    _scaleAnimation = Tween(begin: 0.0, end: 0.4).animate(curve);
 
     _animationController.addListener(() {
       setState(() {});
@@ -135,39 +239,54 @@ class _WalkThroughPageState extends State<WalkThroughPage>
         child: Column(
           children: [
             SizedBox(
-              height: screenSizeInfo.textSizeMedium,
+              height: screenSizeInfo.paddingXLarge,
             ),
-            Opacity(
-              opacity: _opacityAnimation.value,
+            ShowUpTransitionWidget(
+              delayInMilliseconds: 500,
+              animationDurationInMilliseconds: 750,
+              direction: AxisDirection.down,
               child: SizedBox(
                   height: screenSizeInfo.screenHeight * _scaleAnimation.value,
                   width: screenSizeInfo.screenHeight * 0.4,
-                  child: Image.asset("assets/plant_1.png")),
+                  child: Image.asset(widget.assetUrl)),
             ),
             SizedBox(
-              height: screenSizeInfo.textSizeXLarge,
+              height: screenSizeInfo.paddingXLarge * 1.2,
             ),
-            Text(
-              "Find Designs",
-              style: GoogleFonts.quicksand(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: screenSizeInfo.textSizeLarge,
-                  fontWeight: FontWeight.bold,
+            ShowUpTransitionWidget(
+              delayInMilliseconds: 750,
+              animationDurationInMilliseconds: 750,
+              direction: AxisDirection.up,
+              child: Text(
+                widget.titleText,
+                style: GoogleFonts.quicksand(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenSizeInfo.textSizeLarge * 1.2,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
             SizedBox(
-              height: screenSizeInfo.textSizeMedium,
+              height: screenSizeInfo.paddingLarge,
             ),
-            Text(
-              "Find popular designs from Dribbble \nbrought to life through Flutter",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.quicksand(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: screenSizeInfo.textSizeMedium,
-                  fontWeight: FontWeight.bold,
+            ShowUpTransitionWidget(
+              delayInMilliseconds: 1000,
+              animationDurationInMilliseconds: 750,
+              direction: AxisDirection.up,
+              child: Padding(
+                padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+                child: Text(
+                  widget.descriptionText,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.quicksand(
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenSizeInfo.textSizeMedium * 1.2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -180,10 +299,10 @@ class _WalkThroughPageState extends State<WalkThroughPage>
 
 enum LineIndicatorState { TRANSPARENT, WHITE, GRAY }
 
-class LineIndicatorWidget extends BaseStatelessWidget {
+class _LineIndicatorWidget extends BaseStatelessWidget {
   final LineIndicatorState indicatorState;
 
-  const LineIndicatorWidget({
+  const _LineIndicatorWidget({
     Key key,
     @required this.indicatorState,
   }) : super(key: key);
@@ -192,18 +311,21 @@ class LineIndicatorWidget extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     var lineWidth = (screenSizeInfo.screenWidth / 6);
     var color = _getIndicatorColor(indicatorState);
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 750),
-      foregroundDecoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            screenSizeInfo.paddingMedium,
+    return Opacity(
+      opacity: _getIndicatorOpacity(indicatorState),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 750),
+        foregroundDecoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              screenSizeInfo.paddingMedium,
+            ),
           ),
         ),
+        width: lineWidth,
+        height: screenSizeInfo.textSizeSmall * 0.5,
       ),
-      width: lineWidth,
-      height: screenSizeInfo.textSizeSmall * 0.8,
     );
   }
 
@@ -217,6 +339,19 @@ class LineIndicatorWidget extends BaseStatelessWidget {
         return Colors.grey.shade700;
       default:
         return Colors.transparent;
+    }
+  }
+
+  double _getIndicatorOpacity(LineIndicatorState indicatorState) {
+    switch (indicatorState) {
+      case LineIndicatorState.TRANSPARENT:
+        return 0.0;
+      case LineIndicatorState.WHITE:
+        return 1.0;
+      case LineIndicatorState.GRAY:
+        return 0.35;
+      default:
+        return 0.0;
     }
   }
 }

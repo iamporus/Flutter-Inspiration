@@ -1,18 +1,18 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
-import 'package:flutter_design_challenge/screens/SettingsScreen.dart';
+import 'package:flutter_design_challenge/screens/HomeScreen.dart';
+import 'package:flutter_design_challenge/screens/WalkThroughScreen.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
-import 'package:flutter_design_challenge/widgets/BackdropWidget.dart';
-import 'package:showcaseview/showcase_widget.dart';
-
-import 'screens/DesignListScreen.dart';
 
 final kReleaseMode = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
+
   await Services.SystemChrome.setPreferredOrientations(
       [Services.DeviceOrientation.portraitUp]);
   runApp(kReleaseMode
@@ -81,30 +81,6 @@ class _HomeBuilderState extends State<HomeBuilder> {
         color: Colors.black,
       );
     } else
-      return _isFirstTime ? _buildHomeWithShowCase(context) : _getHome();
-  }
-
-  ShowCaseWidget _buildHomeWithShowCase(BuildContext context) {
-    return ShowCaseWidget(
-      builder: Builder(builder: (context) {
-        return _getHome();
-      }),
-      onFinish: () {
-        //TODO: notify user about end of showcase.
-        dissolveFirstTimeState().then((value) => _isFirstTime = value);
-      },
-    );
-  }
-
-  Widget _getHome() {
-    return BackdropWidget(
-      settingsScreen: SettingsScreen(),
-      homeBuilder: (context, isSettingsOpen) {
-        return DesignListScreen(
-          isSettingsOpen: isSettingsOpen,
-          isFirstTime: _isFirstTime,
-        );
-      },
-    );
+      return _isFirstTime ? WalkThroughScreen() : HomeScreen();
   }
 }
