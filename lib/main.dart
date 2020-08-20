@@ -1,20 +1,20 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_design_challenge/screens/HomeScreen.dart';
 import 'package:flutter_design_challenge/screens/WalkThroughScreen.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
+import 'package:flutter_design_challenge/widgets/FirebaseInitWidget.dart';
 
 final kReleaseMode = true;
 
 void main() async {
+  ///This is to make sure app supports only portrait orientation
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
-
   await Services.SystemChrome.setPreferredOrientations(
       [Services.DeviceOrientation.portraitUp]);
+
   runApp(kReleaseMode
       ? MyApp()
       : DevicePreview(
@@ -23,9 +23,9 @@ void main() async {
         ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends FirebaseInitWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget getApp() {
     return MaterialApp(
       title: 'Flutter Inspiration',
       builder: DevicePreview.appBuilder,
@@ -40,21 +40,22 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  final MaterialColor darkBlueGray = const MaterialColor(
-    0xFF37474f,
-    const <int, Color>{
-      50: const Color(0xFF37474f),
-      100: const Color(0xFF37474f),
-      200: const Color(0xFF37474f),
-      300: const Color(0xFF37474f),
-      400: const Color(0xFF37474f),
-      500: const Color(0xFF37474f),
-      600: const Color(0xFF37474f),
-      700: const Color(0xFF37474f),
-      800: const Color(0xFF37474f),
-      900: const Color(0xFF37474f),
-    },
-  );
+  @override
+  Widget getInitErrorWidget() {
+    print("Error while Firebase Init");
+    //TODO: add error indicator
+    return Container(
+      color: Colors.red,
+    );
+  }
+
+  @override
+  Widget getLoadingWidget() {
+    //TODO: add progress indicator
+    return Container(
+      color: Colors.black,
+    );
+  }
 }
 
 class HomeBuilder extends StatefulWidget {
