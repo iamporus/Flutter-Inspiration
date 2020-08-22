@@ -22,7 +22,7 @@ class DesignListing {
         sourceCodeUrl:
             "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart"),
     Design(
-      id: 0,
+      id: 1,
       title: "Sign in / Sign up UI",
       author: "Giga Tamarashvili",
       link: "https://dribbble.com/shots/6371155-Sign-in-Sign-up-UI",
@@ -36,7 +36,7 @@ class DesignListing {
           "https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_1_sign_in_sign_up_by_giga",
     ),
     Design(
-      id: 1,
+      id: 2,
       title: "Simple Game App Concept",
       author: "Zoltán Czigány",
       link:
@@ -51,7 +51,7 @@ class DesignListing {
           "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart",
     ),
     Design(
-        id: 2,
+        id: 3,
         title: "Plant Shop",
         author: "Julia Jakubiak",
         link: "https://dribbble.com/shots/6158149-Plant-Shop",
