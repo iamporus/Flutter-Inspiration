@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/screens/HomeScreen.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
@@ -35,7 +36,8 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                 children: [
                   _WalkThroughPageWidget(
                     backgroundColor: Colors.red.shade700,
-                    assetUrl: "assets/app_logo_512.webp",
+                    assetUrl: "assets/app_logo_anim.flr",
+                    isAnim: true,
                     titleText: "Flutter Inspiration",
                     descriptionText:
                         "Find Beautiful designs and know how to implement them!\n ",
@@ -190,6 +192,7 @@ class _WalkThroughPageWidget extends StatefulWidget {
   final Color backgroundColor;
   final String assetUrl;
   final String titleText;
+  final bool isAnim;
   final String descriptionText;
 
   const _WalkThroughPageWidget(
@@ -197,6 +200,7 @@ class _WalkThroughPageWidget extends StatefulWidget {
       @required this.backgroundColor,
       @required this.assetUrl,
       @required this.titleText,
+      this.isAnim = false,
       @required this.descriptionText})
       : super(key: key);
 
@@ -248,7 +252,9 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
               child: SizedBox(
                   height: screenSizeInfo.screenHeight * _scaleAnimation.value,
                   width: screenSizeInfo.screenHeight * 0.4,
-                  child: Image.asset(widget.assetUrl)),
+                  child: widget.isAnim
+                      ? FlareActor(widget.assetUrl, animation: "idle",)
+                      : Image.asset(widget.assetUrl)),
             ),
             SizedBox(
               height: screenSizeInfo.paddingXLarge * 1.2,

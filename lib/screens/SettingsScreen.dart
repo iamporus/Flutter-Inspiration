@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                             ),
                             AppLogoWidget(
                               radius: screenSizeInfo.paddingXLarge,
-                              padding: screenSizeInfo.paddingMedium,
+                              anim: AppLogoAnim.SPINNING,
                             ),
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,

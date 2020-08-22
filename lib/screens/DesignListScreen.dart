@@ -4,6 +4,7 @@ import 'package:flutter_design_challenge/models/Design.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/utils/scale_route.dart';
+import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignInfoWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
@@ -48,6 +49,7 @@ class _DesignListScreenState extends State<DesignListScreen>
   GlobalKey _showcaseDesignDetailsKey = GlobalKey();
   GlobalKey _showcaseViewSourceKey = GlobalKey();
   GlobalKey _showcaseMarkFavKey = GlobalKey();
+  bool _isFirstTime;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Flutter Inspiration',
@@ -58,7 +60,7 @@ class _DesignListScreenState extends State<DesignListScreen>
 
   @override
   void didUpdateWidget(DesignListScreen oldWidget) {
-    if (!widget.isFirstTime) {
+    if (!_isFirstTime) {
       widget.isSettingsOpen
           ? _carouselAnimController.reverse()
           : _carouselAnimController.forward();
@@ -71,8 +73,9 @@ class _DesignListScreenState extends State<DesignListScreen>
   void initState() {
     _setupColorAnimation();
     _setupCarouselAnimation();
+    _isFirstTime = widget.isFirstTime;
 
-    if (widget.isFirstTime) {
+    if (_isFirstTime) {
       _setupShowCase();
     } else {
       _carouselAnimController.forward();
@@ -106,16 +109,16 @@ class _DesignListScreenState extends State<DesignListScreen>
                       appBarTitle: _packageInfo.appName,
                     ),
                   ),
-                  widget.isFirstTime
+                  _isFirstTime
                       ? _buildCarouselWithShowcase(context, screenSizeInfo)
                       : _buildDesignCarousel(screenSizeInfo, context),
                   Row(
                     children: <Widget>[
-                      widget.isFirstTime
+                      _isFirstTime
                           ? _buildViewSourceWithShowcase()
                           : _buildViewSourceChipWidget(),
                       Spacer(),
-                      widget.isFirstTime
+                      _isFirstTime
                           ? _buildFavoriteChipWithShowcase()
                           : _buildFavouriteChipWidget()
                     ],
@@ -132,6 +135,11 @@ class _DesignListScreenState extends State<DesignListScreen>
 
   Showcase _buildFavoriteChipWithShowcase() {
     return Showcase(
+      onTargetClick: (){
+        _isFirstTime = false;
+        dissolveFirstTimeState();
+      },
+      disposeOnTap: true,
       key: _showcaseMarkFavKey,
       description: "Mark the Design as Favorite",
       child: _buildFavouriteChipWidget(),

@@ -38,10 +38,6 @@ class HomeScreen extends StatelessWidget {
       builder: Builder(builder: (context) {
         return _buildBackdropWidget();
       }),
-      onFinish: () {
-        //TODO: notify user about end of showcase.
-        dissolveFirstTimeState();
-      },
     );
   }
 }

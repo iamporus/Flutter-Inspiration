@@ -1,15 +1,24 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 
 import 'BaseStatelessWidget.dart';
 
+enum AppLogoAnim { IDLE, SPINNING }
+
+extension ExtractAnimType on AppLogoAnim {
+  String toAnimName() {
+    return this.toString().toLowerCase().split('.').last;
+  }
+}
+
 class AppLogoWidget extends BaseStatelessWidget {
   final double radius;
-  final double padding;
+  final AppLogoAnim anim;
 
   const AppLogoWidget({
     @required this.radius,
-    this.padding,
+    @required this.anim,
     Key key,
   }) : super(key: key);
 
@@ -18,11 +27,9 @@ class AppLogoWidget extends BaseStatelessWidget {
     return Center(
       child: CircleAvatar(
         radius: radius,
-        child: Padding(
-          padding: EdgeInsets.all(padding),
-          child: Image(
-            image: AssetImage("assets/app_logo_512.webp"),
-          ),
+        child: FlareActor(
+          "assets/app_logo_anim.flr",
+          animation: anim.toAnimName(),
         ),
       ),
     );

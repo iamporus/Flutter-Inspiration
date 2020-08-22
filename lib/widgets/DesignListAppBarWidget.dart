@@ -24,7 +24,7 @@ class DesignListAppBarWidget extends BaseStatelessWidget {
         children: <Widget>[
           AppLogoWidget(
             radius: screenSizeInfo.paddingMedium * 1.5,
-            padding: screenSizeInfo.paddingSmall,
+            anim: AppLogoAnim.IDLE,
           ),
           SizedBox(width: screenSizeInfo.paddingSmall,),
           Align(
