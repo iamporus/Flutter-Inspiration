@@ -64,8 +64,8 @@ class _ShowUpTransitionWidgetState extends State<ShowUpTransitionWidget>
 
   @override
   void dispose() {
-    super.dispose();
     _animController.dispose();
+    super.dispose();
   }
 
   @override
