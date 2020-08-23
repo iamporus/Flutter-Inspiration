@@ -16,7 +16,7 @@ class GameAppConceptDesign extends StatelessWidget {
           "Ghost of Tsushima",
           "Ghost of Tsushima is an action-adventure stealth game played from a third-person perspective. It feature a large open world without any waypoints and can be explored without guidance. Players can quickly travel to different parts of the game's world by riding a horse.",
           59.99,
-          "assets/ghost_preview.png"),
+          "assets/ghost_preview.webp"),
     );
   }
 }
