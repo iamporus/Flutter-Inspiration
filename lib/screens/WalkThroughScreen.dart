@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/screens/HomeScreen.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/AppLogoWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
@@ -253,7 +254,10 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
                   height: screenSizeInfo.screenHeight * _scaleAnimation.value,
                   width: screenSizeInfo.screenHeight * 0.4,
                   child: widget.isAnim
-                      ? FlareActor(widget.assetUrl, animation: "idle",)
+                      ? FlareActor(
+                          widget.assetUrl,
+                          animation: AppLogoAnim.SPINNING.toAnimName(),
+                        )
                       : Image.asset(widget.assetUrl)),
             ),
             SizedBox(
