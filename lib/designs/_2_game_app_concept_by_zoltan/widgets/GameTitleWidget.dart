@@ -17,7 +17,7 @@ class GameTitleWidget extends BaseStatelessWidget {
         gameTitle,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: screenSizeInfo.textSizeLarge,
+          fontSize: screenSizeInfo.textSizeMedium * 1.5,
         ),
       ),
     );

@@ -18,7 +18,7 @@ class GameInfoWidget extends BaseStatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
           fontWeight: FontWeight.w400,
-          fontSize: screenSizeInfo.textSizeMedium,
+          fontSize: screenSizeInfo.textSizeSmall * 1.5,
           wordSpacing: 2,
           height: 1.5),
     );
