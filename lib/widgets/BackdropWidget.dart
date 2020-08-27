@@ -169,48 +169,61 @@ class _SettingsIconState extends State<_SettingsIcon>
 
   @override
   Widget build(BuildContext context) {
-    return BaseBuilderWidget(
-      builder: (context, screenSizeInfo) {
-        return Align(
-          alignment: AlignmentDirectional.topStart,
-          child: SizedBox(
-            width: screenSizeInfo.screenWidth * 0.18,
-            height: screenSizeInfo.screenHeight * 0.07 +
-                (screenSizeInfo.safeBlockVertical * 4),
-            child: Material(
-              borderRadius: const BorderRadiusDirectional.only(
-                bottomEnd: Radius.circular(10),
-              ),
-              color: widget.isSettingsOpenNotifier.value
-                  ? Colors.transparent
-                  : Theme.of(context).colorScheme.secondaryVariant,
-              clipBehavior: Clip.antiAlias,
-              elevation: 10,
-              child: InkWell(
-                onTap: () {
-                  if (widget.isSettingsOpenNotifier.value)
-                    _animationController.reverse();
-                  else
-                    _animationController.forward();
-                  widget.toggleSettings();
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
-                  child: Align(
-                    alignment: AlignmentDirectional.bottomEnd,
-                    child: AnimatedIcon(
-                      icon: AnimatedIcons.menu_close,
-                      size: screenSizeInfo.textSizeLarge * 0.8,
-                      progress: _animationController,
-                      color: Colors.white,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: BaseBuilderWidget(
+        builder: (context, screenSizeInfo) {
+          return Align(
+            alignment: AlignmentDirectional.topStart,
+            child: SizedBox(
+              width: screenSizeInfo.screenWidth * 0.18,
+              height: screenSizeInfo.screenHeight * 0.07 +
+                  (screenSizeInfo.safeBlockVertical * 4),
+              child: Material(
+                borderRadius: const BorderRadiusDirectional.only(
+                  bottomEnd: Radius.circular(10),
+                ),
+                color: widget.isSettingsOpenNotifier.value
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.secondaryVariant,
+                clipBehavior: Clip.antiAlias,
+                elevation: 10,
+                child: InkWell(
+                  onTap: () {
+                    if (widget.isSettingsOpenNotifier.value)
+                      _animationController.reverse();
+                    else
+                      _animationController.forward();
+                    widget.toggleSettings();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+                    child: Align(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      child: AnimatedIcon(
+                        icon: AnimatedIcons.menu_close,
+                        size: screenSizeInfo.textSizeLarge * 0.8,
+                        progress: _animationController,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
+  }
+
+  Future<bool> _onBackPressed() {
+    if (widget.isSettingsOpenNotifier.value) {
+      _animationController.reverse();
+      widget.toggleSettings();
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 }
