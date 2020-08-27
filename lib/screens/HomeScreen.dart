@@ -38,6 +38,9 @@ class HomeScreen extends StatelessWidget {
       builder: Builder(builder: (context) {
         return _buildBackdropWidget();
       }),
+      onFinish: () {
+        dissolveFirstTimeState();
+      },
     );
   }
 }

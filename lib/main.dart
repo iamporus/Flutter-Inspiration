@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_design_challenge/screens/HomeScreen.dart';
@@ -14,13 +17,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Services.SystemChrome.setPreferredOrientations(
       [Services.DeviceOrientation.portraitUp]);
-
-  runApp(kReleaseMode
-      ? MyApp()
-      : DevicePreview(
-          enabled: !kReleaseMode,
-          builder: (context) => MyApp(),
-        ));
+  runZoned(() {
+    runApp(kReleaseMode
+        ? MyApp()
+        : DevicePreview(
+            enabled: !kReleaseMode,
+            builder: (context) => MyApp(),
+          ));
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class MyApp extends FirebaseInitWidget {
