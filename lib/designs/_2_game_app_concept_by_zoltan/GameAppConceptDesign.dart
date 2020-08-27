@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
 import 'widgets/AddToCartWidget.dart';
@@ -31,7 +32,7 @@ class Game {
   Game(this.title, this.info, this.priceInDollars, this.imagePath);
 }
 
-class GameAppConceptLayout extends BaseStatelessWidget {
+class GameAppConceptLayout extends StatefulWidget {
   final Game game;
 
   GameAppConceptLayout({@required this.game});
