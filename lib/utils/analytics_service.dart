@@ -20,4 +20,16 @@ class AnalyticsService {
       parameters: {'designId': designId},
     );
   }
+
+  Future logViewRepoClicked() async {
+    await _analytics.logEvent(
+      name: 'viewRepo',
+    );
+  }
+
+  Future logViewWalkThroughClicked() async {
+    await _analytics.logEvent(
+      name: 'viewWalkThrough',
+    );
+  }
 }

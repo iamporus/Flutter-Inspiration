@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/DesignListing.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/analytics_service.dart';
+import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/AppLogoWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
@@ -130,9 +132,13 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 title: "Show Onboarding Screen",
                                 icon: Icons.burst_mode,
                                 onTap: () {
+                                  AnalyticsService()
+                                      .logViewWalkThroughClicked();
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return WalkThroughScreen(shouldPopOnStart: true,);
+                                    return WalkThroughScreen(
+                                      shouldPopOnStart: true,
+                                    );
                                   }));
                                 }),
                             SizedBox(
@@ -159,7 +165,20 @@ class _SettingsScreenState extends State<SettingsScreen>
                                 color: Colors.white70,
                               ),
                             ),
-//                            _GithubIconListItem(),
+                            _SettingsListItem(
+                                title: "Contribute to the App",
+                                iconWidget: CircleAvatar(
+                                  child: Image.asset(
+                                    "assets/github_logo.png",
+                                  ),
+                                  radius: screenSizeInfo.paddingSmall * 1.3,
+                                  backgroundColor: Colors.white,
+                                ),
+                                onTap: () {
+                                  AnalyticsService().logViewRepoClicked();
+                                  launchURL(context,
+                                      "https://github.com/iamporus/Flutter-Inspiration/");
+                                }),
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
@@ -229,65 +248,17 @@ class _AppTitleWidget extends BaseStatelessWidget {
   }
 }
 
-// ignore: unused_element
-class _GithubIconListItem extends BaseStatelessWidget {
-  const _GithubIconListItem({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Center(
-      child: CircleAvatar(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {},
-            child: Image.asset(
-              "assets/github_logo.png",
-            ),
-          ),
-        ),
-        radius: screenSizeInfo.paddingLarge,
-        backgroundColor: Colors.white,
-      ),
-    );
-  }
-}
-
-// ignore: unused_element
-class _SourceCodeListItem extends BaseStatelessWidget {
-  const _SourceCodeListItem({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Padding(
-      padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
-      child: Text(
-        "Looking for entire Source Code? \nFork it from here:",
-        style: GoogleFonts.quicksand(
-          textStyle: TextStyle(
-              fontSize: screenSizeInfo.textSizeMedium,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [Shadow(blurRadius: 3.0)]),
-        ),
-      ),
-    );
-  }
-}
-
 class _SettingsListItem extends BaseStatelessWidget {
   final String title;
   final IconData icon;
+  final Widget iconWidget;
   final VoidCallback onTap;
 
   const _SettingsListItem({
     @required this.title,
-    @required this.icon,
     @required this.onTap,
+    this.icon,
+    this.iconWidget,
     Key key,
   }) : super(key: key);
 
@@ -298,11 +269,13 @@ class _SettingsListItem extends BaseStatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: ListTile(
-          leading: Icon(
-            icon,
-            color: Colors.white,
-            size: screenSizeInfo.textSizeMedium * 1.5,
-          ),
+          leading: iconWidget == null
+              ? Icon(
+                  icon,
+                  color: Colors.white,
+                  size: screenSizeInfo.textSizeMedium * 1.5,
+                )
+              : iconWidget,
           title: Text(
             title,
             style: GoogleFonts.quicksand(
