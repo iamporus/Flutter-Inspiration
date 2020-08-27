@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterMobileAppDesign.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 
 import '_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
@@ -61,6 +62,19 @@ class DesignListing {
         imageHash: "LfM*a7Rknn%3WCRjofxu~Ea{IoNF",
         paletteColor: Color(0xFF359A58),
         route: PlantShopHomeDesign(),
+        sourceCodeUrl:
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/PlantShopHomeDesign.dart"),
+    Design(
+        id: 4,
+        title: "Mobile App - Chapter",
+        author: "Outcrowd",
+        link: "https://dribbble.com/shots/11524146-Mobile-app-Chapter",
+        imageAsset:
+            "https://static.dribbble.com/users/702789/screenshots/11524146/media/e801469b335bd9800168287a0fc48c73.png?compress=1&resize=" +
+                resolution,
+        imageHash: "L7SrioD+@X~o.8oLVsS2^c%LM|Dk",
+        paletteColor: Color(0xFFa3705a),
+        route: ChapterMobileAppDesign(),
         sourceCodeUrl:
             "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/PlantShopHomeDesign.dart"),
   ];
