@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
+import 'WalkThroughScreen.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     Key key,
@@ -125,6 +127,22 @@ class _SettingsScreenState extends State<SettingsScreen>
                               ),
                             ),
                             _SettingsListItem(
+                                title: "Show Onboarding Screen",
+                                icon: Icons.burst_mode,
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return WalkThroughScreen(shouldPopOnStart: true,);
+                                  }));
+                                }),
+                            SizedBox(
+                              height: screenSizeInfo.paddingSmall,
+                              child: Divider(
+                                height: 1.0,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            _SettingsListItem(
                                 title: "Licenses",
                                 icon: Icons.filter_frames,
                                 onTap: () {
@@ -199,7 +217,7 @@ class _AppTitleWidget extends BaseStatelessWidget {
                 shadows: [Shadow(blurRadius: 3.0)])),
       ),
       subtitle: Text(
-        _packageInfo.version,
+        "v" + _packageInfo.version,
         style: GoogleFonts.quicksand(
             textStyle: TextStyle(
                 fontSize: screenSizeInfo.textSizeMedium,

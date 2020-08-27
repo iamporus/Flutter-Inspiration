@@ -9,6 +9,13 @@ import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WalkThroughScreen extends StatefulWidget {
+  final bool shouldPopOnStart;
+
+  const WalkThroughScreen({
+    Key key,
+    this.shouldPopOnStart = false,
+  }) : super(key: key);
+
   @override
   _WalkThroughScreenState createState() => _WalkThroughScreenState();
 }
@@ -87,7 +94,16 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                   delayInMilliseconds: 2000,
                   animationDurationInMilliseconds: 750,
                   direction: AxisDirection.up,
-                  child: _StartButtonWidget(),
+                  child: _StartButtonWidget(
+                    onPressed: () {
+                      if (widget.shouldPopOnStart) {
+                        Navigator.pop(context);
+                      } else {
+                        Navigator.pop(context);
+                        _navigateToHomeScreen(context);
+                      }
+                    },
+                  ),
                 ),
               )
             ],
@@ -100,6 +116,19 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   void _handlePageChanged(int value) {
     _selectedPageIndex = value;
     setState(() {});
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return HomeScreen(
+            isFirstTime: true,
+          );
+        },
+        settings: RouteSettings(name: "HomeScreen"),
+      ),
+    );
   }
 }
 
@@ -143,7 +172,10 @@ class _PageIndicatorWidget extends StatelessWidget {
 }
 
 class _StartButtonWidget extends BaseStatelessWidget {
+  final VoidCallback onPressed;
+
   const _StartButtonWidget({
+    this.onPressed,
     Key key,
   }) : super(key: key);
 
@@ -151,10 +183,7 @@ class _StartButtonWidget extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return RaisedButton(
       color: Colors.white,
-      onPressed: () {
-        Navigator.pop(context);
-        _navigateToHomeScreen(context);
-      },
+      onPressed: onPressed,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
         Radius.circular(screenSizeInfo.paddingMedium),
@@ -171,19 +200,6 @@ class _StartButtonWidget extends BaseStatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void _navigateToHomeScreen(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return HomeScreen(
-            isFirstTime: true,
-          );
-        },
-        settings: RouteSettings(name: "HomeScreen"),
       ),
     );
   }
