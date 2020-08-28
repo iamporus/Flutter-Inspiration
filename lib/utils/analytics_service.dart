@@ -32,4 +32,10 @@ class AnalyticsService {
       name: 'viewWalkThrough',
     );
   }
+
+  Future logViewCreditsClicked() async {
+    await _analytics.logEvent(
+      name: 'viewCredits',
+    );
+  }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/utils/scale_route.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignInfoWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
 import 'package:flutter_design_challenge/widgets/DesignWidget.dart';
@@ -47,6 +48,7 @@ class _DesignListScreenState extends State<DesignListScreen>
   Animation<double> _carouselOffAxisFractionAnimation;
   GlobalKey _showcaseDesignRotateKey = GlobalKey();
   GlobalKey _showcaseDesignDetailsKey = GlobalKey();
+  GlobalKey _showcaseDesignInfoKey = GlobalKey();
   GlobalKey _showcaseViewSourceKey = GlobalKey();
   GlobalKey _showcaseMarkFavKey = GlobalKey();
   bool _isFirstTime;
@@ -123,7 +125,9 @@ class _DesignListScreenState extends State<DesignListScreen>
                           : _buildFavouriteChipWidget()
                     ],
                   ),
-                  _buildDesignInfoCarousel(screenSizeInfo),
+                  _isFirstTime
+                      ? _buildInfoCarouselWithShowcase(context, screenSizeInfo)
+                      : _buildDesignInfoCarousel()
                 ],
               ),
             ),
@@ -135,11 +139,6 @@ class _DesignListScreenState extends State<DesignListScreen>
 
   Showcase _buildFavoriteChipWithShowcase() {
     return Showcase(
-      onTargetClick: (){
-        _isFirstTime = false;
-        dissolveFirstTimeState();
-      },
-      disposeOnTap: true,
       key: _showcaseMarkFavKey,
       description: "Mark the Design as Favorite",
       child: _buildFavouriteChipWidget(),
@@ -172,6 +171,7 @@ class _DesignListScreenState extends State<DesignListScreen>
                   _showcaseDesignDetailsKey,
                   _showcaseViewSourceKey,
                   _showcaseMarkFavKey,
+                  _showcaseDesignInfoKey
                 ]);
               }));
         },
@@ -187,54 +187,32 @@ class _DesignListScreenState extends State<DesignListScreen>
 
   Widget _buildDesignCarousel(
       ScreenSizeInfo screenSizeInfo, BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      height: screenSizeInfo.screenHeight * _carouselHeightAnimation.value,
-      width: screenSizeInfo.screenWidth,
-      child: HorizontalListWheelScrollView(
-        itemExtent: screenSizeInfo.screenHeight * 0.49,
-        scrollDirection: Axis.horizontal,
-        scrollPhysics: FixedExtentScrollPhysics(),
-        squeeze: _carouselSqueezeAnimation.value,
-        offAxisFraction: _carouselOffAxisFractionAnimation.value,
-        diameterRatio: 2.0,
-        controller: _designScrollController,
-        onTap: () {
-          Navigator.push(
-            context,
-            ScaleRoute(
-              page: _currentDesign.route,
-              name: _currentDesign.title,
-            ),
-          );
-        },
-        onSelectedItemChanged: _onDesignItemChanged,
-        builder: (context, index) {
-          var design = DesignListing.getAvailableDesigns()[index];
-          return DesignWidget(design: design);
-        },
-      ),
+    return _DesignCarousel(
+        carouselHeightAnimation: _carouselHeightAnimation,
+        carouselSqueezeAnimation: _carouselSqueezeAnimation,
+        carouselOffAxisFractionAnimation: _carouselOffAxisFractionAnimation,
+        designScrollController: _designScrollController,
+        currentDesign: _currentDesign,
+        onDesignChanged: _onDesignItemChanged);
+  }
+
+  _buildInfoCarouselWithShowcase(
+      BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Showcase(
+      key: _showcaseDesignInfoKey,
+      child: _buildDesignInfoCarousel(),
+      description: "Tap to see the source Design on Dribbble.",
+      onTargetClick: () {
+        _isFirstTime = false;
+        dissolveFirstTimeState();
+      },
+      disposeOnTap: true,
     );
   }
 
-  Container _buildDesignInfoCarousel(ScreenSizeInfo screenSizeInfo) {
-    return Container(
-      height: screenSizeInfo.screenHeight * 0.12,
-      color: Colors.transparent,
-      child: HorizontalListWheelScrollView(
-        itemExtent: screenSizeInfo.screenHeight * 0.65,
-        scrollDirection: Axis.horizontal,
-        squeeze: 1.3,
-        scrollPhysics: NeverScrollableScrollPhysics(),
-        diameterRatio: 15,
-        controller: _designInfoScrollController,
-        builder: (context, index) {
-          var design = DesignListing.getAvailableDesigns()[index];
-          return DesignInfoWidget(design: design);
-        },
-      ),
-    );
-  }
+  _buildDesignInfoCarousel() => _DesignInfoCarousel(
+      currentDesign: _currentDesign,
+      designInfoScrollController: _designInfoScrollController);
 
   void _onDesignItemChanged(int page) {
     _designInfoScrollController.animateToItem(
@@ -329,5 +307,106 @@ class _DesignListScreenState extends State<DesignListScreen>
     setState(() {
       if (info.appName != null && info.version != null) _packageInfo = info;
     });
+  }
+}
+
+class _DesignCarousel extends BaseStatelessWidget {
+  const _DesignCarousel({
+    Key key,
+    @required Animation<double> carouselHeightAnimation,
+    @required Animation<double> carouselSqueezeAnimation,
+    @required Animation<double> carouselOffAxisFractionAnimation,
+    @required FixedExtentScrollController designScrollController,
+    @required Design currentDesign,
+    @required Function onDesignChanged,
+  })  : _carouselHeightAnimation = carouselHeightAnimation,
+        _carouselSqueezeAnimation = carouselSqueezeAnimation,
+        _carouselOffAxisFractionAnimation = carouselOffAxisFractionAnimation,
+        _designScrollController = designScrollController,
+        _currentDesign = currentDesign,
+        _onDesignChanged = onDesignChanged,
+        super(key: key);
+
+  final Animation<double> _carouselHeightAnimation;
+  final Animation<double> _carouselSqueezeAnimation;
+  final Animation<double> _carouselOffAxisFractionAnimation;
+  final FixedExtentScrollController _designScrollController;
+  final Design _currentDesign;
+  final void Function(int) _onDesignChanged;
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Container(
+      color: Colors.transparent,
+      height: screenSizeInfo.screenHeight * _carouselHeightAnimation.value,
+      width: screenSizeInfo.screenWidth,
+      child: HorizontalListWheelScrollView(
+        itemExtent: screenSizeInfo.screenHeight * 0.49,
+        scrollDirection: Axis.horizontal,
+        scrollPhysics: FixedExtentScrollPhysics(),
+        squeeze: _carouselSqueezeAnimation.value,
+        offAxisFraction: _carouselOffAxisFractionAnimation.value,
+        diameterRatio: 2.0,
+        controller: _designScrollController,
+        onTap: () {
+          Navigator.push(
+            context,
+            ScaleRoute(
+              page: _currentDesign.route,
+              name: _currentDesign.title,
+            ),
+          );
+        },
+        onSelectedItemChanged: _onDesignChanged,
+        builder: (context, index) {
+          var design = DesignListing.getAvailableDesigns()[index];
+          return DesignWidget(design: design);
+        },
+      ),
+    );
+  }
+}
+
+class _DesignInfoCarousel extends BaseStatelessWidget {
+  const _DesignInfoCarousel({
+    Key key,
+    @required Design currentDesign,
+    @required FixedExtentScrollController designInfoScrollController,
+  })  : _designInfoScrollController = designInfoScrollController,
+        _currentDesign = currentDesign,
+        super(key: key);
+
+  final FixedExtentScrollController _designInfoScrollController;
+  final Design _currentDesign;
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          height: screenSizeInfo.screenHeight * 0.12,
+          color: Colors.transparent,
+          child: HorizontalListWheelScrollView(
+            itemExtent: screenSizeInfo.screenHeight * 0.65,
+            scrollDirection: Axis.horizontal,
+            squeeze: 1.3,
+            scrollPhysics: NeverScrollableScrollPhysics(),
+            diameterRatio: 15,
+            onTap: () {
+              launchURL(context, _currentDesign.link);
+            },
+            controller: _designInfoScrollController,
+            builder: (context, index) {
+              var design = DesignListing.getAvailableDesigns()[index];
+              return DesignInfoWidget(
+                design: design,
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
