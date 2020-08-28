@@ -31,3 +31,10 @@ by [Shakuro](https://dribbble.com/shakuro)
 Checkout [Source Code](https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_4_iphone_x_social_app)
 
 <img width="300"  src="https://cdn.dribbble.com/users/110372/screenshots/3898209/andrew_morozkin_-_user_profile_2_still_2x.gif">
+
+### 5. [Mobile App - Chapter](https://dribbble.com/shots/11524146-Mobile-app-Chapter)
+by [Outcrowd](https://dribbble.com/outcrowd)
+       
+Checkout [Source Code](https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_5_chapter_mobile_app)
+       
+<img width="300"  src="https://static.dribbble.com/users/702789/screenshots/11524146/media/e801469b335bd9800168287a0fc48c73.png">
