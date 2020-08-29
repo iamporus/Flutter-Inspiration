@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/sign_in_design.dart';
-import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterMobileAppDesign.dart';
+import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/chapter_mobile_app_design.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 
 import '_2_game_app_concept_by_zoltan/game_app_concept_design.dart';
@@ -76,7 +76,7 @@ class DesignListing {
         paletteColor: Color(0xFFa3705a),
         route: ChapterMobileAppDesign(),
         sourceCodeUrl:
-            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_5_chapter_mobile_app/ChapterHomeDesign.dart"),
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_5_chapter_mobile_app/chapter_mobile_app_design.dart"),
   ];
 
   static int getAvailableDesignCount() {

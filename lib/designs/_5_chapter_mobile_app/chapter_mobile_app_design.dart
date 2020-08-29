@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterHomeDesign.dart';
+import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/chapter_home_design.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 import 'package:flutter_svg/svg.dart';

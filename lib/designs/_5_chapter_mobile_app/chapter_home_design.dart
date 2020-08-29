@@ -36,15 +36,15 @@ class _ChapterHomeDesignState extends State<ChapterHomeDesign>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
             children: [
-              _UserInfoWidget(),
+              const _UserInfoHeader(),
               SizedBox(
                 height: screenSizeInfo.paddingLarge,
               ),
-              _SearchBarWidget(),
-              _CategoryTabBarWidget(tabController: _tabController, tabs: [
-                _CategoryTabWidget(title: "Featured"),
-                _CategoryTabWidget(title: "Latest"),
-                _CategoryTabWidget(title: "Followed"),
+              const _SearchBar(),
+              _CategoryTabBar(tabController: _tabController, tabs: [
+                const _CategoryTab(title: "Featured"),
+                const _CategoryTab(title: "Latest"),
+                const _CategoryTab(title: "Followed"),
               ]),
               Flexible(
                 fit: FlexFit.tight,
@@ -53,9 +53,9 @@ class _ChapterHomeDesignState extends State<ChapterHomeDesign>
                   child: PageView(
                     controller: _pageController,
                     children: [
-                      _CategoryPageWidget(),
-                      _CategoryPageWidget(),
-                      _CategoryPageWidget()
+                      const _CategoryPage(),
+                      const _CategoryPage(),
+                      const _CategoryPage()
                     ],
                   ),
                 ),
@@ -113,8 +113,8 @@ PreferredSize _buildAppBar(
   );
 }
 
-class _SearchBarWidget extends BaseStatelessWidget {
-  const _SearchBarWidget({
+class _SearchBar extends BaseStatelessWidget {
+  const _SearchBar({
     Key key,
   }) : super(key: key);
 
@@ -152,8 +152,8 @@ class _SearchBarWidget extends BaseStatelessWidget {
   }
 }
 
-class _UserInfoWidget extends BaseStatelessWidget {
-  const _UserInfoWidget({
+class _UserInfoHeader extends BaseStatelessWidget {
+  const _UserInfoHeader({
     Key key,
   }) : super(key: key);
 
@@ -191,8 +191,8 @@ class _UserInfoWidget extends BaseStatelessWidget {
   }
 }
 
-class _CategoryTabBarWidget extends BaseStatelessWidget {
-  const _CategoryTabBarWidget({
+class _CategoryTabBar extends BaseStatelessWidget {
+  const _CategoryTabBar({
     Key key,
     @required TabController tabController,
     @required this.tabs,
@@ -200,7 +200,7 @@ class _CategoryTabBarWidget extends BaseStatelessWidget {
         super(key: key);
 
   final TabController _tabController;
-  final List<_CategoryTabWidget> tabs;
+  final List<_CategoryTab> tabs;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
@@ -229,10 +229,10 @@ class _CategoryTabBarWidget extends BaseStatelessWidget {
   }
 }
 
-class _CategoryTabWidget extends BaseStatelessWidget {
-  final title;
+class _CategoryTab extends BaseStatelessWidget {
+  final String title;
 
-  const _CategoryTabWidget({
+  const _CategoryTab({
     Key key,
     @required this.title,
   })  : assert(title != null),
@@ -253,27 +253,29 @@ class _CategoryTabWidget extends BaseStatelessWidget {
   }
 }
 
-class _CategoryPageWidget extends BaseStatelessWidget {
+class _CategoryPage extends BaseStatelessWidget {
+  const _CategoryPage({Key key}) : super(key: key);
+
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return ListView(
       children: [
-        _CategoryArticleWidget(
+        _CategoryArticle(
           imageUrl: "assets/humaaans.png",
           title: "10 tips on how to improve the UX",
           subtitle: "Apr 28 - 6 min read",
         ),
-        _CategoryArticleWidget(
+        _CategoryArticle(
           imageUrl: "assets/humaaans_1.png",
           title: "Interior design advice from top world experts",
           subtitle: "Apr 21 - 23 min read",
         ),
-        _CategoryArticleWidget(
+        _CategoryArticle(
           imageUrl: "assets/humaaans_2.png",
           title: "Expert's opinion on boosting productivity",
           subtitle: "Apr 12 - 8 min read",
         ),
-        _CategoryArticleWidget(
+        _CategoryArticle(
           imageUrl: "assets/humaaans_3.png",
           title: "UI/UX guidelines for Material Design",
           subtitle: "Apr 02 - 9 min read",
@@ -283,18 +285,19 @@ class _CategoryPageWidget extends BaseStatelessWidget {
   }
 }
 
-class _CategoryArticleWidget extends BaseStatelessWidget {
+class _CategoryArticle extends BaseStatelessWidget {
   final String imageUrl;
   final String title;
   final String subtitle;
 
-  _CategoryArticleWidget({this.imageUrl, this.title, this.subtitle});
+  _CategoryArticle({this.imageUrl, this.title, this.subtitle});
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Padding(
       padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
       child: ListTile(
+        onTap: () {},
         leading: Container(
             width: screenSizeInfo.screenWidth / 4,
             decoration: BoxDecoration(
