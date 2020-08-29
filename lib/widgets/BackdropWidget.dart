@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
+import 'package:flutter_design_challenge/models/SettingsCollapseModel.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -101,8 +102,13 @@ class _BackdropWidgetState extends State<BackdropWidget>
       },
     );
 
-    return ChangeNotifierProvider<DesignChangeModel>(
-      create: (_) => DesignChangeModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DesignChangeModel>(
+            create: (_) => DesignChangeModel()),
+        ChangeNotifierProvider<SettingsCollapseModel>(
+            create: (_) => SettingsCollapseModel()),
+      ],
       child: Stack(
         children: [
           PositionedTransition(
@@ -190,9 +196,13 @@ class _SettingsIconState extends State<_SettingsIcon>
                 elevation: 10,
                 child: InkWell(
                   onTap: () {
-                    if (widget.isSettingsOpenNotifier.value)
+                    if (widget.isSettingsOpenNotifier.value) {
                       _animationController.reverse();
-                    else
+                      final SettingsCollapseModel settingsCollapseModel =
+                          Provider.of<SettingsCollapseModel>(context,
+                              listen: false);
+                      settingsCollapseModel.isSettingsCollapsedValue = true;
+                    } else
                       _animationController.forward();
                     widget.toggleSettings();
                   },

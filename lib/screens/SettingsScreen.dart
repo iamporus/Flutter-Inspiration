@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/DesignListing.dart';
 import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
+import 'package:flutter_design_challenge/models/SettingsCollapseModel.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
@@ -66,11 +67,14 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget build(BuildContext context) {
     return BaseBuilderWidget(
       builder: (context, screenSizeInfo) {
-        return Consumer<DesignChangeModel>(
-          builder: (context, designChangeModel, _) {
+        return Consumer2<DesignChangeModel, SettingsCollapseModel>(
+          builder: (context, designChangeModel, settingsCollapseModel, _) {
             var currentDesignIndex = designChangeModel.currentDesignIndex;
             var previousDesignIndex = designChangeModel.previousDesignIndex;
             _updateBackground(previousDesignIndex, currentDesignIndex);
+            if (settingsCollapseModel.isSettingsCollapsed)
+              _pageController.animateToPage(0,
+                  duration: Duration(milliseconds: 250), curve: Curves.easeIn);
 
             return Material(
               color: Colors.transparent,

@@ -22,6 +22,7 @@ class DesignWidget extends BaseStatelessWidget {
       child: Container(
         child: Center(
           child: Card(
+            clipBehavior: Clip.antiAlias,
             color: Colors.transparent,
             elevation: 8.0,
             child: Material(
