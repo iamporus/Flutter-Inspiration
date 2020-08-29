@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
@@ -182,7 +181,7 @@ class _GameAppConceptLayoutState extends State<_GameAppConceptLayout>
           return true;
         },
         child: ScrollConfiguration(
-          behavior: GlowLessScrollBehavior(),
+          behavior: _GlowLessScrollBehavior(),
           child: DraggableScrollableActuator(
             child: DraggableScrollableSheet(
               key: Key(_sheetHeightController.value.toString()),
@@ -460,5 +459,13 @@ class _GameTitleHeader extends BaseStatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _GlowLessScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
