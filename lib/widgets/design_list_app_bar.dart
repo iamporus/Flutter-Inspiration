@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'AppLogoWidget.dart';
-import 'BaseStatelessWidget.dart';
+import 'app_logo.dart';
+import 'base_stateless_widget.dart';
 
-class DesignListAppBarWidget extends BaseStatelessWidget {
+class DesignListAppBar extends BaseStatelessWidget {
   final String appBarTitle;
 
-  const DesignListAppBarWidget({
+  const DesignListAppBar({
     @required this.appBarTitle,
     Key key,
   }) : super(key: key);
@@ -22,7 +22,7 @@ class DesignListAppBarWidget extends BaseStatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          AppLogoWidget(
+          AppLogo(
             radius: screenSizeInfo.paddingMedium * 1.5,
             anim: AppLogoAnim.IDLE,
           ),

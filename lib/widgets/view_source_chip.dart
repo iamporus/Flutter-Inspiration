@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/models/design.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import 'BaseStatelessWidget.dart';
+import 'base_stateless_widget.dart';
 
-class ViewSourceChipWidget extends BaseStatelessWidget {
-  const ViewSourceChipWidget({
+class ViewSourceChip extends BaseStatelessWidget {
+  const ViewSourceChip({
     Key key,
     @required Design currentDesign,
   })  : _currentDesign = currentDesign,

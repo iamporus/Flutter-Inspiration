@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/StateCurrentPage.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
-import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
+import 'package:flutter_design_challenge/designs/_4_iphone_x_social_app/current_page_model.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
+import 'package:flutter_design_challenge/widgets/show_up_transition.dart';
 import 'package:provider/provider.dart';
 
-import 'UserProfile.dart';
+import 'user_profile.dart';
 
 class IPhoneXSocialAppDesign extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class _IPhoneXSocialAppDesignState extends State<IPhoneXSocialAppDesign>
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
       return SafeArea(
           child: ChangeNotifierProvider(
-        create: (_) => StateCurrentPage(),
+        create: (_) => CurrentPageModel(),
         child: Stack(
           children: <Widget>[
             _PicturePageView(
@@ -217,7 +217,7 @@ class _PicturePageViewState extends State<_PicturePageView> {
   }
 
   void _handlePageChange() {
-    final profileModal = Provider.of<StateCurrentPage>(context, listen: false);
+    final profileModal = Provider.of<CurrentPageModel>(context, listen: false);
     setState(() {
       _selectedPageIndex = _pageController.page.toInt();
       profileModal.currentPageValue = _selectedPageIndex;
@@ -292,7 +292,7 @@ class _ProfileDraggableCardState
   @override
   Widget build(BuildContext context) {
     return BaseBuilderWidget(builder: (context, screenSizeInfo) {
-      return Consumer<StateCurrentPage>(
+      return Consumer<CurrentPageModel>(
         builder: (context, profileModel, _) {
           var currentProfile = widget.userProfiles[profileModel.currentPage];
 
@@ -362,7 +362,7 @@ class _ProfileDraggableCardState
                           Padding(
                             padding: EdgeInsets.all(
                                 screenSizeInfo.paddingSmall * 1.5),
-                            child: ShowUpTransitionWidget(
+                            child: ShowUpTransition(
                               key: ValueKey(currentProfile.name),
                               child: FollowButtonWidget(
                                 key: ValueKey(currentProfile.name),
@@ -507,7 +507,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   Widget build(BuildContext context) {
     return BaseBuilderWidget(
       builder: (context, screenSizeInfo) {
-        return ShowUpTransitionWidget(
+        return ShowUpTransition(
           key: ValueKey(widget.name),
           child: Padding(
             padding: EdgeInsets.all(screenSizeInfo.paddingSmall * 1.5),
@@ -550,7 +550,7 @@ class _SocialInfoWidget extends BaseStatelessWidget {
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return ShowUpTransitionWidget(
+    return ShowUpTransition(
       key: ValueKey(title),
       child: Padding(
         padding: EdgeInsets.fromLTRB(screenSizeInfo.paddingLarge,

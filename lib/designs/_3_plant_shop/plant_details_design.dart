@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 
 import 'plant.dart';
 

@@ -1,20 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/DesignListing.dart';
-import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
-import 'package:flutter_design_challenge/models/SettingsCollapseModel.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/designs/design_listing.dart';
+import 'package:flutter_design_challenge/models/design_change_model.dart';
+import 'package:flutter_design_challenge/models/settings_collapse_model.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
-import 'package:flutter_design_challenge/widgets/AppLogoWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/widgets/app_logo.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
-import 'WalkThroughScreen.dart';
+import 'walk_through_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -418,7 +418,7 @@ class _AppTitleWidget extends BaseStatelessWidget {
       leading: Container(
         width: screenSizeInfo.paddingXLarge,
         height: screenSizeInfo.paddingXLarge,
-        child: AppLogoWidget(
+        child: AppLogo(
           radius: screenSizeInfo.paddingXLarge,
           anim: AppLogoAnim.SPINNING,
         ),

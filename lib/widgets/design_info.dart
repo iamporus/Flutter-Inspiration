@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/models/design.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'BaseStatelessWidget.dart';
+import 'base_stateless_widget.dart';
 
-class DesignInfoWidget extends BaseStatelessWidget {
+class DesignInfo extends BaseStatelessWidget {
   final Design design;
 
-  DesignInfoWidget({
+  DesignInfo({
     Key key,
     @required this.design,
   }) : super(key: key);

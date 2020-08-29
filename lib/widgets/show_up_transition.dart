@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class ShowUpTransitionWidget extends StatefulWidget {
+class ShowUpTransition extends StatefulWidget {
   final Widget child;
   final AxisDirection direction;
   final int delayInMilliseconds;
   final int animationDurationInMilliseconds;
 
-  ShowUpTransitionWidget({
+  ShowUpTransition({
     Key key,
     @required this.child,
     this.delayInMilliseconds,
@@ -16,10 +16,10 @@ class ShowUpTransitionWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ShowUpTransitionWidgetState createState() => _ShowUpTransitionWidgetState();
+  _ShowUpTransitionState createState() => _ShowUpTransitionState();
 }
 
-class _ShowUpTransitionWidgetState extends State<ShowUpTransitionWidget>
+class _ShowUpTransitionState extends State<ShowUpTransition>
     with TickerProviderStateMixin {
   AnimationController _animController;
   Animation<Offset> _animOffset;

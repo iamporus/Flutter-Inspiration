@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/sign_in_design.dart';
 import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/chapter_mobile_app_design.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
+import 'package:flutter_design_challenge/models/design.dart';
 
 import '_2_game_app_concept_by_zoltan/game_app_concept_design.dart';
 import '_3_plant_shop/plant_shop_home_design.dart';

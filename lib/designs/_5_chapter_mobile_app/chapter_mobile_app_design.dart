@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/chapter_home_design.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 

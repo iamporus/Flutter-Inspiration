@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChapterHomeDesign extends StatefulWidget {

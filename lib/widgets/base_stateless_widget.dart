@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 
 /// A Base class for all Stateless widgets to extend in order to build responsive layouts.
 /// Classes extending should implement [buildResponsive] instead of usual [build] method

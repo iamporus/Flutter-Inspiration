@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/sign_in_design.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class SignUpDesign extends BaseStatelessWidget {

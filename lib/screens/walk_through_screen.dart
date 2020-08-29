@@ -1,11 +1,11 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/screens/HomeScreen.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/AppLogoWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
-import 'package:flutter_design_challenge/widgets/ShowUpTransitionWidget.dart';
+import 'package:flutter_design_challenge/screens/home_screen.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/app_logo.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
+import 'package:flutter_design_challenge/widgets/show_up_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WalkThroughScreen extends StatefulWidget {
@@ -76,7 +76,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
               Positioned(
                 bottom: screenSizeInfo.paddingXLarge * 2.8,
                 width: screenSizeInfo.screenWidth,
-                child: ShowUpTransitionWidget(
+                child: ShowUpTransition(
                   direction: AxisDirection.up,
                   delayInMilliseconds: 2000,
                   animationDurationInMilliseconds: 750,
@@ -90,7 +90,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                 bottom: screenSizeInfo.paddingMedium * 1.5,
                 left: screenSizeInfo.paddingMedium,
                 right: screenSizeInfo.paddingMedium,
-                child: ShowUpTransitionWidget(
+                child: ShowUpTransition(
                   delayInMilliseconds: 2000,
                   animationDurationInMilliseconds: 750,
                   direction: AxisDirection.up,
@@ -262,7 +262,7 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
             SizedBox(
               height: screenSizeInfo.paddingXLarge,
             ),
-            ShowUpTransitionWidget(
+            ShowUpTransition(
               delayInMilliseconds: 500,
               animationDurationInMilliseconds: 750,
               direction: AxisDirection.down,
@@ -279,7 +279,7 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
             SizedBox(
               height: screenSizeInfo.paddingXLarge * 1.2,
             ),
-            ShowUpTransitionWidget(
+            ShowUpTransition(
               delayInMilliseconds: 750,
               animationDurationInMilliseconds: 750,
               direction: AxisDirection.up,
@@ -297,7 +297,7 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
             SizedBox(
               height: screenSizeInfo.paddingLarge,
             ),
-            ShowUpTransitionWidget(
+            ShowUpTransition(
               delayInMilliseconds: 1000,
               animationDurationInMilliseconds: 750,
               direction: AxisDirection.up,

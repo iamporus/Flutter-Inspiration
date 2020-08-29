@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
+import 'package:flutter_design_challenge/models/design.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
 
-class DesignWidget extends BaseStatelessWidget {
+class DesignCard extends BaseStatelessWidget {
   final Design design;
 
-  DesignWidget({
+  DesignCard({
     Key key,
     @required this.design,
   });

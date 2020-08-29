@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
-import 'package:flutter_design_challenge/models/SettingsCollapseModel.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:flutter_design_challenge/models/design_change_model.dart';
+import 'package:flutter_design_challenge/models/settings_collapse_model.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
 import 'package:provider/provider.dart';
 
-class BackdropWidget extends StatefulWidget {
-  const BackdropWidget({
+class Backdrop extends StatefulWidget {
+  const Backdrop({
     @required this.settingsScreen,
     @required this.homeBuilder,
   });
@@ -15,10 +15,10 @@ class BackdropWidget extends StatefulWidget {
   final Widget Function(BuildContext context, bool isSettingsOpen) homeBuilder;
 
   @override
-  _BackdropWidgetState createState() => _BackdropWidgetState();
+  _BackdropState createState() => _BackdropState();
 }
 
-class _BackdropWidgetState extends State<BackdropWidget>
+class _BackdropState extends State<Backdrop>
     with SingleTickerProviderStateMixin {
   AnimationController _settingsPanelController;
   ValueNotifier<bool> _isSettingsOpenNotifier;

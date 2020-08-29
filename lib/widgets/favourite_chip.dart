@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
+import 'package:flutter_design_challenge/models/design.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FavouriteChipWidget extends StatefulWidget {
-  const FavouriteChipWidget({
+class FavouriteChip extends StatefulWidget {
+  const FavouriteChip({
     Key key,
     @required Design currentDesign,
   })  : _currentDesign = currentDesign,
@@ -15,12 +15,12 @@ class FavouriteChipWidget extends StatefulWidget {
   final Design _currentDesign;
 
   @override
-  _FavouriteChipWidgetState createState() => _FavouriteChipWidgetState();
+  _FavouriteChipState createState() => _FavouriteChipState();
 }
 
 const String PREFS_KEY_FAVOURITE = "_isFavourite";
 
-class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
+class _FavouriteChipState extends State<FavouriteChip>
     with TickerProviderStateMixin {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   AnimationController _animationController;
@@ -83,7 +83,7 @@ class _FavouriteChipWidgetState extends State<FavouriteChipWidget>
           _changeFavoriteState();
         },
         elevation: 15,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.zero,

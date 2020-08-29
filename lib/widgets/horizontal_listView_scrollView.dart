@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/DesignListing.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/designs/design_listing.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 
-import 'BaseStatelessWidget.dart';
+import 'base_stateless_widget.dart';
 
 class HorizontalListWheelScrollView extends BaseStatelessWidget {
   final Widget Function(BuildContext, int) builder;

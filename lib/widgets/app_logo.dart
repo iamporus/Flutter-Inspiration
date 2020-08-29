@@ -1,8 +1,8 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 
-import 'BaseStatelessWidget.dart';
+import 'base_stateless_widget.dart';
 
 enum AppLogoAnim { IDLE, SPINNING }
 
@@ -12,11 +12,11 @@ extension ExtractAnimType on AppLogoAnim {
   }
 }
 
-class AppLogoWidget extends BaseStatelessWidget {
+class AppLogo extends BaseStatelessWidget {
   final double radius;
   final AppLogoAnim anim;
 
-  const AppLogoWidget({
+  const AppLogo({
     @required this.radius,
     @required this.anim,
     Key key,

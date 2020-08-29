@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 
 /// Widget layouts inside Stateful widgets should parent this Widget.
 /// as it provides [ScreenSizeInfo] object which has all detailed information

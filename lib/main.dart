@@ -4,11 +4,11 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
-import 'package:flutter_design_challenge/screens/HomeScreen.dart';
-import 'package:flutter_design_challenge/screens/WalkThroughScreen.dart';
+import 'package:flutter_design_challenge/screens/home_screen.dart';
+import 'package:flutter_design_challenge/screens/walk_through_screen.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
-import 'package:flutter_design_challenge/widgets/FirebaseInitWidget.dart';
+import 'package:flutter_design_challenge/widgets/firebase_init_widget.dart';
 
 final kReleaseMode = true;
 

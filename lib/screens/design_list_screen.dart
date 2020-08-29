@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/DesignListing.dart';
-import 'package:flutter_design_challenge/models/Design.dart';
-import 'package:flutter_design_challenge/models/DesignChangeModel.dart';
-import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
+import 'package:flutter_design_challenge/designs/design_listing.dart';
+import 'package:flutter_design_challenge/models/design.dart';
+import 'package:flutter_design_challenge/models/design_change_model.dart';
+import 'package:flutter_design_challenge/utils/screen_size_info.dart';
 import 'package:flutter_design_challenge/utils/scale_route.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
-import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
-import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
-import 'package:flutter_design_challenge/widgets/DesignInfoWidget.dart';
-import 'package:flutter_design_challenge/widgets/DesignListAppBarWidget.dart';
-import 'package:flutter_design_challenge/widgets/DesignWidget.dart';
-import 'package:flutter_design_challenge/widgets/FavouriteChipWidget.dart';
-import 'package:flutter_design_challenge/widgets/HorizontalListViewScrollView.dart';
-import 'package:flutter_design_challenge/widgets/ViewSourceChipWidget.dart';
+import 'package:flutter_design_challenge/widgets/base_responsive_builder.dart';
+import 'package:flutter_design_challenge/widgets/base_stateless_widget.dart';
+import 'package:flutter_design_challenge/widgets/design_info.dart';
+import 'package:flutter_design_challenge/widgets/design_list_app_bar.dart';
+import 'package:flutter_design_challenge/widgets/design_card.dart';
+import 'package:flutter_design_challenge/widgets/favourite_chip.dart';
+import 'package:flutter_design_challenge/widgets/horizontal_listView_scrollView.dart';
+import 'package:flutter_design_challenge/widgets/view_source_chip.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcase.dart';
@@ -107,7 +107,7 @@ class _DesignListScreenState extends State<DesignListScreen>
                 children: <Widget>[
                   Visibility(
                     visible: !widget.isSettingsOpen,
-                    child: DesignListAppBarWidget(
+                    child: DesignListAppBar(
                       appBarTitle: _packageInfo.appName,
                     ),
                   ),
@@ -145,8 +145,8 @@ class _DesignListScreenState extends State<DesignListScreen>
     );
   }
 
-  FavouriteChipWidget _buildFavouriteChipWidget() {
-    return FavouriteChipWidget(
+  FavouriteChip _buildFavouriteChipWidget() {
+    return FavouriteChip(
       key: ValueKey(_currentDesign.id),
       currentDesign: _currentDesign,
     );
@@ -159,8 +159,8 @@ class _DesignListScreenState extends State<DesignListScreen>
         child: _buildViewSourceChipWidget());
   }
 
-  ViewSourceChipWidget _buildViewSourceChipWidget() =>
-      ViewSourceChipWidget(currentDesign: _currentDesign);
+  ViewSourceChip _buildViewSourceChipWidget() =>
+      ViewSourceChip(currentDesign: _currentDesign);
 
   Showcase _buildCarouselWithShowcase(
       BuildContext context, ScreenSizeInfo screenSizeInfo) {
@@ -360,7 +360,7 @@ class _DesignCarousel extends BaseStatelessWidget {
         onSelectedItemChanged: _onDesignChanged,
         builder: (context, index) {
           var design = DesignListing.getAvailableDesigns()[index];
-          return DesignWidget(design: design);
+          return DesignCard(design: design);
         },
       ),
     );
@@ -400,7 +400,7 @@ class _DesignInfoCarousel extends BaseStatelessWidget {
             controller: _designInfoScrollController,
             builder: (context, index) {
               var design = DesignListing.getAvailableDesigns()[index];
-              return DesignInfoWidget(
+              return DesignInfo(
                 design: design,
               );
             },
