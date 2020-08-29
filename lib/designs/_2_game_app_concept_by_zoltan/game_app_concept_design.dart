@@ -4,17 +4,11 @@ import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-import 'widgets/AddToCartWidget.dart';
-import 'widgets/FloatingUpArrowWidget.dart';
-import 'widgets/GameInfoWidget.dart';
-import 'widgets/GamePriceWidget.dart';
-import 'widgets/GameTitleWidget.dart';
-
 class GameAppConceptDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GameAppConceptLayout(
-      game: Game(
+    return _GameAppConceptLayout(
+      game: _Game(
           "Ghost of Tsushima",
           "Ghost of Tsushima is an action-adventure stealth game played from a third-person perspective. It feature a large open world without any waypoints and can be explored without guidance. Players can quickly travel to different parts of the game's world by riding a horse.",
           59.99,
@@ -23,25 +17,25 @@ class GameAppConceptDesign extends StatelessWidget {
   }
 }
 
-class Game {
+class _Game {
   final String title;
   final String info;
   final double priceInDollars;
   final String imagePath;
 
-  Game(this.title, this.info, this.priceInDollars, this.imagePath);
+  _Game(this.title, this.info, this.priceInDollars, this.imagePath);
 }
 
-class GameAppConceptLayout extends StatefulWidget {
-  final Game game;
+class _GameAppConceptLayout extends StatefulWidget {
+  final _Game game;
 
-  GameAppConceptLayout({@required this.game});
+  _GameAppConceptLayout({@required this.game});
 
   @override
   _GameAppConceptLayoutState createState() => _GameAppConceptLayoutState();
 }
 
-class _GameAppConceptLayoutState extends State<GameAppConceptLayout>
+class _GameAppConceptLayoutState extends State<_GameAppConceptLayout>
     with TickerProviderStateMixin {
   AnimationController _imageHeightController;
   AnimationController _sheetHeightController;
@@ -136,7 +130,7 @@ class _GameAppConceptLayoutState extends State<GameAppConceptLayout>
         curve: Curves.easeOut,
         duration: Duration(milliseconds: 250),
         opacity: _floatingArrowOpacity,
-        child: FloatingUpArrowWidget(
+        child: _FloatingUpArrowButton(
           onPressed: () {
             isDragging = false;
             setState(() {
@@ -164,8 +158,8 @@ class _GameAppConceptLayoutState extends State<GameAppConceptLayout>
           });
         }
       },
-      child: _GameBackgroundImageWidget(
-        widget: widget,
+      child: _GameBackgroundImage(
+        imagePath: widget.game.imagePath,
         isDragging: isDragging,
         imageHeightTween: _imageHeightTween,
         dragPosition: _dragPosition,
@@ -273,10 +267,10 @@ class _GameAppBar extends BaseStatelessWidget {
   }
 }
 
-class _GameBackgroundImageWidget extends BaseStatelessWidget {
-  const _GameBackgroundImageWidget({
+class _GameBackgroundImage extends BaseStatelessWidget {
+  const _GameBackgroundImage({
     Key key,
-    @required this.widget,
+    @required this.imagePath,
     @required this.isDragging,
     @required Animation<double> imageHeightTween,
     @required double dragPosition,
@@ -284,7 +278,7 @@ class _GameBackgroundImageWidget extends BaseStatelessWidget {
         _dragPosition = dragPosition,
         super(key: key);
 
-  final GameAppConceptLayout widget;
+  final String imagePath;
   final bool isDragging;
   final Animation<double> _imageHeightTween;
   final double _dragPosition;
@@ -300,7 +294,7 @@ class _GameBackgroundImageWidget extends BaseStatelessWidget {
       child: FittedBox(
         fit: BoxFit.cover,
         child: Image.asset(
-          widget.game.imagePath,
+          imagePath,
         ),
       ),
     );
@@ -308,7 +302,7 @@ class _GameBackgroundImageWidget extends BaseStatelessWidget {
 }
 
 class _GameInfoCard extends BaseStatelessWidget {
-  final Game game;
+  final _Game game;
 
   const _GameInfoCard({
     Key key,
@@ -319,13 +313,13 @@ class _GameInfoCard extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Column(
       children: <Widget>[
-        GameTitleWidget(
+        _GameTitleHeader(
           gameTitle: game.title,
         ),
         SizedBox(
           height: screenSizeInfo.paddingSmall * 1.5,
         ),
-        GameInfoWidget(
+        _GameInfoText(
           infoText: game.info,
         ),
         SizedBox(
@@ -336,7 +330,7 @@ class _GameInfoCard extends BaseStatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 screenSizeInfo.paddingSmall, 0, screenSizeInfo.paddingSmall, 0),
-            child: GamePriceWidget(
+            child: _GamePriceText(
               priceInDollars: game.priceInDollars,
             ),
           ),
@@ -346,9 +340,125 @@ class _GameInfoCard extends BaseStatelessWidget {
         ),
         SizedBox(
           width: screenSizeInfo.screenWidth,
-          child: AddToCartWidget(),
+          child: _AddToCartButton(),
         )
       ],
+    );
+  }
+}
+
+class _AddToCartButton extends BaseStatelessWidget {
+  const _AddToCartButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return FlatButton(
+        onPressed: () {},
+        color: Colors.redAccent.shade700,
+        child: Padding(
+          padding: EdgeInsets.all(screenSizeInfo.paddingSmall),
+          child: Text(
+            "Add to Cart",
+            style: TextStyle(
+              fontSize: screenSizeInfo.textSizeMedium,
+              color: Colors.white,
+            ),
+          ),
+        ));
+  }
+}
+
+class _FloatingUpArrowButton extends BaseStatelessWidget {
+  final VoidCallback onPressed;
+
+  const _FloatingUpArrowButton({
+    Key key,
+    @required this.onPressed,
+  })  : assert(onPressed != null),
+        super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Padding(
+      padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+      child: CircleAvatar(
+        radius: screenSizeInfo.textSizeLarge,
+        backgroundColor: Colors.black.withAlpha(150),
+        child: IconButton(
+            iconSize: screenSizeInfo.textSizeLarge,
+            icon: Icon(
+              Icons.keyboard_arrow_up,
+              color: Colors.red,
+              size: screenSizeInfo.textSizeLarge,
+            ),
+            onPressed: onPressed),
+      ),
+    );
+  }
+}
+
+class _GameInfoText extends BaseStatelessWidget {
+  final String infoText;
+
+  const _GameInfoText({Key key, @required this.infoText})
+      : assert(infoText != null),
+        super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Text(
+      infoText,
+      maxLines:
+          screenSizeInfo.deviceScreenType == DeviceScreenType.Mobile ? 7 : 12,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: screenSizeInfo.textSizeSmall * 1.5,
+          wordSpacing: 2,
+          height: 1.5),
+    );
+  }
+}
+
+class _GamePriceText extends BaseStatelessWidget {
+  final double priceInDollars;
+
+  const _GamePriceText({Key key, @required this.priceInDollars})
+      : assert(priceInDollars != null),
+        super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Text(
+      "\$" + priceInDollars.toString(),
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: screenSizeInfo.textSizeLarge,
+      ),
+    );
+  }
+}
+
+class _GameTitleHeader extends BaseStatelessWidget {
+  final String gameTitle;
+
+  const _GameTitleHeader({Key key, @required this.gameTitle})
+      : assert(gameTitle != null),
+        super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Text(
+        gameTitle,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: screenSizeInfo.textSizeMedium * 1.5,
+        ),
+      ),
     );
   }
 }

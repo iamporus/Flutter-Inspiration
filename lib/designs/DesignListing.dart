@@ -3,7 +3,7 @@ import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/sign
 import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterMobileAppDesign.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 
-import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
+import '_2_game_app_concept_by_zoltan/game_app_concept_design.dart';
 import '_3_plant_shop/PlantShopHomeDesign.dart';
 import '_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
 
@@ -49,7 +49,7 @@ class DesignListing {
       paletteColor: Color(0xFF536D80),
       route: GameAppConceptDesign(),
       sourceCodeUrl:
-          "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart",
+          "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_2_game_app_concept_by_zoltan/game_app_concept_design.dart",
     ),
     Design(
         id: 3,
