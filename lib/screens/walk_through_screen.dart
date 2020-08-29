@@ -42,7 +42,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
               PageView(
                 onPageChanged: _handlePageChanged,
                 children: [
-                  _WalkThroughPageWidget(
+                  _WalkThroughPage(
                     backgroundColor: Colors.red.shade700,
                     assetUrl: "assets/app_logo_anim.flr",
                     isAnim: true,
@@ -50,21 +50,21 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                     descriptionText:
                         "Find Beautiful designs and know how to implement them!\n ",
                   ),
-                  _WalkThroughPageWidget(
+                  _WalkThroughPage(
                     backgroundColor: Colors.blue,
                     assetUrl: "assets/walkthrough_designs.webp",
                     titleText: "Find Designs",
                     descriptionText:
                         "Popular designs from Dribbble brought to life through Flutter code",
                   ),
-                  _WalkThroughPageWidget(
+                  _WalkThroughPage(
                     backgroundColor: Colors.green,
                     assetUrl: "assets/walkthrough_source_code.webp",
                     titleText: "View Source Code",
                     descriptionText:
                         "Check out the Source Code to know how it is implemented",
                   ),
-                  _WalkThroughPageWidget(
+                  _WalkThroughPage(
                     backgroundColor: Colors.orange.shade700,
                     assetUrl: "assets/walkthrough_notifications.webp",
                     titleText: "Get Notified",
@@ -80,7 +80,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                   direction: AxisDirection.up,
                   delayInMilliseconds: 2000,
                   animationDurationInMilliseconds: 750,
-                  child: _PageIndicatorWidget(
+                  child: _PageIndicator(
                     pageCount: _pageCount,
                     selectedPageIndex: _selectedPageIndex,
                   ),
@@ -94,7 +94,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                   delayInMilliseconds: 2000,
                   animationDurationInMilliseconds: 750,
                   direction: AxisDirection.up,
-                  child: _StartButtonWidget(
+                  child: _StartButton(
                     onPressed: () {
                       if (widget.shouldPopOnStart) {
                         Navigator.pop(context);
@@ -132,8 +132,8 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 }
 
-class _PageIndicatorWidget extends StatelessWidget {
-  const _PageIndicatorWidget({
+class _PageIndicator extends StatelessWidget {
+  const _PageIndicator({
     Key key,
     @required int pageCount,
     @required int selectedPageIndex,
@@ -152,7 +152,7 @@ class _PageIndicatorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             for (int i = 0; i < _pageCount; i++)
-              _LineIndicatorWidget(indicatorState: LineIndicatorState.GRAY),
+              _LineIndicator(indicatorState: LineIndicatorState.GRAY),
           ],
         ),
         Row(
@@ -160,10 +160,9 @@ class _PageIndicatorWidget extends StatelessWidget {
           children: [
             for (int i = 0; i < _pageCount; i++)
               if (i <= _selectedPageIndex)
-                _LineIndicatorWidget(indicatorState: LineIndicatorState.WHITE)
+                _LineIndicator(indicatorState: LineIndicatorState.WHITE)
               else
-                _LineIndicatorWidget(
-                    indicatorState: LineIndicatorState.TRANSPARENT)
+                _LineIndicator(indicatorState: LineIndicatorState.TRANSPARENT)
           ],
         ),
       ],
@@ -171,10 +170,10 @@ class _PageIndicatorWidget extends StatelessWidget {
   }
 }
 
-class _StartButtonWidget extends BaseStatelessWidget {
+class _StartButton extends BaseStatelessWidget {
   final VoidCallback onPressed;
 
-  const _StartButtonWidget({
+  const _StartButton({
     this.onPressed,
     Key key,
   }) : super(key: key);
@@ -205,14 +204,14 @@ class _StartButtonWidget extends BaseStatelessWidget {
   }
 }
 
-class _WalkThroughPageWidget extends StatefulWidget {
+class _WalkThroughPage extends StatefulWidget {
   final Color backgroundColor;
   final String assetUrl;
   final String titleText;
   final bool isAnim;
   final String descriptionText;
 
-  const _WalkThroughPageWidget(
+  const _WalkThroughPage(
       {Key key,
       @required this.backgroundColor,
       @required this.assetUrl,
@@ -222,10 +221,10 @@ class _WalkThroughPageWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _WalkThroughPageWidgetState createState() => _WalkThroughPageWidgetState();
+  _WalkThroughPageState createState() => _WalkThroughPageState();
 }
 
-class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
+class _WalkThroughPageState extends State<_WalkThroughPage>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _scaleAnimation;
@@ -325,10 +324,10 @@ class _WalkThroughPageWidgetState extends State<_WalkThroughPageWidget>
 
 enum LineIndicatorState { TRANSPARENT, WHITE, GRAY }
 
-class _LineIndicatorWidget extends BaseStatelessWidget {
+class _LineIndicator extends BaseStatelessWidget {
   final LineIndicatorState indicatorState;
 
-  const _LineIndicatorWidget({
+  const _LineIndicator({
     Key key,
     @required this.indicatorState,
   }) : super(key: key);

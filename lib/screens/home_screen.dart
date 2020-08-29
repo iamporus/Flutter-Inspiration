@@ -17,11 +17,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isFirstTime
-        ? _buildBackdropWidgetWithShowcase()
-        : _buildBackdropWidget();
+        ? _buildBackdropWithShowcase()
+        : _buildBackdrop();
   }
 
-  Backdrop _buildBackdropWidget() {
+  Backdrop _buildBackdrop() {
     return Backdrop(
       settingsScreen: SettingsScreen(),
       homeBuilder: (context, isSettingsOpen) {
@@ -33,10 +33,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBackdropWidgetWithShowcase() {
+  Widget _buildBackdropWithShowcase() {
     return ShowCaseWidget(
       builder: Builder(builder: (context) {
-        return _buildBackdropWidget();
+        return _buildBackdrop();
       }),
       onFinish: () {
         dissolveFirstTimeState();

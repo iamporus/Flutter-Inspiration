@@ -117,12 +117,12 @@ class _DesignListScreenState extends State<DesignListScreen>
                   Row(
                     children: <Widget>[
                       _isFirstTime
-                          ? _buildViewSourceWithShowcase()
-                          : _buildViewSourceChipWidget(),
+                          ? _buildViewSourceChipWithShowcase()
+                          : _buildViewSourceChip(),
                       Spacer(),
                       _isFirstTime
                           ? _buildFavoriteChipWithShowcase()
-                          : _buildFavouriteChipWidget()
+                          : _buildFavouriteChip()
                     ],
                   ),
                   _isFirstTime
@@ -141,25 +141,25 @@ class _DesignListScreenState extends State<DesignListScreen>
     return Showcase(
       key: _showcaseMarkFavKey,
       description: "Mark the Design as Favorite",
-      child: _buildFavouriteChipWidget(),
+      child: _buildFavouriteChip(),
     );
   }
 
-  FavouriteChip _buildFavouriteChipWidget() {
+  FavouriteChip _buildFavouriteChip() {
     return FavouriteChip(
       key: ValueKey(_currentDesign.id),
       currentDesign: _currentDesign,
     );
   }
 
-  Showcase _buildViewSourceWithShowcase() {
+  Showcase _buildViewSourceChipWithShowcase() {
     return Showcase(
         key: _showcaseViewSourceKey,
         description: "Check out the Source Code for selected Design",
-        child: _buildViewSourceChipWidget());
+        child: _buildViewSourceChip());
   }
 
-  ViewSourceChip _buildViewSourceChipWidget() =>
+  ViewSourceChip _buildViewSourceChip() =>
       ViewSourceChip(currentDesign: _currentDesign);
 
   Showcase _buildCarouselWithShowcase(

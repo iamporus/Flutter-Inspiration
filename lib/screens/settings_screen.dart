@@ -111,7 +111,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                             SizedBox(
                               height: screenSizeInfo.paddingSmall,
                             ),
-                            _AppTitleWidget(
+                            _AppTitleHeader(
                               packageInfo: _packageInfo,
                             ),
                             Flexible(
@@ -403,8 +403,8 @@ class _Credit {
   }
 }
 
-class _AppTitleWidget extends BaseStatelessWidget {
-  const _AppTitleWidget({
+class _AppTitleHeader extends BaseStatelessWidget {
+  const _AppTitleHeader({
     Key key,
     @required PackageInfo packageInfo,
   })  : _packageInfo = packageInfo,
