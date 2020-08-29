@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_design_challenge/designs/_3_plant_shop/widgets/PlantImageWidget.dart';
-import 'package:flutter_design_challenge/designs/_3_plant_shop/widgets/PlantShopAppBar.dart';
 import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
@@ -18,7 +16,7 @@ class PlantDetailsDesign extends BaseStatelessWidget {
       BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return PreferredSize(
       preferredSize: Size.fromHeight(screenSizeInfo.paddingMedium * 2.5),
-      child: PlantShopAppBar(
+      child: _PlantShopAppBar(
         leadingIcon: Icon(
           Icons.arrow_back,
           color: Colors.white.withAlpha(150),
@@ -48,6 +46,44 @@ class PlantDetailsDesign extends BaseStatelessWidget {
   }
 }
 
+class _PlantShopAppBar extends BaseStatelessWidget {
+  final Icon leadingIcon;
+
+  final Icon shopActionIcon;
+
+  const _PlantShopAppBar({
+    Key key,
+    @required this.leadingIcon,
+    @required this.shopActionIcon,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: Container(
+        margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingMedium, 0, 0, 0),
+        child: IconButton(
+            icon: leadingIcon,
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ),
+      actions: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingMedium, 0),
+          child: CircleAvatar(
+            radius: 35,
+            backgroundColor: Colors.black.withAlpha(15),
+            child: IconButton(icon: shopActionIcon, onPressed: () {}),
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class _PlantShopLayout extends BaseStatelessWidget {
   final Plant plant;
 
@@ -71,32 +107,32 @@ class _PlantShopLayout extends BaseStatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _CategoryWidget(
+                    _CategoryText(
                       categoryTitle: "INDOOR",
                     ),
-                    _PlantTitleWidget(title: plant.name),
+                    _PlantTitleText(title: plant.name),
                     SizedBox(
                       height: screenSizeInfo.paddingMedium,
                     ),
-                    _CategoryWidget(
+                    _CategoryText(
                       categoryTitle: "FROM",
                     ),
                     SizedBox(
                       height: screenSizeInfo.paddingSmall * 0.5,
                     ),
-                    _PlantPriceWidget(
+                    _PlantPriceText(
                       priceInDollars: plant.price,
                     ),
                     SizedBox(
                       height: screenSizeInfo.paddingMedium,
                     ),
-                    _CategoryWidget(
+                    _CategoryText(
                       categoryTitle: "SIZES",
                     ),
                     SizedBox(
                       height: screenSizeInfo.paddingSmall * 0.5,
                     ),
-                    _PlantSizeWidget(
+                    _PlantSizeText(
                       plantSize: plant.size,
                     ),
                     SizedBox(
@@ -104,7 +140,7 @@ class _PlantShopLayout extends BaseStatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: _AddToCartWidget(),
+                      child: _AddToCartButton(),
                     ),
                     SizedBox(
                       height: screenSizeInfo.paddingSmall,
@@ -120,7 +156,7 @@ class _PlantShopLayout extends BaseStatelessWidget {
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
                       )),
-                  child: PlantInfoWidget(plant: plant),
+                  child: _PlantInfoHolder(plant: plant),
                   width: screenSizeInfo.screenWidth,
                 ),
               )
@@ -131,7 +167,7 @@ class _PlantShopLayout extends BaseStatelessWidget {
           margin: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingSmall, 0),
           child: Align(
               alignment: Alignment(1.3, -0.5),
-              child: PlantImageWidget(
+              child: _PlantImage(
                 plant: plant,
                 imageSize: imageSize,
               )),
@@ -141,8 +177,42 @@ class _PlantShopLayout extends BaseStatelessWidget {
   }
 }
 
-class PlantInfoWidget extends BaseStatelessWidget {
-  const PlantInfoWidget({
+class _PlantImage extends BaseStatelessWidget {
+  final VoidCallback onTap;
+  final Plant plant;
+  final double imageSize;
+
+  const _PlantImage({
+    Key key,
+    @required this.plant,
+    @required this.imageSize,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return SizedBox(
+      width: imageSize,
+      child: Hero(
+        tag: plant.name,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Image.asset(
+              plant.image,
+              height: imageSize,
+              width: imageSize,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlantInfoHolder extends BaseStatelessWidget {
+  const _PlantInfoHolder({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -158,18 +228,18 @@ class PlantInfoWidget extends BaseStatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _AllToKnowWidget(),
-          _PlantInfoWidget(plant: plant),
-          _DetailsWidget(),
-          _PlantDetailsWidget(plant: plant),
+          const _AllToKnowHeader(),
+          _PlantInfoText(plantInfo: plant.info),
+          const _DetailsHeader(),
+          _PlantDetails(plant: plant),
         ],
       ),
     );
   }
 }
 
-class _DetailsWidget extends BaseStatelessWidget {
-  const _DetailsWidget({
+class _DetailsHeader extends BaseStatelessWidget {
+  const _DetailsHeader({
     Key key,
   }) : super(key: key);
 
@@ -186,8 +256,8 @@ class _DetailsWidget extends BaseStatelessWidget {
   }
 }
 
-class _AllToKnowWidget extends BaseStatelessWidget {
-  const _AllToKnowWidget({
+class _AllToKnowHeader extends BaseStatelessWidget {
+  const _AllToKnowHeader({
     Key key,
   }) : super(key: key);
 
@@ -204,8 +274,8 @@ class _AllToKnowWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantDetailsWidget extends BaseStatelessWidget {
-  const _PlantDetailsWidget({
+class _PlantDetails extends BaseStatelessWidget {
+  const _PlantDetails({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -234,7 +304,9 @@ class _PlantDetailsWidget extends BaseStatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 4,),
+        SizedBox(
+          height: 4,
+        ),
         Row(
           children: <Widget>[
             Text(
@@ -258,18 +330,18 @@ class _PlantDetailsWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantInfoWidget extends BaseStatelessWidget {
-  const _PlantInfoWidget({
+class _PlantInfoText extends BaseStatelessWidget {
+  const _PlantInfoText({
     Key key,
-    @required this.plant,
+    @required this.plantInfo,
   }) : super(key: key);
 
-  final Plant plant;
+  final String plantInfo;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
-      plant.info,
+      plantInfo,
       style: TextStyle(
         color: Colors.black,
         height: 1.5,
@@ -280,8 +352,8 @@ class _PlantInfoWidget extends BaseStatelessWidget {
   }
 }
 
-class _AddToCartWidget extends BaseStatelessWidget {
-  const _AddToCartWidget({
+class _AddToCartButton extends BaseStatelessWidget {
+  const _AddToCartButton({
     Key key,
   }) : super(key: key);
 
@@ -301,10 +373,10 @@ class _AddToCartWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantTitleWidget extends BaseStatelessWidget {
+class _PlantTitleText extends BaseStatelessWidget {
   final title;
 
-  const _PlantTitleWidget({
+  const _PlantTitleText({
     Key key,
     @required this.title,
   })  : assert(title != null),
@@ -323,10 +395,10 @@ class _PlantTitleWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantPriceWidget extends BaseStatelessWidget {
-  final priceInDollars;
+class _PlantPriceText extends BaseStatelessWidget {
+  final double priceInDollars;
 
-  const _PlantPriceWidget({Key key, @required this.priceInDollars})
+  const _PlantPriceText({Key key, @required this.priceInDollars})
       : assert(priceInDollars != null),
         super(key: key);
 
@@ -343,11 +415,13 @@ class _PlantPriceWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantSizeWidget extends BaseStatelessWidget {
+class _PlantSizeText extends BaseStatelessWidget {
   final PlantSize plantSize;
 
-  const _PlantSizeWidget({Key key, @required this.plantSize})
-      : assert(plantSize != null),
+  const _PlantSizeText({
+    Key key,
+    @required this.plantSize,
+  })  : assert(plantSize != null),
         super(key: key);
 
   @override
@@ -363,11 +437,13 @@ class _PlantSizeWidget extends BaseStatelessWidget {
   }
 }
 
-class _CategoryWidget extends BaseStatelessWidget {
+class _CategoryText extends BaseStatelessWidget {
   final categoryTitle;
 
-  const _CategoryWidget({Key key, @required this.categoryTitle})
-      : assert(categoryTitle != null),
+  const _CategoryText({
+    Key key,
+    @required this.categoryTitle,
+  })  : assert(categoryTitle != null),
         super(key: key);
 
   @override
