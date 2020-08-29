@@ -4,7 +4,7 @@ import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterMo
 import 'package:flutter_design_challenge/models/Design.dart';
 
 import '_2_game_app_concept_by_zoltan/game_app_concept_design.dart';
-import '_3_plant_shop/PlantShopHomeDesign.dart';
+import '_3_plant_shop/plant_shop_home_design.dart';
 import '_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
 
 class DesignListing {
@@ -63,7 +63,7 @@ class DesignListing {
         paletteColor: Color(0xFF359A58),
         route: PlantShopHomeDesign(),
         sourceCodeUrl:
-            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/PlantShopHomeDesign.dart"),
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/plant_shop_home_design.dart"),
     Design(
         id: 4,
         title: "Mobile App - Chapter",

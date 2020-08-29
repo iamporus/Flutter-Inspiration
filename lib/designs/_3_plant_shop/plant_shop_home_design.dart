@@ -8,18 +8,16 @@ import 'package:flutter_design_challenge/utils/ScreenSizeInfo.dart';
 import 'package:flutter_design_challenge/widgets/BaseBuilderWidget.dart';
 import 'package:flutter_design_challenge/widgets/BaseStatelessWidget.dart';
 
-import 'Plant.dart';
-import 'PlantDetailsDesign.dart';
-import 'widgets/PlantImageWidget.dart';
-import 'widgets/PlantShopAppBar.dart';
+import 'plant.dart';
+import 'plant_details_design.dart';
 
 class PlantShopHomeDesign extends BaseStatelessWidget {
-  final tabs = [
-    _PlantCategoryTabWidget(title: "Top"),
-    _PlantCategoryTabWidget(title: "Outdoor"),
-    _PlantCategoryTabWidget(title: "Indoor"),
-    _PlantCategoryTabWidget(title: "Plant Garden"),
-    _PlantCategoryTabWidget(title: "Office"),
+  final List<_PlantCategoryTab> tabs = [
+    _PlantCategoryTab(title: "Top"),
+    _PlantCategoryTab(title: "Outdoor"),
+    _PlantCategoryTab(title: "Indoor"),
+    _PlantCategoryTab(title: "Plant Garden"),
+    _PlantCategoryTab(title: "Office"),
   ];
 
   @override
@@ -42,7 +40,7 @@ class PlantShopHomeDesign extends BaseStatelessWidget {
   PreferredSize _buildPlantShopAppBar(
       BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return PreferredSize(
-      child: PlantShopAppBar(
+      child: _PlantShopAppBar(
         leadingIcon: Icon(
           Icons.sort,
           color: Colors.black.withAlpha(150),
@@ -55,10 +53,43 @@ class PlantShopHomeDesign extends BaseStatelessWidget {
       preferredSize: Size.fromHeight(screenSizeInfo.paddingMedium * 2.5),
     );
   }
+}
+
+class _PlantShopAppBar extends BaseStatelessWidget {
+  final Icon leadingIcon;
+
+  final Icon shopActionIcon;
+
+  const _PlantShopAppBar({
+    Key key,
+    @required this.leadingIcon,
+    @required this.shopActionIcon,
+  }) : super(key: key);
 
   @override
-  bool printLogs() {
-    return true;
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: Container(
+        margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingMedium, 0, 0, 0),
+        child: IconButton(
+            icon: leadingIcon,
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ),
+      actions: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, screenSizeInfo.paddingMedium, 0),
+          child: CircleAvatar(
+            radius: 35,
+            backgroundColor: Colors.black.withAlpha(15),
+            child: IconButton(icon: shopActionIcon, onPressed: () {}),
+          ),
+        )
+      ],
+    );
   }
 }
 
@@ -91,7 +122,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
         TabController(length: widget.tabs.length, initialIndex: 0, vsync: this);
     _tabController.addListener(_handleTabChange);
     _pageController.addListener(_handlePageChange);
-    _plantDescriptionWidget = _PlantDescriptionWidget(
+    _plantDescriptionWidget = _PlantDescriptionText(
       info: widget.plants[0].info,
       key: ValueKey(0),
     );
@@ -116,7 +147,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
     if (page == page.roundToDouble()) {
       setState(() {
         _selectedPlantIndex = _pageController.page.toInt();
-        _plantDescriptionWidget = _PlantDescriptionWidget(
+        _plantDescriptionWidget = _PlantDescriptionText(
           key: ValueKey(page),
           info: widget.plants[_selectedPlantIndex].info,
         );
@@ -141,12 +172,12 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
           Container(
             margin: EdgeInsets.fromLTRB(
                 screenSizeInfo.paddingLarge, screenSizeInfo.paddingSmall, 0, 0),
-            child: _TopPicksWidget(),
+            child: _TopPicksHeader(),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(screenSizeInfo.paddingMedium, 0, 0, 0),
-            child: _CategoryTabBarWidget(
-                tabController: _tabController, widget: widget),
+            child: _CategoryTabBar(
+                tabController: _tabController, tabs: widget.tabs),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(0, 0, 0, screenSizeInfo.paddingSmall),
@@ -155,7 +186,7 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
             child: PageView(
               controller: _pageController,
               children: <Widget>[
-                for (var plant in widget.plants) _PlantCardWidget(plant: plant)
+                for (var plant in widget.plants) _PlantCard(plant: plant)
               ],
             ),
           ),
@@ -184,16 +215,34 @@ class _PlantShopHomeLayoutState extends State<PlantShopHomeLayout>
   }
 }
 
-class _CategoryTabBarWidget extends BaseStatelessWidget {
-  const _CategoryTabBarWidget({
+class _TopPicksHeader extends BaseStatelessWidget {
+  const _TopPicksHeader({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return Text(
+      "Top Picks",
+      style: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: screenSizeInfo.textSizeSmall * 2,
+        color: Colors.black,
+      ),
+    );
+  }
+}
+
+class _CategoryTabBar extends BaseStatelessWidget {
+  const _CategoryTabBar({
     Key key,
     @required TabController tabController,
-    @required this.widget,
+    @required this.tabs,
   })  : _tabController = tabController,
         super(key: key);
 
   final TabController _tabController;
-  final PlantShopHomeLayout widget;
+  final List<_PlantCategoryTab> tabs;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
@@ -214,7 +263,7 @@ class _CategoryTabBarWidget extends BaseStatelessWidget {
             unselectedLabelStyle: TextStyle(
               fontWeight: FontWeight.w200,
             ),
-            tabs: widget.tabs,
+            tabs: tabs,
           ),
         ),
       ),
@@ -222,10 +271,10 @@ class _CategoryTabBarWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantCardWidget extends BaseStatelessWidget {
+class _PlantCard extends BaseStatelessWidget {
   final Plant plant;
 
-  const _PlantCardWidget({Key key, @required this.plant})
+  const _PlantCard({Key key, @required this.plant})
       : assert(plant != null),
         super(key: key);
 
@@ -253,7 +302,7 @@ class _PlantCardWidget extends BaseStatelessWidget {
                         height: screenSizeInfo.paddingLarge,
                       ),
                       Center(
-                        child: PlantImageWidget(
+                        child: _PlantImage(
                             plant: plant,
                             imageSize: screenSizeInfo.screenWidth * 0.4,
                             onTap: () {
@@ -272,7 +321,7 @@ class _PlantCardWidget extends BaseStatelessWidget {
                               4,
                               screenSizeInfo.paddingMedium,
                               4),
-                          child: _PlantCategoryWidget(plant: plant),
+                          child: _PlantCategoryText(category: plant.category),
                         ),
                       ),
                       Align(
@@ -283,7 +332,7 @@ class _PlantCardWidget extends BaseStatelessWidget {
                               0,
                               screenSizeInfo.paddingMedium,
                               screenSizeInfo.paddingMedium),
-                          child: _PlantNameWidget(plant: plant),
+                          child: _PlantNameText(plantName: plant.name),
                         ),
                       ),
                       Padding(
@@ -294,11 +343,11 @@ class _PlantCardWidget extends BaseStatelessWidget {
                             screenSizeInfo.paddingSmall),
                         child: Row(
                           children: <Widget>[
-                            _PlantEnvironmentWidget(icon: Icons.wb_sunny),
+                            const _PlantEnvironmentWidget(icon: Icons.wb_sunny),
                             SizedBox(width: screenSizeInfo.paddingSmall),
-                            _PlantEnvironmentWidget(icon: Icons.cloud),
+                            const _PlantEnvironmentWidget(icon: Icons.cloud),
                             SizedBox(width: screenSizeInfo.paddingSmall),
-                            _PlantEnvironmentWidget(
+                            const _PlantEnvironmentWidget(
                                 icon: Icons.wb_incandescent),
                           ],
                         ),
@@ -329,7 +378,7 @@ class _PlantCardWidget extends BaseStatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child: _PlantPriceWidget(plant: plant),
+                        child: _PlantPriceText(price: plant.price),
                       ),
                     ],
                   ),
@@ -342,19 +391,19 @@ class _PlantCardWidget extends BaseStatelessWidget {
           margin: EdgeInsets.fromLTRB(0, screenSizeInfo.paddingMedium, 0, 0),
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: Container(child: _AddToCartWidget()),
+            child: Container(child: const _AddToCartButton()),
           ),
         ),
         Positioned.fill(
-          child: _SplashCardWidget(plant: plant),
+          child: _SplashPlantCard(plant: plant),
         )
       ],
     );
   }
 }
 
-class _SplashCardWidget extends BaseStatelessWidget {
-  const _SplashCardWidget({
+class _SplashPlantCard extends BaseStatelessWidget {
+  const _SplashPlantCard({
     Key key,
     @required this.plant,
   }) : super(key: key);
@@ -381,8 +430,8 @@ class _SplashCardWidget extends BaseStatelessWidget {
   }
 }
 
-class _AddToCartWidget extends BaseStatelessWidget {
-  const _AddToCartWidget({
+class _AddToCartButton extends BaseStatelessWidget {
+  const _AddToCartButton({
     Key key,
   }) : super(key: key);
 
@@ -405,18 +454,18 @@ class _AddToCartWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantNameWidget extends BaseStatelessWidget {
-  const _PlantNameWidget({
+class _PlantNameText extends BaseStatelessWidget {
+  const _PlantNameText({
     Key key,
-    @required this.plant,
+    @required this.plantName,
   }) : super(key: key);
 
-  final Plant plant;
+  final String plantName;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
-      plant.name,
+      plantName,
       style: TextStyle(
         color: Colors.white,
         fontSize: screenSizeInfo.textSizeMedium,
@@ -426,18 +475,18 @@ class _PlantNameWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantCategoryWidget extends BaseStatelessWidget {
-  const _PlantCategoryWidget({
+class _PlantCategoryText extends BaseStatelessWidget {
+  const _PlantCategoryText({
     Key key,
-    @required this.plant,
+    @required this.category,
   }) : super(key: key);
 
-  final Plant plant;
+  final PlantCategory category;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
-      describeEnum(plant.category).toUpperCase(),
+      describeEnum(category).toUpperCase(),
       style: TextStyle(
         color: Colors.white,
         fontSize: screenSizeInfo.textSizeSmall,
@@ -447,8 +496,42 @@ class _PlantCategoryWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantDescriptionWidget extends BaseStatelessWidget {
-  const _PlantDescriptionWidget({
+class _PlantImage extends BaseStatelessWidget {
+  final VoidCallback onTap;
+  final Plant plant;
+  final double imageSize;
+
+  const _PlantImage({
+    Key key,
+    @required this.plant,
+    @required this.imageSize,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
+    return SizedBox(
+      width: imageSize,
+      child: Hero(
+        tag: plant.name,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Image.asset(
+              plant.image,
+              height: imageSize,
+              width: imageSize,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlantDescriptionText extends BaseStatelessWidget {
+  const _PlantDescriptionText({
     Key key,
     @required this.info,
   })  : assert(info != null),
@@ -470,18 +553,18 @@ class _PlantDescriptionWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantPriceWidget extends BaseStatelessWidget {
-  const _PlantPriceWidget({
+class _PlantPriceText extends BaseStatelessWidget {
+  const _PlantPriceText({
     Key key,
-    @required this.plant,
+    @required this.price,
   }) : super(key: key);
 
-  final Plant plant;
+  final double price;
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Text(
-      "\$" + plant.price.toString(),
+      "\$" + price.toString(),
       style: TextStyle(
           color: Colors.white,
           fontSize: screenSizeInfo.textSizeSmall * 2,
@@ -514,10 +597,10 @@ class _PlantEnvironmentWidget extends BaseStatelessWidget {
   }
 }
 
-class _PlantCategoryTabWidget extends BaseStatelessWidget {
-  final title;
+class _PlantCategoryTab extends BaseStatelessWidget {
+  final String title;
 
-  const _PlantCategoryTabWidget({
+  const _PlantCategoryTab({
     Key key,
     @required this.title,
   })  : assert(title != null),
@@ -533,24 +616,6 @@ class _PlantCategoryTabWidget extends BaseStatelessWidget {
           color: Colors.black,
           fontSize: screenSizeInfo.textSizeMedium,
         ),
-      ),
-    );
-  }
-}
-
-class _TopPicksWidget extends BaseStatelessWidget {
-  const _TopPicksWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return Text(
-      "Top Picks",
-      style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: screenSizeInfo.textSizeSmall * 2,
-        color: Colors.black,
       ),
     );
   }
