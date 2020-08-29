@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_design_challenge/designs/_1_sign_in_sign_up_by_giga/sign_in_design.dart';
 import 'package:flutter_design_challenge/designs/_5_chapter_mobile_app/ChapterMobileAppDesign.dart';
 import 'package:flutter_design_challenge/models/Design.dart';
 
-import '_1_sign_in_sign_up_by_giga/SignUpDesign.dart';
 import '_2_game_app_concept_by_zoltan/GameAppConceptDesign.dart';
 import '_3_plant_shop/PlantShopHomeDesign.dart';
 import '_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
@@ -32,7 +32,7 @@ class DesignListing {
               resolution,
       imageHash: "*YONUe\$y~B9FWB%M-4NcNx-;xZRj-;n~Iox]WBWAkCR+WCxuW=Rj",
       paletteColor: Color(0xFF53859C),
-      route: SignUpDesign(),
+      route: SignInDesign(),
       sourceCodeUrl:
           "https://github.com/iamporus/flutter_design_challenges/tree/master/lib/designs/_1_sign_in_sign_up_by_giga",
     ),
