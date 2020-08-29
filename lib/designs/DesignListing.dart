@@ -5,7 +5,7 @@ import 'package:flutter_design_challenge/models/Design.dart';
 
 import '_2_game_app_concept_by_zoltan/game_app_concept_design.dart';
 import '_3_plant_shop/plant_shop_home_design.dart';
-import '_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart';
+import '_4_iphone_x_social_app/iPhone_x_social_app_design.dart';
 
 class DesignListing {
   static final resolution = "600x445";
@@ -21,7 +21,7 @@ class DesignListing {
         paletteColor: Color(0xFF35322E),
         route: IPhoneXSocialAppDesign(),
         sourceCodeUrl:
-            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_4_iphone_x_social_app/IPhoneXSocialAppDesign.dart"),
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_4_iphone_x_social_app/iPhone_x_social_app_design.dart"),
     Design(
       id: 1,
       title: "Sign in / Sign up UI",
