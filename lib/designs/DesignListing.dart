@@ -76,7 +76,7 @@ class DesignListing {
         paletteColor: Color(0xFFa3705a),
         route: ChapterMobileAppDesign(),
         sourceCodeUrl:
-            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_3_plant_shop/PlantShopHomeDesign.dart"),
+            "https://github.com/iamporus/flutter_design_challenges/blob/master/lib/designs/_5_chapter_mobile_app/ChapterHomeDesign.dart"),
   ];
 
   static int getAvailableDesignCount() {
