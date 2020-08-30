@@ -17,7 +17,10 @@ class DesignListAppBar extends BaseStatelessWidget {
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
     return Container(
       width: screenSizeInfo.screenWidth,
-      padding: EdgeInsets.all(screenSizeInfo.paddingMedium),
+      padding: EdgeInsets.only(
+        top: screenSizeInfo.paddingSmall,
+        right: screenSizeInfo.paddingSmall,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
@@ -26,14 +29,16 @@ class DesignListAppBar extends BaseStatelessWidget {
             radius: screenSizeInfo.paddingMedium * 1.5,
             anim: AppLogoAnim.IDLE,
           ),
-          SizedBox(width: screenSizeInfo.paddingSmall,),
+          SizedBox(
+            width: screenSizeInfo.paddingSmall,
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               appBarTitle,
               style: GoogleFonts.quicksand(
                 textStyle: TextStyle(
-                    fontSize: screenSizeInfo.textSizeMedium * 1.3,
+                    fontSize: screenSizeInfo.textSizeMedium * 1.4,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     shadows: [Shadow(blurRadius: 3.0)]),

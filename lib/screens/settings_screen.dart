@@ -399,6 +399,11 @@ class _Credit {
         title: "Humaaans by Pablo Stanley",
         imageUrl: "assets/humaaans_1.png",
       ),
+      _Credit(
+        title: "Dribbble Icon made by Dave Gandy from www.flaticon.com",
+        imageUrl: "assets/dribbble_logo.svg",
+        isSvgAsset: true
+      ),
     ];
   }
 }

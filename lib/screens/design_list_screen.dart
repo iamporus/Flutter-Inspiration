@@ -385,25 +385,28 @@ class _DesignInfoCarousel extends BaseStatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () {},
-        child: Container(
-          height: screenSizeInfo.screenHeight * 0.12,
-          color: Colors.transparent,
-          child: HorizontalListWheelScrollView(
-            itemExtent: screenSizeInfo.screenHeight * 0.65,
-            scrollDirection: Axis.horizontal,
-            squeeze: 1.3,
-            scrollPhysics: NeverScrollableScrollPhysics(),
-            diameterRatio: 15,
-            onTap: () {
-              launchURL(context, _currentDesign.link);
-            },
-            controller: _designInfoScrollController,
-            builder: (context, index) {
-              var design = DesignListing.getAvailableDesigns()[index];
-              return DesignInfo(
-                design: design,
-              );
-            },
+        child: Center(
+          child: Container(
+            height: screenSizeInfo.screenHeight * 0.12,
+            width: screenSizeInfo.screenWidth,
+            color: Colors.transparent,
+            child: HorizontalListWheelScrollView(
+              itemExtent: screenSizeInfo.screenWidth ,
+              scrollDirection: Axis.horizontal,
+              squeeze: 1.2,
+              scrollPhysics: NeverScrollableScrollPhysics(),
+              diameterRatio: 1.8,
+              onTap: () {
+                launchURL(context, _currentDesign.link);
+              },
+              controller: _designInfoScrollController,
+              builder: (context, index) {
+                var design = DesignListing.getAvailableDesigns()[index];
+                return DesignInfo(
+                  design: design,
+                );
+              },
+            ),
           ),
         ),
       ),

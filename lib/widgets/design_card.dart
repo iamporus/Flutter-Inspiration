@@ -15,44 +15,46 @@ class DesignCard extends BaseStatelessWidget {
 
   @override
   Widget buildResponsive(BuildContext context, ScreenSizeInfo screenSizeInfo) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(
-        Radius.circular(15),
-      ),
-      child: Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (BuildContext context) {
+              return design.route;
+            },
+          ));
+        },
         child: Center(
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            color: Colors.transparent,
-            elevation: 8.0,
-            child: Material(
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(screenSizeInfo.paddingMedium * 1.5),
+                topRight: Radius.circular(screenSizeInfo.paddingMedium * 1.5)),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
               color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return design.route;
-                    },
-                  ));
-                },
-                child: Stack(
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 0.9,
-                      child: Container(
-                        color: design.paletteColor,
-                        child: CachedNetworkImage(
-                          imageUrl: design.imageAsset,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              BlurHash(hash: design.imageHash),
-                          placeholderFadeInDuration:
-                              Duration(milliseconds: 300),
-                        ),
+              elevation: 8.0,
+              child: Stack(
+                children: <Widget>[
+                  AspectRatio(
+                    aspectRatio: 0.9,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft:
+                            Radius.circular(screenSizeInfo.paddingMedium),
+                        topRight:
+                            Radius.circular(screenSizeInfo.paddingMedium),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: design.imageAsset,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            BlurHash(hash: design.imageHash),
+                        placeholderFadeInDuration: Duration(milliseconds: 300),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
