@@ -287,7 +287,7 @@ class _WalkThroughPageState extends State<_WalkThroughPage>
                 style: GoogleFonts.quicksand(
                   textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: screenSizeInfo.textSizeLarge * 1.2,
+                    fontSize: screenSizeInfo.textSizeLarge,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -308,7 +308,8 @@ class _WalkThroughPageState extends State<_WalkThroughPage>
                   style: GoogleFonts.quicksand(
                     textStyle: TextStyle(
                       color: Colors.white,
-                      fontSize: screenSizeInfo.textSizeMedium * 1.2,
+                      height: 1.4,
+                      fontSize: screenSizeInfo.textSizeMedium,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

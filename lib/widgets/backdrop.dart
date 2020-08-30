@@ -182,7 +182,7 @@ class _SettingsIconState extends State<_SettingsIcon>
           return Align(
             alignment: AlignmentDirectional.topStart,
             child: SizedBox(
-              width: screenSizeInfo.screenWidth * 0.18,
+              width: screenSizeInfo.screenWidth * 0.15,
               height: screenSizeInfo.screenHeight * 0.07 +
                   (screenSizeInfo.safeBlockVertical * 4),
               child: Material(
@@ -212,7 +212,7 @@ class _SettingsIconState extends State<_SettingsIcon>
                       alignment: AlignmentDirectional.bottomEnd,
                       child: AnimatedIcon(
                         icon: AnimatedIcons.menu_close,
-                        size: screenSizeInfo.textSizeLarge * 0.8,
+                        size: screenSizeInfo.textSizeLarge * 0.7,
                         progress: _animationController,
                         color: Colors.white,
                       ),

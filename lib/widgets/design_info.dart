@@ -45,7 +45,7 @@ class DesignInfo extends BaseStatelessWidget {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         shadows: [Shadow(blurRadius: 3.0)],
-                        fontSize: screenSizeInfo.textSizeMedium * 1.1,
+                        fontSize: screenSizeInfo.textSizeMedium,
                       ),
                     ),
                   ),
