@@ -9,6 +9,7 @@ import 'package:flutter_design_challenge/screens/walk_through_screen.dart';
 import 'package:flutter_design_challenge/utils/analytics_service.dart';
 import 'package:flutter_design_challenge/utils/utils.dart';
 import 'package:flutter_design_challenge/widgets/firebase_init_widget.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 final kReleaseMode = true;
 
@@ -69,12 +70,22 @@ class HomeBuilder extends StatefulWidget {
 
 class _HomeBuilderState extends State<HomeBuilder> {
   bool _isFirstTime;
+  bool _isGoodTimeToAskReview;
 
   @override
   void initState() {
     getIsFirstTimeState().then((value) {
       _isFirstTime = value;
       setState(() {});
+    });
+
+    updateNoOfAppOpenInstances().then((value) {
+      getIsGoodTimeToAskReview().then((value) {
+        _isGoodTimeToAskReview = value;
+        print(
+            "Is Good time to ask review: " + _isGoodTimeToAskReview.toString());
+        setState(() {});
+      });
     });
     super.initState();
   }
@@ -85,7 +96,24 @@ class _HomeBuilderState extends State<HomeBuilder> {
       return Container(
         color: Colors.black,
       );
-    } else
-      return _isFirstTime ? WalkThroughScreen() : HomeScreen();
+    } else {
+      if (_isFirstTime)
+        return WalkThroughScreen();
+      else {
+        if (_isGoodTimeToAskReview) {
+          return WillPopScope(
+              onWillPop: () async {
+                final InAppReview inAppReview = InAppReview.instance;
+                if (await inAppReview.isAvailable()) {
+                  inAppReview.requestReview();
+                  return Future.value(false);
+                }
+                return Future.value(true);
+              },
+              child: HomeScreen());
+        } else
+          return HomeScreen();
+      }
+    }
   }
 }
